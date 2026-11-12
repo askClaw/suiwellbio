@@ -445,3 +445,8 @@ body[data-page="product"] #working-mode { padding-bottom:75px; }
 @media (max-width:760px) {
   .contact-card,.expertise-list article { min-height:0; }
 }
+
+/* Static forms remain unavailable until their local handlers are installed. */
+:is(.consultation-form,.faq-feedback) [data-static-control]:disabled { cursor:not-allowed; opacity:.55; }
+.form-noscript { color:#81969e; font-size:13px; line-height:1.8; }
+.form-noscript a { color:var(--cyan); text-decoration:underline; }

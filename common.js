@@ -1,4 +1,5 @@
 import { createAnimationController, settleMotionStates } from './motion-core.js';
+import { createEntranceRegistry } from './entrance-registry.js';
 
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
@@ -18,11 +19,25 @@ const details = {
   language: '<h2>English Version</h2><p>The English version is being prepared. Please contact our team for product information and consultation in English.</p>' + contactLink
 };
 // Entrance animations own opacity / translate / scale. CSS hover owns transform.
-const entrances = new Map();
 const entryObserver = new IntersectionObserver(entries => {
   if (document.hidden) return;
   startEntrances(entries.filter(entry => entry.isIntersecting).map(entry => entry.target));
 }, { threshold: .08, rootMargin: '0px 0px -16px 0px' });
+const entranceRegistry = createEntranceRegistry({
+  unobserve: element => entryObserver.unobserve(element),
+  cancel: element => animations.cancel(element),
+  reveal: element => {
+    element.classList.remove('motion-pending');
+    element.dataset.motionState = 'complete';
+  },
+  reset: element => {
+    element.classList.remove('motion-pending');
+    delete element.dataset.motion;
+    delete element.dataset.motionState;
+  }
+});
+const entrances = entranceRegistry.active;
+function disposeEntrances(root) { entranceRegistry.disposeWithin(root); }
 function startEntrances(elements) {
   const groups = new Map();
   elements.forEach(element => {
@@ -46,11 +61,7 @@ function startEntrances(elements) {
   });
 }
 function completeEntrance(element) {
-  element.classList.remove('motion-pending');
-  element.dataset.motionState = 'complete';
-  const state = entrances.get(element);
-  if (state) state.status = 'complete';
-  entryObserver.unobserve(element);
+  entranceRegistry.complete(element);
 }
 function enter(element, delay = 0, immediately = false) {
   const state = entrances.get(element);
@@ -69,11 +80,11 @@ function enter(element, delay = 0, immediately = false) {
 }
 function registerEntrances(selector, direction = 'up', groupSelector) {
   $$(selector).forEach((element, index) => {
-    if (entrances.has(element)) return;
+    if (entranceRegistry.has(element)) return;
     const rect = element.getBoundingClientRect();
     const visible = rect.bottom > 0 && rect.top < innerHeight;
     const state = { direction, group: groupSelector ? element.closest(groupSelector) : null, status: 'pending' };
-    entrances.set(element, state);
+    entranceRegistry.add(element, state);
     element.dataset.motion = direction;
     if (visible && groupSelector === '.hero-content' && scrollY === 0 && !skipMotion() && element.animate) {
       enter(element, index * 80); return;
@@ -311,4 +322,4 @@ registerEntrances('.project-timeline > li:nth-child(odd) > article', 'right');
 registerEntrances('.project-timeline > li:nth-child(even) > article', 'left');
 registerEntrances('.work-flow', 'fade');
 registerEntrances('[data-entry]');
-export { $, $$, preference, mobile, skipMotion, animations, ease, registerEntrances, showDialog, addMotionHooks, updateScrollState };
+export { $, $$, preference, mobile, skipMotion, animations, ease, registerEntrances, disposeEntrances, showDialog, addMotionHooks, updateScrollState };

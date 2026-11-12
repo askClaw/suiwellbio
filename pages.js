@@ -4,20 +4,27 @@ import { selectNews, newsQuery, detailHref, createFeedbackStore, escapeHtml as e
 function renderCard(item, category, page) {
   return `<article data-news-card><a class="news-card-link" href="${detailHref(item,category,page)}"><div class="news-image"><img src="${item.cover}" alt="${e(item.title)}" width="384" height="182" loading="lazy"></div><div class="news-copy"><time datetime="${item.publishedAt}">${item.publishedAt}</time><h3>${e(item.title)}</h3><p>${e(item.summary)}</p><span class="read-more">阅读全文 →</span></div></a></article>`;
 }
+function enableStaticForm(form) {
+  // Call only after all handlers for this form are installed.
+  form.querySelectorAll('[data-static-control]').forEach(control => { control.disabled=false; });
+  form.dataset.ready='true';
+}
 export function initPages(context) {
-  const { $, $$, animations, ease, registerEntrances, skipMotion } = context;
+  const { $, $$, animations, ease, registerEntrances, disposeEntrances, skipMotion } = context;
   const page = document.body.dataset.page;
   if (page === 'news') {
     const list = $('#news-results'), section = $('#news-list');
     function render() {
       const params = new URLSearchParams(location.search);
       const model = selectNews(newsItems,{category:params.get('category')||'company',page:params.get('page')||1});
-      history.replaceState(null,'',`news.html?${newsQuery(model.category,model.page)}${location.hash}`);
+      const canonical = new URL(`news.html?${newsQuery(model.category,model.page)}${location.hash}`,location.href);
+      if (canonical.href !== location.href) history.replaceState(null,'',canonical.href);
       $$('[data-news-category]').forEach(link => {
         if(link.dataset.newsCategory === model.category) link.setAttribute('aria-current','true');
         else link.removeAttribute('aria-current');
       });
       $('.news-results').textContent = `共 ${model.total} 条${categories.find(item=>item.id===model.category).label} · 第 ${model.page} / ${model.totalPages} 页`;
+      disposeEntrances(list);
       list.innerHTML = model.items.map(item=>renderCard(item,model.category,model.page)).join('') || '<p class="empty-state">此分类暂无新闻。</p>';
       const link = (label,target,enabled) => enabled ? `<a href="news.html?${newsQuery(model.category,target)}" data-news-page="${target}" aria-label="${label}">${label}</a>` : `<span aria-disabled="true">${label}</span>`;
       const numbers = Array.from({length:model.totalPages},(_,i)=>i+1).map(number=>number===model.page?`<span aria-current="page">${number}</span>`:`<a href="news.html?${newsQuery(model.category,number)}" data-news-page="${number}">${number}</a>`).join('');
@@ -90,6 +97,17 @@ export function initPages(context) {
       });
     });
     $$('.faq-feedback').forEach(form=>{
+      form.addEventListener('submit',event=>{
+        event.preventDefault();
+        const data=new FormData(form);
+        try {
+          const selected=data.get('helpful');
+          if(selected!=='yes' && selected!=='no') throw new Error('请先选择是否有帮助。');
+          const value=store.save({faqId:form.dataset.faqId,helpful:selected==='yes',comment:String(data.get('comment')||'')});
+          form.dataset.feedbackState='recorded';
+          form.querySelector('.feedback-status').textContent=`已在本页记录“${value.helpful?'有帮助':'没有帮助'}”的反馈。当前为静态演示，尚未发送到服务器。`;
+        } catch(error) { form.querySelector('.feedback-status').textContent=error.message; }
+      });
       const toggle=form.querySelector('.feedback-toggle');
       const extra=form.querySelector('.feedback-extra');
       function showComment(open) {
@@ -104,24 +122,13 @@ export function initPages(context) {
       form.addEventListener('change',event=>{
         if(event.target.name==='helpful') showComment(event.target.value==='no');
       });
-      form.addEventListener('submit',event=>{
-        event.preventDefault();
-        const data=new FormData(form);
-        try {
-          const selected=data.get('helpful');
-          if(selected!=='yes' && selected!=='no') throw new Error('请先选择是否有帮助。');
-          const value=store.save({faqId:form.dataset.faqId,helpful:selected==='yes',comment:String(data.get('comment')||'')});
-          form.dataset.feedbackState='recorded';
-          form.querySelector('.feedback-status').textContent=`已在本页记录“${value.helpful?'有帮助':'没有帮助'}”的反馈。当前为静态演示，尚未发送到服务器。`;
-        } catch(error) { form.querySelector('.feedback-status').textContent=error.message; }
-      });
+      if (form.elements.helpful.value === 'no') showComment(true);
+      enableStaticForm(form);
     });
   }
   if (page === 'contact') {
     const form=$('.consultation-form'), code=$('.verification-code');
     const status=$('.form-status');
-    code.addEventListener('click',()=>{code.textContent=String(Math.floor(Math.random()*9000)+1000);form.elements.verification.value='';form.elements.verification.focus();});
-    form.addEventListener('input',event=>event.target.setCustomValidity?.(''));
     form.addEventListener('submit',event=>{
       event.preventDefault();status.classList.remove('is-error');
       for(const input of form.querySelectorAll('[required]')) {
@@ -134,6 +141,9 @@ export function initPages(context) {
       }
       status.textContent='信息格式检查通过。当前为静态演示，填写内容未发送；请通过电话或邮箱与我们联系。';
     });
+    code.addEventListener('click',()=>{code.textContent=String(Math.floor(Math.random()*9000)+1000);form.elements.verification.value='';form.elements.verification.focus();});
+    form.addEventListener('input',event=>event.target.setCustomValidity?.(''));
+    enableStaticForm(form);
   }
   $$('a[href="#top"]').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();window.scrollTo({top:0,behavior:skipMotion()?'auto':'smooth'});}));
 }

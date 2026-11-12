@@ -54,3 +54,15 @@ test('generated pages have live local destinations and a single correct current 
     }
   }
 });
+
+test('generated static demo forms are unavailable until their handlers initialize',async()=>{
+ for(const name of ['contact','service']){
+  const html=await readFile(resolve(`${name}.html`),'utf8');
+  const forms=[...html.matchAll(/<form class="(?:consultation-form|faq-feedback)"[\s\S]*?<\/form>/g)];
+  assert.equal(forms.length,name==='contact'?1:4);
+  for(const [form] of forms) for(const [control] of form.matchAll(/<(?:input|textarea|button)\b[^>]*>/g)){
+   assert.match(control,/\sdisabled(?:\s|>)/);assert.match(control,/\sdata-static-control(?:\s|>)/);
+  }
+  assert.match(html,/<noscript>[\s\S]*?电话联系[\s\S]*?发送邮件[\s\S]*?<\/noscript>/);
+ }
+});

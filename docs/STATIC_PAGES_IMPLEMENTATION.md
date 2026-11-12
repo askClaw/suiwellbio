@@ -2,6 +2,8 @@
 
 后续视觉与动效精修已完成，最新布局测量和浏览器验证见 [内页精修结果](INNER_PAGES_VISUAL_REFINEMENT_RESULT.md)。FAQ补充意见现为按需展开，仍保持页面内记录。
 
+静态表单初始化保护与动态新闻卡片动效清理也已完成，见 [修复结果](STATIC_FORMS_AND_MOTION_CLEANUP_RESULT.md)。
+
 已完成首页以外的 7 个静态内页，保留 PSD 的青蓝/金色视觉、分区结构与内容层次。当前没有后端程序。
 
 ## 页面和结构
