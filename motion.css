@@ -1,0 +1,732 @@
+/* Motion follows the reference examples;
+   the PSD remains the layout source. */
+:root {
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --ease-ui:cubic-bezier(.2,.7,.3,1)
+}
+
+html {
+  scroll-padding-top:125px
+}
+body {
+  overflow-x:clip
+}
+body.dialog-open {
+  overflow:hidden
+}
+.icon {
+  display:inline-block;
+  flex-shrink:0;
+  width:20px;
+  height:20px;
+  vertical-align:middle
+}
+header {
+  position:sticky;
+  top:-60px;
+  background:#fff;
+  z-index:20;
+  transition:box-shadow .3s ease
+}
+header.is-scrolled {
+  box-shadow:0 6px 30px #16474e14
+}
+.navigation {
+  position:relative;
+  background:#fff
+}
+#main-nav a {
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:5px
+}
+#main-nav .icon {
+  width:16px;
+  height:16px;
+  color:#8fcfd8;
+  transition:color .25s,transform .3s var(--ease-out)
+}
+#main-nav a:after {
+  content:'';
+  position:absolute;
+  bottom:4px;
+  left:20%;
+  right:20%;
+  height:2px;
+  background:var(--cyan);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .35s var(--ease-out)
+}
+#main-nav a:hover:after,#main-nav a.active:after {
+  transform:scaleX(1)
+}
+#main-nav a:hover .icon,#main-nav a.active .icon {
+  color:var(--cyan);
+  transform:translateY(-2px)
+}
+.top-actions .icon {
+  width:18px;
+  height:18px
+}
+.search-toggle {
+  display:flex;
+  align-items:center;
+  padding:6px
+}
+.hero {
+  overflow:hidden
+}
+.hero .button .icon {
+  width:16px;
+  height:16px
+}
+.hero-content h1 {
+  letter-spacing:-1px
+}
+.button {
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  transition:transform .35s var(--ease-out),box-shadow .35s,background .3s
+}
+.button:before {
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(105deg,transparent 30%,#fff4 50%,transparent 70%);
+  transform:translateX(-130%);
+  transition:transform .65s var(--ease-ui);
+  pointer-events:none
+}
+.button:hover:before,.button:focus-visible:before {
+  transform:translateX(130%)
+}
+.button>span {
+  transition:transform .3s var(--ease-out)
+}
+.button:hover>span {
+  transform:translateX(4px)
+}
+.button:active {
+  transform:translateY(0) scale(.98)
+}
+.slide-arrow {
+  transition:background .25s,transform .25s,border-color .25s
+}
+.slide-arrow.previous {
+  background:#ffffff25;
+  border-color:#ffffff80
+}
+.slide-arrow:hover {
+  transform:scale(1.08);
+  background:var(--gold);
+  border-color:var(--gold)
+}
+.slide-dots button {
+  transition:width .35s var(--ease-out),background .3s;
+  position:relative
+}
+.slide-dots button:before {
+  content:'';
+  position:absolute;
+  inset:-12px -1px
+}
+.metric-grid>div {
+  position:relative;
+  transition:background .3s,transform .35s var(--ease-out);
+  border-radius:3px
+}
+.metric-grid strong {
+  font-variant-numeric:tabular-nums;
+  font-feature-settings:'tnum';
+  font-weight:700;
+  letter-spacing:-.5px
+}
+.metric-grid>div:hover {
+  background:#ffffff12;
+  transform:translateY(-4px)
+}
+.metric-grid>div span {
+  transition:transform .3s
+}
+.metric-grid>div:hover span {
+  transform:translateY(2px)
+}
+
+.connector {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+  border-radius:0;
+  pointer-events:none;
+  overflow:visible;
+  display:block
+}
+.connector path {
+  fill:none;
+  stroke-width:1.5
+}
+.connector-track {
+  stroke:#00b3ca24
+}
+.connector-flow {
+  stroke:var(--cyan);
+  stroke-dasharray:5 6;
+  animation:flow-dash 1.1s linear infinite;
+  animation-play-state:paused
+}
+.products.in-view .connector-flow {
+  animation-play-state:running
+}
+.unit-card {
+  transition:border-color .3s,box-shadow .3s;
+  backdrop-filter:blur(10px);
+  background:linear-gradient(140deg,#effcfcf5,#e1f5f7da)
+}
+.unit-card:hover {
+  border-color:#51c8d7;
+  box-shadow:0 12px 32px #00a6bd1a
+}
+.hotspot {
+  z-index:3;
+  transition:transform .3s var(--ease-out),background .3s,box-shadow .3s
+}
+.hotspot:before {
+  content:'';
+  position:absolute;
+  inset:-12px;
+  border:1px solid #00b3ca80;
+  border-radius:50%;
+  opacity:0;
+  scale:.65;
+  transition:opacity .3s,scale .5s var(--ease-out)
+}
+.hotspot:hover,.hotspot:focus-visible,.hotspot[aria-pressed="true"] {
+  background:var(--gold);
+  box-shadow:0 0 0 5px #00b3ca24;
+  transform:scale(1.18)
+}
+.hotspot:hover:before,.hotspot:focus-visible:before,.hotspot[aria-pressed="true"]:before {
+  opacity:1;
+  scale:1
+}
+.machine {
+  filter:drop-shadow(0 16px 12px #3761690b)
+}
+.application-grid button {
+  position:relative;
+  transition:color .22s;
+  padding:10px 0
+}
+.application-grid button>span {
+  position:relative;
+  isolation:isolate
+}
+.application-grid button>span:before {
+  content:'';
+  position:absolute;
+  inset:-9px;
+  border:1px solid #b1e3e9;
+  border-radius:50%;
+  scale:.88;
+  opacity:0;
+  transition:scale .4s var(--ease-out),opacity .4s
+}
+.application-grid button>span:after {
+  content:'';
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--gold);
+  top:-11px;
+  left:calc(50% - 4px);
+  opacity:0;
+  transform-origin:4px 83px;
+  rotate:-70deg;
+  transition:rotate .7s var(--ease-out),opacity .3s
+}
+.application-grid button img {
+  transition:transform .55s var(--ease-out)
+}
+.application-grid button:hover,.application-grid button:focus-visible {
+  color:var(--cyan)
+}
+.application-grid button:hover>span:before,.application-grid button:focus-visible>span:before {
+  scale:1;
+  opacity:1
+}
+.application-grid button:hover>span:after,.application-grid button:focus-visible>span:after {
+  opacity:1;
+  rotate:45deg
+}
+.application-grid button:hover img {
+  transform:scale(1.08) rotate(-4deg)
+}
+.factory-frame {
+  transition:transform .5s var(--ease-out)
+}
+.factory-frame img {
+  transition:box-shadow .5s
+}
+.factory-frame:hover {
+  transform:translateY(-5px)
+}
+.factory-frame:hover img {
+  box-shadow:0 14px 32px #113f4920
+}
+.about-features>span {
+  transition:color .3s
+}
+.about-features img {
+  transition:transform .4s var(--ease-out)
+}
+.about-features>span:hover img {
+  transform:translateY(-4px) rotate(-5deg)
+}
+.news article {
+  position:relative;
+  transition:transform .22s var(--ease-out),box-shadow .22s,border-color .22s;
+  transition-delay:0s
+}
+.news article:after {
+  content:'';
+  height:3px;
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  background:var(--cyan);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .4s var(--ease-out)
+}
+.news article:hover,.news article:focus-within {
+  transform:translateY(-8px);
+  box-shadow:0 18px 38px #123a4610;
+  border-color:#d4eff2
+}
+.news article:hover:after,.news article:focus-within:after {
+  transform:scaleX(1)
+}
+.news article:hover .news-image img {
+  transform:scale(1.045)
+}
+.news article:hover h3 button {
+  color:var(--cyan)
+}
+.read-more {
+  transition:letter-spacing .3s,color .3s
+}
+.read-more:hover {
+  letter-spacing:1px
+}
+.footer-grid a {
+  transition:color .25s,transform .3s var(--ease-out)
+}
+.footer-grid nav a {
+  width:fit-content
+}
+.footer-grid nav a:hover {
+  transform:translateX(5px)
+}
+.floating-tools {
+  top:auto;
+  bottom:32px;
+  right:24px;
+  gap:10px;
+  z-index:15
+}
+.floating-tools a,.floating-tools a.phone {
+  width:48px;
+  height:48px;
+  padding:0;
+  position:relative;
+  box-shadow:0 4px 15px #009cb62a;
+  transition:transform .3s var(--ease-out),background .3s,opacity .3s
+}
+.floating-tools .icon {
+  width:22px;
+  height:22px
+}
+.floating-tools a:hover {
+  background:#009ab2;
+  transform:translateX(-3px)
+}
+.tool-tip {
+  position:absolute;
+  right:calc(100% + 12px);
+  padding:12px 18px;
+  border-radius:8px;
+  white-space:nowrap;
+  color:#fff;
+  background:#009fb6;
+  box-shadow:0 6px 18px #0067781a;
+  font-size:14px;
+  opacity:0;
+  visibility:hidden;
+  transform:translateX(8px);
+  transition:opacity .2s,transform .3s var(--ease-out),visibility .2s;
+  pointer-events:none
+}
+.tool-tip:after {
+  content:'';
+  position:absolute;
+  left:100%;
+  top:calc(50% - 5px);
+  border:5px solid transparent;
+  border-left-color:#009fb6
+}
+.floating-tools a:hover .tool-tip,.floating-tools a:focus-visible .tool-tip {
+  opacity:1;
+  visibility:visible;
+  transform:translateX(0)
+}
+.floating-tools a[href="#top"] {
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(8px)
+}
+.floating-tools.show-top a[href="#top"] {
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0)
+}
+.dialog-close {
+  transition:rotate .3s,color .3s
+}
+.dialog-close:hover {
+  rotate:90deg;
+  color:var(--cyan)
+}
+
+@media(max-width:1050px) {
+  #main-nav a {
+  gap:3px
+}
+#main-nav .icon {
+  width:13px;
+  height:13px
+}
+.connector {
+  display:block
+}
+
+}
+
+@media(max-width:760px) {
+  html {
+  scroll-padding-top:94px
+}
+header {
+  top:-36px
+}
+#main-nav {
+  top:76px;
+  border-top:1px solid #eef5f6;
+  border-radius:0 0 12px 12px
+}
+#main-nav .icon {
+  width:16px;
+  height:16px
+}
+#main-nav a:after {
+  bottom:5px;
+  left:0;
+  right:50%
+}
+.hero-content h1 {
+  font-size:30px;
+  letter-spacing:-.5px
+}
+.hero-content>p {
+  line-height:1.9
+}
+.floating-tools {
+  right:12px;
+  bottom:20px;
+  gap:8px
+}
+.floating-tools a,.floating-tools a.phone {
+  width:40px;
+  height:40px
+}
+.floating-tools .icon {
+  width:19px;
+  height:19px
+}
+.tool-tip {
+  display:none
+}
+.application-grid button>span:after {
+  transform-origin:4px 54px
+}
+.connector {
+  display:block
+}
+.unit-card {
+  z-index:4
+}
+.news article:hover {
+  transform:none
+}
+.footer-grid a {
+  min-height:26px
+}
+.news article:after {
+  height:2px
+}
+
+}
+
+@media(prefers-reduced-motion:reduce) {
+  html {
+  scroll-behavior:auto
+}
+*,*:before,*:after {
+  animation:none!important;
+  transition:none!important
+}
+.connector-flow {
+  stroke-dasharray:5 6
+}
+
+}
+
+/* Fade the source floor into the page and keep the whole device visible on phones. */
+.products {
+  background-image:linear-gradient(180deg,#f7f8f8b3,transparent 40%,transparent 70%,#f7f8f8 96%),url('assets/product-background.webp')
+}
+
+@media(max-width:760px) {
+  .machine-stage {
+  height:430px
+}
+.machine {
+  max-width:98%
+}
+
+}
+
+@media(hover:none) {
+  .button:hover:before {
+  transform:translateX(-130%)
+}
+.news article:hover {
+  transform:none
+}
+.application-grid button:hover>span {
+  transform:none;
+  box-shadow:none
+}
+
+}
+
+/* Entrance animation is owned by the JavaScript controller. */
+.motion-pending  {
+   opacity: 0;
+   
+}
+
+html  {
+   scrollbar-gutter: stable;
+   
+}
+
+.hero-copy  {
+   display: flow-root;
+   
+}
+
+.hero-content > .button  {
+   animation: none;
+   
+}
+
+.metric-grid strong  {
+   width: fit-content;
+   margin-inline: auto;
+   
+}
+
+.metric-grid strong > .metric-value  {
+   display: inline-block;
+   font: inherit;
+   letter-spacing: inherit;
+   line-height: inherit;
+   margin: 0;
+   
+}
+
+.measure-copy  {
+   position: absolute !important;
+   left: -100000px !important;
+   top: 0 !important;
+   visibility: hidden !important;
+   pointer-events: none !important;
+   height: auto !important;
+   min-height: 0 !important;
+   translate: none !important;
+   scale: 1 !important;
+   
+}
+
+.unit-content  {
+   display: flow-root;
+   
+}
+
+.news article:hover, .news article:focus-within  {
+   transform: none;
+   box-shadow: none;
+   border-color: #d4eff2;
+   
+}
+
+.news article:hover::after  {
+   transform: scaleX(0);
+   
+}
+
+.news article:has(button:hover), .news article:focus-within  {
+   transform: translateY(-5px);
+   box-shadow: 0 14px 30px #123a4610;
+   
+}
+
+.news article:has(button:hover)::after, .news article:focus-within::after  {
+   transform: scaleX(1);
+   
+}
+
+.news article:hover .news-image img  {
+   transform: none;
+   
+}
+
+.news article:has(button:hover) .news-image img  {
+   transform: scale(1.035);
+   
+}
+
+.news article:hover h3 button  {
+   color: inherit;
+   
+}
+
+.news article:has(button:hover) h3 button  {
+   color: var(--cyan);
+   
+}
+
+#main-nav[data-state="closing"]  {
+   pointer-events: none;
+   
+}
+
+dialog  {
+   animation: none;
+   
+}
+
+dialog::backdrop  {
+   transition: background-color .16s ease;
+   
+}
+
+dialog[data-state="closing"]::backdrop  {
+   background-color: transparent;
+   
+}
+
+@keyframes flow-dash  {
+   to  {
+   stroke-dashoffset: -22;
+   
+}
+ 
+}
+
+@media (max-width: 760px)  {
+  
+  .hero-content  {
+   padding-top: 65px;
+   
+}
+
+  .hero-copy h1  {
+   font-size: clamp(25px, 7.3vw, 30px);
+   
+}
+
+  .unit-content  {
+   font-size: 11px;
+   
+}
+
+
+}
+
+@media (hover: none)  {
+  
+  .news article:has(button:hover), .news article:focus-within  {
+   transform: none;
+   box-shadow: none;
+   
+}
+
+  .application-grid button:hover img  {
+   transform: none;
+   
+}
+
+  .application-grid button:hover > span::before, .application-grid button:hover > span::after  {
+   opacity: 0;
+   
+}
+
+
+}
+
+@media (prefers-reduced-motion: reduce)  {
+  
+  .motion-pending  {
+   opacity: 1;
+   
+}
+
+
+}
+
+
+/* The hidden final value reserves width in the current responsive font. */
+.metric-grid strong { display: grid; grid-template-areas: "value"; grid-template-columns: max-content; }
+.metric-grid strong > .metric-value, .metric-grid strong > .metric-measure { grid-area: value; font: inherit; margin: 0; line-height: inherit; letter-spacing: inherit; }
+.metric-grid strong > .metric-measure { visibility: hidden; }
+
+/* Switch navigation before its seven links can overflow a tablet width. */
+@media (min-width: 761px) and (max-width: 960px) {
+  .menu-toggle { display: block; color: var(--cyan); font-size: 26px; }
+  #main-nav { display: none; position: absolute; top: 100px; left: 0; right: 0; background: white; padding: 16px 24px; border-top: 1px solid #eef5f6; border-radius: 0 0 12px 12px; box-shadow: 0 12px 16px #0001; font-size: 15px; }
+  #main-nav.open { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+  #main-nav .icon { width: 16px; height: 16px; }
+}
+@media (min-width: 761px) and (max-width: 1050px) {
+  .application-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+  .application-grid button { font-size: 16px; }
+  .application-grid button > span { width: 110px; height: 110px; }
+  .application-grid button img { max-width: 74px; max-height: 74px; }
+  .application-grid button > span::after { transform-origin: 4px 66px; }
+}
+
+/* Hotspots use final device coordinates: reveal them only once the device settles. */
+.machine:is([data-motion-state="pending"], [data-motion-state="running"]) ~ .hotspot,
+.machine:is([data-motion-state="pending"], [data-motion-state="running"]) ~ .connector {
+  visibility: hidden;
+  pointer-events: none;
+}

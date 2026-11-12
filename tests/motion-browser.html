@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>动效浏览器回归检查</title>
+<style>body{font:16px system-ui;margin:32px;color:#234}button{padding:12px 24px;cursor:pointer}li{padding:8px}#fixture{width:1280px;height:720px;border:0}.viewport{height:240px;overflow:auto;border:1px solid #ddd;margin-top:24px}#status{white-space:pre-wrap}</style>
+<script src="motion-browser.js" type="module"></script>
+</head>
+<body><h1>动效浏览器回归检查</h1><p>在独立 iframe 中加载真实首页；仅在此测试页模拟页面可见性。</p><button id="run">运行回归检查</button><p id="status" role="status">等待运行</p><ol id="results"></ol><div class="viewport"><iframe id="fixture" title="首页回归测试"></iframe></div></body>
+</html>

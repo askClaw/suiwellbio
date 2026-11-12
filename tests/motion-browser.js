@@ -1,0 +1,62 @@
+const frame = document.querySelector('#fixture');
+const button = document.querySelector('#run');
+const status = document.querySelector('#status');
+const results = document.querySelector('#results');
+const assert = (condition, message) => { if (!condition) throw new Error(message); };
+function passed(message) { const li = document.createElement('li'); li.textContent = '通过：' + message; results.append(li); }
+const nextFrame = win => new Promise(resolve => win.requestAnimationFrame(resolve));
+async function waitFor(win, condition, message) {
+  const start = performance.now();
+  while (!condition()) {
+    if (performance.now() - start > 4000) throw new Error(message);
+    await nextFrame(win);
+  }
+}
+button.addEventListener('click', async () => {
+  button.disabled = true; results.replaceChildren(); status.textContent = '检查中…';
+  try {
+    await new Promise(resolve => { frame.onload = resolve; frame.src = '../index.html'; });
+    const win = frame.contentWindow, doc = frame.contentDocument;
+    assert(!win.matchMedia('(prefers-reduced-motion: reduce)').matches, '此组浏览器检查需要允许动态效果；减少动态效果另有核心回归覆盖。');
+    doc.documentElement.style.scrollBehavior = 'auto';
+    let hidden = false;
+    Object.defineProperty(doc, 'hidden', { configurable: true, get: () => hidden });
+    function visibility(value) { hidden = value; doc.dispatchEvent(new win.Event('visibilitychange')); }
+    const pending = [...doc.querySelectorAll('[data-motion-state="pending"]')];
+    assert(pending.length > 0, '缺少待入场的真实页面目标');
+    const pendingValues = [...doc.querySelectorAll('.metric-value')].slice(0, 2).map(element => element.textContent);
+    visibility(true);
+    assert(pending.every(element => element.dataset.motionState === 'pending'), '切入后台消耗了未播放的入场目标');
+    assert([...doc.querySelectorAll('.metric-value')].slice(0, 2).every((element, i) => element.textContent === pendingValues[i]), '切入后台消耗了未播放的数字计数');
+    passed('后台切换保留待播放的入场目标和计数器');
+
+    const cards = [...doc.querySelectorAll('.news-grid article')];
+    win.scrollTo(0, doc.querySelector('.news-grid').getBoundingClientRect().top + win.scrollY - 170);
+    await nextFrame(win); await nextFrame(win); await nextFrame(win);
+    assert(cards.every(element => element.dataset.motionState === 'pending'), '后台滚动仍然触发了入场');
+    visibility(false);
+    assert(cards.every(element => element.dataset.motionState === 'running'), '返回前台没有恢复当前可见目标');
+    // This runs synchronously inside the delayed animation's before phase.
+    assert(win.getComputedStyle(cards[1]).opacity === '0' && win.getComputedStyle(cards[2]).opacity === '0', '错峰等待期间元素提前显示');
+    passed('真实新闻卡片的延迟阶段保持隐藏，没有先显示再淡入');
+    await waitFor(win, () => cards.every(element => element.dataset.motionState === 'complete'), '新闻入场未完成');
+    assert(cards.every(element => win.getComputedStyle(element).opacity === '1'), '新闻入场后未完全显示');
+    passed('前台恢复后入场完成，最终可见状态正确');
+
+    const machine = doc.querySelector('.machine'), point = doc.querySelector('[data-unit="0"]'), connector = doc.querySelector('.connector');
+    assert(machine.dataset.motionState === 'pending', '屏幕外设备的入场状态被提前消耗');
+    assert(win.getComputedStyle(point).visibility === 'hidden', '设备未入场时热点已经可见');
+    win.scrollTo(0, machine.getBoundingClientRect().top + win.scrollY - 180);
+    await waitFor(win, () => machine.dataset.motionState === 'running', '设备未开始入场');
+    assert(win.getComputedStyle(point).visibility === 'hidden' && win.getComputedStyle(connector).visibility === 'hidden', '设备位移期间热点或连线提前显示');
+    passed('设备入场期间隐藏热点和连线，避免移动中的坐标错位');
+    await waitFor(win, () => machine.dataset.motionState === 'complete', '设备入场未完成');
+    assert(win.getComputedStyle(point).visibility === 'visible' && win.getComputedStyle(connector).visibility === 'visible', '设备完成后热点或连线未显示');
+    const image = machine.getBoundingClientRect(), marker = point.getBoundingClientRect();
+    assert(Math.abs(marker.left + marker.width / 2 - (image.left + image.width * .245)) < 1, '热点横向坐标错位');
+    assert(Math.abs(marker.top + marker.height / 2 - (image.top + image.height * .42)) < 1, '热点纵向坐标错位');
+    passed('设备落定后热点、连线恢复，热点与设备锚点误差小于 1px');
+    status.textContent = `全部通过：${results.children.length} 项真实页面浏览器回归`;
+  } catch (error) { status.textContent = '检查失败：' + error.message; }
+  finally { button.disabled = false; }
+});

@@ -1,0 +1,7 @@
+.DS_Store
+.venv/
+.design/
+node_modules/
+
+# Local PSD files and supplied reference projects
+resource/
