@@ -29,7 +29,7 @@ export function initPages(context) {
       const link = (label,target,enabled) => enabled ? `<a href="news.html?${newsQuery(model.category,target)}" data-news-page="${target}" aria-label="${label}">${label}</a>` : `<span aria-disabled="true">${label}</span>`;
       const numbers = Array.from({length:model.totalPages},(_,i)=>i+1).map(number=>number===model.page?`<span aria-current="page">${number}</span>`:`<a href="news.html?${newsQuery(model.category,number)}" data-news-page="${number}">${number}</a>`).join('');
       $('.pagination').innerHTML = link('上一页',model.page-1,model.page>1)+numbers+link('下一页',model.page+1,model.page<model.totalPages);
-      registerEntrances('[data-news-card]','up','#news-results');
+      registerEntrances('[data-news-card]','up','#news-results', { animateVisible: true });
     }
     section.addEventListener('click',event=>{
       const link = event.target.closest('a[data-news-category],a[data-news-page]');
@@ -73,6 +73,9 @@ export function initPages(context) {
     const next=ordered[ordered.findIndex(article=>article.id===item.id)+1];
     if(next) nextLink.href=detailHref(next,model.category,model.page);
     else { nextLink.removeAttribute('href');nextLink.setAttribute('aria-disabled','true');nextLink.textContent='已是最后一篇'; }
+    registerEntrances('.article-heading > *', 'up', '.article-heading');
+    registerEntrances('.article-body > *', 'up', '.article-body');
+    registerEntrances('.article-navigation > a', 'up', '.article-navigation');
   }
   if (page === 'service') {
     const store=createFeedbackStore(faqItems);

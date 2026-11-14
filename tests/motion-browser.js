@@ -56,6 +56,37 @@ button.addEventListener('click', async () => {
     assert(Math.abs(marker.left + marker.width / 2 - (image.left + image.width * .245)) < 1, '热点横向坐标错位');
     assert(Math.abs(marker.top + marker.height / 2 - (image.top + image.height * .42)) < 1, '热点纵向坐标错位');
     passed('设备落定后热点、连线恢复，热点与设备锚点误差小于 1px');
+    const values = [...doc.querySelectorAll('.metric-value')];
+    const staticValues = values.slice(2).map(element => element.textContent);
+    const counting = () => parseInt(values[0].textContent, 10) > 0 && parseInt(values[0].textContent, 10) < 50;
+    const final = () => values[0].textContent === '50%+' && values[1].textContent === '30%';
+    const reveal = () => win.scrollTo(0, values[0].getBoundingClientRect().top + win.scrollY - 70);
+    reveal();
+    await waitFor(win, counting, '数字首次进入未递增');
+    visibility(true);
+    assert(final(), '后台未完成计数');
+    visibility(false);
+    assert(final(), '返回前台数字被重置');
+    const mutations = [];
+    const observer = new win.MutationObserver(records => mutations.push(...records));
+    values.slice(0, 2).forEach(element => observer.observe(element, { childList: true, characterData: true, subtree: true }));
+    win.scrollTo(0, 0);
+    await nextFrame(win); await nextFrame(win); await nextFrame(win);
+    reveal();
+    for (let i = 0; i < 5; i++) await nextFrame(win);
+    assert(final() && mutations.length === 0 && observer.takeRecords().length === 0, '离开后再次进入不应重播数字');
+    observer.disconnect();
+    assert(values.slice(2).every((element, index) => element.textContent === staticValues[index]), '其他业务指标被改写');
+    passed('数字首次进入递增，离开重入和前后台切换均不重播，其他指标保持原值');
+    const html = await (await fetch('../index.html')).text();
+    const bootstrap = `<base href="${location.origin}/"><style>header,.hero{display:none!important}</style>`;
+    await new Promise(resolve => { frame.onload = resolve; frame.srcdoc = html.replace('<head>', '<head>' + bootstrap); });
+    const initialWin = frame.contentWindow, initialDoc = frame.contentDocument;
+    await waitFor(initialWin, () => initialDoc.querySelector('.metric-value'), '初始可见页未初始化');
+    const initialValue = initialDoc.querySelector('.metric-value');
+    await waitFor(initialWin, () => parseInt(initialValue.textContent, 10) > 0 && parseInt(initialValue.textContent, 10) < 50, '初始可见未计数');
+    await waitFor(initialWin, () => initialValue.textContent === '50%+', '初始可见未完成');
+    passed('初始化时已经可见的数字也播放递增');
     status.textContent = `全部通过：${results.children.length} 项真实页面浏览器回归`;
   } catch (error) { status.textContent = '检查失败：' + error.message; }
   finally { button.disabled = false; }

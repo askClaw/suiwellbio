@@ -56,6 +56,8 @@ npm test
 
 ## 验证
 
-`npm test` 包含 12 项核心/数据/链接回归。`http://localhost:5173/tests/motion-browser.html` 可运行 5 项原生浏览器动效回归。
+`npm test` 包含 18 项核心/数据/链接回归。`http://localhost:5173/tests/motion-browser.html` 可运行 7 项原生浏览器动效回归。首页两项百分比每次加载只计数一次，刷新时已可见也播放，滚走后再次进入不重播。
 
 静态内页交付记录见 `docs/STATIC_PAGES_IMPLEMENTATION.md`；PSD 分析见 `docs/REMAINING_PSD_ANALYSIS.md`；首页动效规格和既有验证见 `docs/MOTION_REPAIR_PLAN.md` 与 `docs/MOTION_REPAIR_VERIFICATION.md`。
+
+服务器发布使用 `npm run build:site` 生成 `dist/`，部署与回滚说明见 `docs/FORSIZE_DEPLOYMENT.md`。

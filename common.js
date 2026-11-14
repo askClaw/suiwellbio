@@ -78,7 +78,7 @@ function enter(element, delay = 0, immediately = false) {
     { opacity: 1, translate: '0px 0px', scale: '1' }
   ], { duration: state.direction === 'scale' ? 620 : 540, delay, easing: ease, fill: 'backwards' }, () => completeEntrance(element));
 }
-function registerEntrances(selector, direction = 'up', groupSelector) {
+function registerEntrances(selector, direction = 'up', groupSelector, { animateVisible = false } = {}) {
   $$(selector).forEach((element, index) => {
     if (entranceRegistry.has(element)) return;
     const rect = element.getBoundingClientRect();
@@ -86,8 +86,9 @@ function registerEntrances(selector, direction = 'up', groupSelector) {
     const state = { direction, group: groupSelector ? element.closest(groupSelector) : null, status: 'pending' };
     entranceRegistry.add(element, state);
     element.dataset.motion = direction;
-    if (visible && groupSelector === '.hero-content' && scrollY === 0 && !skipMotion() && element.animate) {
-      enter(element, index * 80); return;
+    const playVisible = animateVisible || (scrollY === 0 && (groupSelector === '.hero-content' || document.body.dataset.page !== 'home'));
+    if (visible && playVisible && !skipMotion() && element.animate) {
+      enter(element, Math.min(index * 80, 240)); return;
     }
     if (preference.matches || (visible && !document.hidden) || !element.animate) { completeEntrance(element); return; }
     element.classList.add('motion-pending');
@@ -118,14 +119,16 @@ document.addEventListener('focusin', event => {
 const counters = new Map();
 const counterObserver = new IntersectionObserver(entries => {
   if (document.hidden) return;
-  entries.filter(entry => entry.isIntersecting).forEach(entry => startCounter(entry.target));
-}, { threshold: .05 });
+  entries.filter(entry => entry.isIntersecting && entry.intersectionRatio >= .15)
+    .forEach(entry => startCounter(entry.target));
+}, { threshold: .15 });
 function startCounter(element) {
   const state = counters.get(element);
   if (!state || state.status !== 'pending' || document.hidden) return;
   state.status = 'running';
-  counterObserver.unobserve(element);
+  counterObserver.unobserve(element); // Each number plays once per page load.
   if (preference.matches) { finishCounter(state); return; }
+  state.visual.textContent = '0' + state.suffix;
   const started = performance.now();
   function tick(now) {
     if (state.status !== 'running') return;
@@ -152,16 +155,14 @@ $$('.metric-grid strong').forEach((element, index) => {
   const measure = visual.cloneNode(true);
   measure.className = 'metric-measure';
   element.replaceChildren(measure, visual);
-  const rect = element.getBoundingClientRect();
-  const visible = rect.bottom > 0 && rect.top < innerHeight;
   if (index < 2) {
     const state = { element, visual, final, target: index === 0 ? 50 : 30, suffix: index === 0 ? '%+' : '%', frame: 0, status: 'complete' };
     counters.set(element, state);
-    if (!preference.matches && (document.hidden || (!visible && rect.top >= innerHeight))) {
+    if (!preference.matches) {
       visual.textContent = '0' + state.suffix;
       state.status = 'pending';
-      counterObserver.observe(element);
     }
+    counterObserver.observe(element);
   }
 });
 registerEntrances('.metric-grid > div', 'fade', '.metric-grid');
@@ -320,6 +321,19 @@ for (const group of ['.core-unit-grid','.advantage-grid','.four-cards','.paramet
 }
 registerEntrances('.project-timeline > li:nth-child(odd) > article', 'right');
 registerEntrances('.project-timeline > li:nth-child(even) > article', 'left');
-registerEntrances('.work-flow', 'fade');
+// Inner-page entrances use leaf groups so text never animates inside a moving card.
+registerEntrances('.banner-content > div > *', 'up', '.banner-content > div');
+registerEntrances('.banner-content > img', 'scale');
+registerEntrances('.stage-ribbon > li', 'fade', '.stage-ribbon');
+registerEntrances('.stage-content > div', 'up', '.stage-content');
+registerEntrances('.work-flow > li', 'up', '.work-flow');
+registerEntrances('.application-strip .eyebrow', 'fade');
+registerEntrances('.application-strip li', 'up', '.application-strip ul');
+registerEntrances('.faq-item > summary', 'up', '.faq-list');
+registerEntrances('.news-tabs', 'fade');
+registerEntrances('.contact-visual', 'scale');
+registerEntrances('.contact-info > *', 'up', '.contact-info');
+registerEntrances('.form-heading > *', 'up', '.form-heading');
+registerEntrances('.consultation-form > .form-field, .consultation-form > .form-submit', 'up', '.consultation-form');
 registerEntrances('[data-entry]');
 export { $, $$, preference, mobile, skipMotion, animations, ease, registerEntrances, disposeEntrances, showDialog, addMotionHooks, updateScrollState };

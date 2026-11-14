@@ -25,6 +25,11 @@ document.querySelector('#run').addEventListener('click',async event=>{
   event.target.disabled=true;results.replaceChildren();status.textContent='检查中…';
   try{
     let {win,doc}=await load('product');
+    const bannerTitle=doc.querySelector('.page-banner h1');
+    assert(bannerTitle.dataset.motionState==='running','内页首屏标题未播放入场');
+    await until(win,()=>bannerTitle.dataset.motionState==='complete','首屏标题未完成入场');
+    assert(win.getComputedStyle(bannerTitle).opacity==='1','首屏标题完成后仍隐藏');
+    pass('内页首屏真实播放并在结束后释放动画');
     const top=id=>doc.getElementById(id).getBoundingClientRect().top+win.scrollY;
     assert(Math.abs(top('advantages')-1176)<12,'核心单元区高度偏差');
     assert(Math.abs(top('working-mode')-2086)<12,'优势区累计偏差');
@@ -41,6 +46,13 @@ document.querySelector('#run').addEventListener('click',async event=>{
     assert(JSON.stringify(delays)==='[0,70,140]',`错峰延迟异常：${delays}`);
     await until(win,()=>cards.slice(0,3).every(e=>e.dataset.motionState==='complete'),'卡片未完成');
     pass('同行卡片实际错峰为0/70/140ms并完成显示');
+    const flow=doc.querySelector('.work-flow'),steps=[...flow.children];
+    win.scrollTo(0,top('working-mode')+140);
+    await until(win,()=>steps.some(step=>step.dataset.motionState==='running'),'工作流程未逐项入场');
+    steps[0].focus();
+    assert(steps[0].dataset.motionState==='complete','键盘聚焦后流程内容仍隐藏');
+    await until(win,()=>steps.every(step=>step.dataset.motionState==='complete'),'流程步骤未完成入场');
+    pass('流程逐项入场，键盘聚焦立即显示步骤');
     ({win,doc}=await load('service'));
     const details=[...doc.querySelectorAll('.faq-item')],last=details[3],form=last.querySelector('form'),extra=form.querySelector('.feedback-extra');
     assert(extra.hidden,'默认意见框应折叠');
