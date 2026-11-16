@@ -20,6 +20,14 @@ def export_components(root, output):
         psd = PSDImage.open(root / 'resource/v02' / f'{name}.psd')
         layers = {layer.layer_id: layer for layer in psd.descendants()}
         pixels = psd.topil().convert('RGB')
+        # The saved CTA artwork overlaps the first footer rows by 1–2 pixels.
+        pixels.crop((0,foot,1920,foot+4)).save(output / f'{name}-footer-edge.png')
+        css.append(f'body[data-page="{page}"] footer{{background:#fff url("assets/psd/{name}-footer-edge.png") center top / auto 4px no-repeat}}')
+        rule = layers[585]
+        copyright_top = min(395,rule.top-foot)
+        css.append(f'body[data-page="{page}"] .copyright{{top:{copyright_top}px;background-position:{rule.left-360}px {rule.top-foot-copyright_top}px}}')
+        for ident, pseudo in [(586,'before'),(587,'after')]:
+            css.append(f'body[data-page="{page}"] .copyright:{pseudo}{{top:{layers[ident].top-foot-copyright_top}px}}')
         # Some saved designs contain a visible merged logo with an empty source
         # layer. Read its real ink bounds from the otherwise blank first column.
         region = pixels.crop((350,foot+30,600,foot+300))
@@ -58,6 +66,10 @@ def export_banners(root, output):
             background.paste(base.crop(box), box[:2])
         background.save(output / f'{name}-banner-background.png')
         css.append(f'body[data-page="{page}"] .page-banner{{background-image:url("assets/psd/{name}-banner-background.png")}}')
+        if page == 'product':
+            pixels.crop((1034,190,1445,420)).save(output / 'product-banner-device.png')
+            css.append('body[data-page="product"] .banner-content:after{left:674px;top:30px;width:411px;height:230px;opacity:1;background-image:url("assets/psd/product-banner-device.png")}')
+            css.append('body[data-page="product"] .banner-content>img{opacity:0!important}')
         layer = layers[1863]
         pixels.crop(layer.bbox).save(output / f'{name}-banner-heading.png')
         css.append(f'body[data-page="{page}"] .page-banner h1{{height:{layer.height}px;background-image:url("assets/psd/{name}-banner-heading.png");background-size:{layer.width}px {layer.height}px}}')
