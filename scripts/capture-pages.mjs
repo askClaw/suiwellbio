@@ -19,6 +19,7 @@ const report={base,viewport:[1920,1080],pages:[],errors};
 try{
  for(const page of pages){
   await send('Page.navigate',{url:new URL(`${page}.html`,base).href});
+  await send('Page.bringToFront');
   await new Promise(resolve=>setTimeout(resolve,1200));
   await evaluate(String.raw`(async()=>{document.querySelectorAll('img').forEach(e=>e.loading='eager');await document.fonts.ready;await Promise.all([...document.images].map(e=>e.decode().catch(()=>{})));const urls=new Set();for(const element of document.querySelectorAll('*'))for(const pseudo of [null,'::before','::after']){const value=getComputedStyle(element,pseudo).backgroundImage;for(const match of value.matchAll(/url\(["']?(.*?)["']?\)/g))urls.add(match[1]);}window.__captureBackgroundFailures=[];await Promise.all([...urls].map(async url=>{const image=new Image();image.src=url;try{await image.decode()}catch{window.__captureBackgroundFailures.push(url)}}));window.scrollTo(0,0);return true})()`);
   await new Promise(resolve=>setTimeout(resolve,200));

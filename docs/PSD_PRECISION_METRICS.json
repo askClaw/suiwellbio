@@ -5,137 +5,137 @@
   ],
   "capture_mode": "reduced motion; fonts, HTML images and CSS background images decoded",
   "measurement": "Mean absolute RGB channel difference on 0..255 scale; not a reproduction percentage",
-  "source_capture": ".design/precision-review/round-11",
+  "source_capture": ".design/precision-review/round-16",
   "pages": [
     {
       "page": "index",
-      "rgb_mae": 1.4994,
+      "rgb_mae": 0.8285,
       "sections": [
         {
           "name": "hero",
           "top": 160,
           "height": 838,
-          "mae": 0.9292
+          "mae": 0.8867
         },
         {
           "name": "metrics",
           "top": 998,
           "height": 160,
-          "mae": 1.0105
+          "mae": 0.8789
         },
         {
           "name": "products",
           "top": 1158,
           "height": 1246,
-          "mae": 1.4443
+          "mae": 1.3919
         },
         {
           "name": "applications",
           "top": 2404,
           "height": 546,
-          "mae": 1.8793
+          "mae": 0.2697
         },
         {
           "name": "about",
           "top": 2950,
           "height": 934,
-          "mae": 2.2921
+          "mae": 1.1777
         },
         {
           "name": "news",
           "top": 3884,
           "height": 870,
-          "mae": 1.9089
+          "mae": 0.3459
         },
         {
           "name": "solution",
           "top": 4754,
           "height": 298,
-          "mae": 1.1066
+          "mae": 0.92
         },
         {
           "name": "",
           "top": 5052,
           "height": 516,
-          "mae": 0.6957
+          "mae": 0.2499
         }
       ]
     },
     {
       "page": "about",
-      "rgb_mae": 1.3883,
+      "rgb_mae": 0.7442,
       "sections": [
         {
           "name": "page-banner",
           "top": 160,
           "height": 300,
-          "mae": 1.3716
+          "mae": 0.4493
         },
         {
           "name": "company-intro container",
           "top": 460,
           "height": 622,
-          "mae": 1.582
+          "mae": 1.4961
         },
         {
           "name": "soft-section",
           "top": 1082,
           "height": 810,
-          "mae": 2.3058
+          "mae": 0.0742
         },
         {
           "name": "core-advantages",
           "top": 1892,
           "height": 645,
-          "mae": 0.7263
+          "mae": 0.7219
         },
         {
           "name": "mission container",
           "top": 2537,
           "height": 625,
-          "mae": 1.5964
+          "mae": 1.4622
         },
         {
           "name": "solution",
           "top": 3162,
           "height": 298,
-          "mae": 0.7491
+          "mae": 0.5737
         },
         {
           "name": "",
           "top": 3460,
           "height": 470,
-          "mae": 0.8532
+          "mae": 0.394
         }
       ]
     },
     {
       "page": "product",
-      "rgb_mae": 1.4825,
+      "rgb_mae": 0.4421,
       "sections": [
         {
           "name": "page-banner",
           "top": 160,
           "height": 300,
-          "mae": 2.0256
+          "mae": 0.4379
         },
         {
           "name": "soft-section network-section",
           "top": 460,
           "height": 716,
-          "mae": 2.5629
+          "mae": 0.5264
         },
         {
           "name": "product-advantages",
           "top": 1176,
           "height": 910,
-          "mae": 2.743
+          "mae": 0.5169
         },
         {
           "name": "soft-section",
           "top": 2086,
           "height": 444,
-          "mae": 1.4696
+          "mae": 0.8234
         },
         {
           "name": "parameter-section",
@@ -147,181 +147,181 @@
           "name": "application-strip",
           "top": 3393,
           "height": 228,
-          "mae": 0.4824
+          "mae": 0.4732
         },
         {
           "name": "solution",
           "top": 3621,
           "height": 298,
-          "mae": 1.0536
+          "mae": 0.8739
         },
         {
           "name": "",
           "top": 3919,
           "height": 477,
-          "mae": 0.7526
+          "mae": 0.2704
         }
       ]
     },
     {
       "page": "process",
-      "rgb_mae": 1.0812,
+      "rgb_mae": 0.6084,
       "sections": [
         {
           "name": "page-banner",
           "top": 260,
           "height": 300,
-          "mae": 1.0893
+          "mae": 0.4459
         },
         {
           "name": "soft-section",
           "top": 560,
           "height": 722,
-          "mae": 1.9605
+          "mae": 0.199
         },
         {
           "name": "team-section",
           "top": 1282,
           "height": 908,
-          "mae": 1.1874
+          "mae": 1.1838
         },
         {
           "name": "soft-section certificates",
           "top": 2190,
           "height": 864,
-          "mae": 0.6063
+          "mae": 0.5907
         },
         {
           "name": "solution",
           "top": 3054,
           "height": 298,
-          "mae": 1.076
+          "mae": 0.8963
         },
         {
           "name": "",
           "top": 3352,
           "height": 466,
-          "mae": 0.7703
+          "mae": 0.2768
         }
       ]
     },
     {
       "page": "service",
-      "rgb_mae": 1.0985,
+      "rgb_mae": 0.5767,
       "sections": [
         {
           "name": "page-banner",
           "top": 160,
           "height": 300,
-          "mae": 1.0178
+          "mae": 0.4491
         },
         {
           "name": "soft-section",
           "top": 460,
           "height": 721,
-          "mae": 1.7301
+          "mae": 0.0
         },
         {
           "name": "implementation-section",
           "top": 1181,
           "height": 1465,
-          "mae": 0.4237
+          "mae": 0.4014
         },
         {
           "name": "soft-section faq-section",
           "top": 2646,
           "height": 677,
-          "mae": 1.5145
+          "mae": 0.6124
         },
         {
           "name": "downloads-section",
           "top": 3323,
           "height": 505,
-          "mae": 1.6414
+          "mae": 1.6024
         },
         {
           "name": "solution",
           "top": 3828,
           "height": 298,
-          "mae": 1.1736
+          "mae": 0.9982
         },
         {
           "name": "",
           "top": 4126,
           "height": 473,
-          "mae": 1.2111
+          "mae": 0.7283
         }
       ]
     },
     {
       "page": "news",
-      "rgb_mae": 0.9568,
+      "rgb_mae": 0.6087,
       "sections": [
         {
           "name": "page-banner",
           "top": 160,
           "height": 300,
-          "mae": 1.2902
+          "mae": 0.4561
         },
         {
           "name": "news-list-section container",
           "top": 460,
           "height": 1250,
-          "mae": 0.7693
+          "mae": 0.5343
         },
         {
           "name": "solution",
           "top": 1710,
           "height": 298,
-          "mae": 1.1736
+          "mae": 0.9982
         },
         {
           "name": "",
           "top": 2008,
           "height": 473,
-          "mae": 1.2111
+          "mae": 0.7283
         }
       ]
     },
     {
       "page": "news-detail",
-      "rgb_mae": 1.2078,
+      "rgb_mae": 0.4164,
       "sections": [
         {
           "name": "page-banner",
           "top": 160,
           "height": 300,
-          "mae": 0.9263
+          "mae": 0.4561
         },
         {
           "name": "article-section container",
           "top": 460,
           "height": 1300,
-          "mae": 1.3492
+          "mae": 0.1628
         },
         {
           "name": "solution",
           "top": 1760,
           "height": 298,
-          "mae": 1.1736
+          "mae": 0.9982
         },
         {
           "name": "",
           "top": 2058,
           "height": 473,
-          "mae": 1.2111
+          "mae": 0.7283
         }
       ]
     },
     {
       "page": "contact",
-      "rgb_mae": 0.8674,
+      "rgb_mae": 0.7013,
       "sections": [
         {
           "name": "page-banner",
           "top": 160,
           "height": 300,
-          "mae": 0.7465
+          "mae": 0.4518
         },
         {
           "name": "contact-section container",
@@ -333,19 +333,19 @@
           "name": "consultation-section",
           "top": 1136,
           "height": 849,
-          "mae": 0.995
+          "mae": 0.9365
         },
         {
           "name": "solution",
           "top": 1985,
           "height": 298,
-          "mae": 1.1971
+          "mae": 1.0217
         },
         {
           "name": "",
           "top": 2283,
           "height": 473,
-          "mae": 1.2111
+          "mae": 0.7283
         }
       ]
     }
