@@ -56,10 +56,12 @@ npm test
 
 ## 验证
 
-`npm test` 包含 18 项核心/数据/链接回归。`http://localhost:5173/tests/motion-browser.html` 可运行 7 项原生浏览器动效回归。首页两项百分比每次加载只计数一次，刷新时已可见也播放，滚走后再次进入不重播。
+`npm test` 包含 19 项核心/数据/链接回归。`http://localhost:5173/tests/motion-browser.html` 可运行 7 项原生浏览器动效回归。首页两项百分比每次加载只计数一次，刷新时已可见也播放，滚走后再次进入不重播。
 
 静态内页交付记录见 `docs/STATIC_PAGES_IMPLEMENTATION.md`；PSD 分析见 `docs/REMAINING_PSD_ANALYSIS.md`；首页动效规格和既有验证见 `docs/MOTION_REPAIR_PLAN.md` 与 `docs/MOTION_REPAIR_VERIFICATION.md`。
 
 服务器发布使用 `npm run build:site` 生成 `dist/`，部署与回滚说明见 `docs/FORSIZE_DEPLOYMENT.md`。
 
 桌面精度样式在 `precision.css`。`scripts/capture-pages.mjs` 可通过 Chrome CDP 对本地或线上八页截图，`scripts/compare-psd.py` 生成与 PSD 的逐页、逐区域差异图和 RGB 误差记录；误差值不作为还原度百分比。
+
+本地预览支持 WOFF2 字体。截图脚本检查字体加载失败、HTML 图片及 CSS 背景解码失败；本地与线上对比前应确认均为零。桌面复杂静态信息图、卡片和文字可用原稿素材呈现，HTML 仍保留语义与原生控件。

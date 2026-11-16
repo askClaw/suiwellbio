@@ -20,9 +20,12 @@ SELECTIONS = {
 for name, selections in SELECTIONS.items():
     psd = PSDImage.open(ROOT / 'resource' / 'v02' / f'{name}.psd')
     layers = {layer.layer_id: layer for layer in psd.descendants()}
+    merged = psd.topil()
     for ident, filename in selections:
         layer = layers[ident]
         artwork = layer.composite() if layer.is_group() else layer.topil()
+        if layer.kind == 'type' and filename != 'home-hero-title':
+            artwork = merged.crop(layer.bbox)
         if artwork is None:
             raise ValueError(f'No rendered pixels for {name}:{ident}')
         artwork.save(OUT / f'{filename}.png')
@@ -41,5 +44,6 @@ for name, selections in SELECTIONS.items():
             child.visible = child.layer_id in selected
         artwork = group.composite(viewport=viewport, force=True)
         artwork.convert('RGB').save(OUT / f'{filename}.webp', quality=95)
+        artwork.convert('RGB').save(OUT / f'{filename}.png')
         for child, visible in states:
             child.visible = visible

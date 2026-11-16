@@ -750,3 +750,34 @@ body,button,input,textarea{font-family:SourceHanPSD,'Microsoft YaHei',sans-serif
  .article-navigation a:last-child:hover{background-image:url('assets/psd/article-next-link.png')}
  .article-navigation a:before,.article-navigation a:after{visibility:hidden}
 }
+@media(min-width:1280px){
+ .page-banner{background-image:url('assets/psd/banner-background.png')}
+ .network-section{background-image:url('assets/psd/product-network.png')}
+ body[data-page="home"] .products{background-image:url('assets/psd/home-product-background.png')}
+ body[data-page="home"] .about:before{background-image:url('assets/psd/home-about-background.png')}
+ body[data-page="home"] .applications{background-image:url('assets/psd/background-home-applications.png')}
+ .application-strip{background-image:url('assets/psd/background-product-applications.png')}
+ .implementation-section{background-image:url('assets/psd/background-service-project.png')}
+ .company-intro>div:first-child:after{left:1px}
+ .company-intro .about-features{left:-1px;height:58px;background:url('assets/psd/company-features.png') no-repeat}
+ .company-intro .about-features>span{opacity:0!important}
+ .mission-card{position:relative;left:-1px;width:1202px;border-radius:0;background:transparent url('assets/psd/company-mission-panel.png') no-repeat}
+ .mission-card>*{opacity:0!important}
+ .expertise-list article{border:0;border-radius:0;background:none;box-shadow:none}
+ .expertise-list article>*{opacity:0!important}
+ .expertise-list article:after{left:-10px;top:-8px;width:582px;height:142px;pointer-events:none}
+ .expertise-list article:nth-child(1):after{background-image:url('assets/psd/team-card-0.png')}
+ .expertise-list article:nth-child(2):after{background-image:url('assets/psd/team-card-1.png')}
+ .expertise-list article:nth-child(3):after{background-image:url('assets/psd/team-card-2.png')}
+ .expertise-list article:nth-child(4):after{background-image:url('assets/psd/team-card-3.png')}
+ .download-row,.download-row:nth-child(2){border:0;border-radius:0;background:none;box-shadow:none}
+ .download-row:after{left:-8px;top:-10px;width:610px;height:105px}
+ .download-row:nth-child(even):after{left:-8px}
+ .download-row:nth-child(1):after{background-image:url('assets/psd/download-card-0.png')}
+ .download-row:nth-child(2):after{background-image:url('assets/psd/download-card-1.png')}
+ .download-row:nth-child(3):after{left:-8px;background-image:url('assets/psd/download-card-2.png')}
+ .download-row:nth-child(4):after{background-image:url('assets/psd/download-card-3.png')}
+ .download-row button{background:none;z-index:1}
+ .footer-brand{position:absolute;width:117px;height:126px}
+ .footer-grid h3{height:38px}
+}
