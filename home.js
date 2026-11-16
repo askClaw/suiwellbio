@@ -84,7 +84,7 @@ function measureUnitHeight() {
   unitContent.style.minHeight = `${Math.ceil(height)}px`;
 }
 function updateLine(duration = 0) {
-  const imageLeft = machine.offsetLeft - machine.offsetWidth / 2;
+  const imageLeft = machine.offsetLeft - (getComputedStyle(machine).transform==='none'?0:machine.offsetWidth/2);
   const positions = [[231.5/1173,246.5/635],[123.5/1173,232.5/635],[765.5/1173,216.5/635],[123.5/1173,440.5/635],[872.5/1173,374.5/635]];
   const points = positions.map(([x, y]) => [imageLeft + machine.offsetWidth * x, machine.offsetTop + machine.offsetHeight * y]);
   const card = { left: unitCard.offsetLeft, top: unitCard.offsetTop, width: unitCard.offsetWidth, height: unitCard.offsetHeight };

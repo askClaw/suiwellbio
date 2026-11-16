@@ -20,14 +20,14 @@ try{
  for(const page of pages){
   await send('Page.navigate',{url:new URL(`${page}.html`,base).href});
   await new Promise(resolve=>setTimeout(resolve,1200));
-  await evaluate(`(async()=>{document.querySelectorAll('img').forEach(e=>e.loading='eager');await document.fonts.ready;await Promise.all([...document.images].map(e=>e.decode().catch(()=>{})));window.scrollTo(0,0);return true})()`);
+  await evaluate(String.raw`(async()=>{document.querySelectorAll('img').forEach(e=>e.loading='eager');await document.fonts.ready;await Promise.all([...document.images].map(e=>e.decode().catch(()=>{})));const urls=new Set();for(const element of document.querySelectorAll('*'))for(const pseudo of [null,'::before','::after']){const value=getComputedStyle(element,pseudo).backgroundImage;for(const match of value.matchAll(/url\(["']?(.*?)["']?\)/g))urls.add(match[1]);}window.__captureBackgroundFailures=[];await Promise.all([...urls].map(async url=>{const image=new Image();image.src=url;try{await image.decode()}catch{window.__captureBackgroundFailures.push(url)}}));window.scrollTo(0,0);return true})()`);
   await new Promise(resolve=>setTimeout(resolve,200));
-  const data=JSON.parse(await evaluate(`JSON.stringify({page:document.body.dataset.page,title:document.title,failedImages:[...document.images].filter(e=>!e.naturalWidth).map(e=>e.src),overflow:document.documentElement.scrollWidth>innerWidth,sections:[...document.querySelectorAll('main>section,footer')].map(e=>({name:e.className,top:Math.round(e.getBoundingClientRect().top+scrollY),height:Math.round(e.offsetHeight)}))})`));
+  const data=JSON.parse(await evaluate(`JSON.stringify({page:document.body.dataset.page,title:document.title,failedImages:[...document.images].filter(e=>!e.naturalWidth).map(e=>e.src),overflow:document.documentElement.scrollWidth>innerWidth,failedBackgrounds:window.__captureBackgroundFailures||[],sections:[...document.querySelectorAll('main>section,footer')].map(e=>({name:e.className,top:Math.round(e.getBoundingClientRect().top+scrollY),height:Math.round(e.offsetHeight)}))})`));
   const metrics=await send('Page.getLayoutMetrics');const height=Math.ceil(metrics.result.cssContentSize.height);
   const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,clip:{x:0,y:0,width:1920,height,scale:1}});
   await writeFile(resolve(output,`${page}.png`),Buffer.from(shot.result.data,'base64'));
   data.height=height;report.pages.push(data);console.log(`${page}: ${height}px, failed images ${data.failedImages.length}, overflow ${data.overflow}`);
  }
  await writeFile(resolve(output,'browser.json'),JSON.stringify(report,null,2)+'\n');
- if(errors.length||report.pages.some(p=>p.failedImages.length||p.overflow))process.exitCode=1;
+ if(errors.length||report.pages.some(p=>p.failedImages.length||p.failedBackgrounds.length||p.overflow))process.exitCode=1;
 }finally{socket.close();await fetch(`${cdp}/json/close/${tab.id}`);}

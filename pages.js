@@ -2,7 +2,7 @@ import { categories, newsItems, faqItems } from './site-data.js';
 import { selectNews, selectDesignNews, newsQuery, detailHref, createFeedbackStore, escapeHtml as e } from './page-model.js';
 
 function renderCard(item, category, page) {
-  return `<article data-news-card${['brochure-2026','continuous-buffer','exhibition-demo'].includes(item.id)?` data-news-art="${item.id}"`:''}><a class="news-card-link" href="${detailHref(item,category,page)}"><div class="news-image"><img src="${item.cover}" alt="${e(item.title)}" width="384" height="182" loading="lazy"></div><div class="news-copy"><time datetime="${item.publishedAt}">${item.publishedAt}</time><h3>${e(item.title)}</h3><p>${e(item.summary)}</p><span class="read-more">阅读全文 →</span></div></a></article>`;
+  return `<article data-news-card${['brochure-2026','continuous-buffer','exhibition-demo'].includes(item.id)?` data-news-art="${item.id}"`:''}><a class="news-card-link" href="${detailHref(item,category,page)}"><div class="news-image"><img src="${item.cover.replace('assets/','assets/psd/list-').replace('.webp','.png')}" alt="${e(item.title)}" width="384" height="182" loading="lazy"></div><div class="news-copy"><time datetime="${item.publishedAt}">${item.publishedAt}</time><h3>${e(item.title)}</h3><p>${e(item.summary)}</p><span class="read-more">阅读全文 →</span></div></a></article>`;
 }
 function enableStaticForm(form) {
   // Call only after all handlers for this form are installed.

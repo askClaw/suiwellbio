@@ -1,0 +1,353 @@
+{
+  "viewport": [
+    1920,
+    1080
+  ],
+  "capture_mode": "reduced motion; fonts, HTML images and CSS background images decoded",
+  "measurement": "Mean absolute RGB channel difference on 0..255 scale; not a reproduction percentage",
+  "source_capture": ".design/precision-review/round-11",
+  "pages": [
+    {
+      "page": "index",
+      "rgb_mae": 1.4994,
+      "sections": [
+        {
+          "name": "hero",
+          "top": 160,
+          "height": 838,
+          "mae": 0.9292
+        },
+        {
+          "name": "metrics",
+          "top": 998,
+          "height": 160,
+          "mae": 1.0105
+        },
+        {
+          "name": "products",
+          "top": 1158,
+          "height": 1246,
+          "mae": 1.4443
+        },
+        {
+          "name": "applications",
+          "top": 2404,
+          "height": 546,
+          "mae": 1.8793
+        },
+        {
+          "name": "about",
+          "top": 2950,
+          "height": 934,
+          "mae": 2.2921
+        },
+        {
+          "name": "news",
+          "top": 3884,
+          "height": 870,
+          "mae": 1.9089
+        },
+        {
+          "name": "solution",
+          "top": 4754,
+          "height": 298,
+          "mae": 1.1066
+        },
+        {
+          "name": "",
+          "top": 5052,
+          "height": 516,
+          "mae": 0.6957
+        }
+      ]
+    },
+    {
+      "page": "about",
+      "rgb_mae": 1.3883,
+      "sections": [
+        {
+          "name": "page-banner",
+          "top": 160,
+          "height": 300,
+          "mae": 1.3716
+        },
+        {
+          "name": "company-intro container",
+          "top": 460,
+          "height": 622,
+          "mae": 1.582
+        },
+        {
+          "name": "soft-section",
+          "top": 1082,
+          "height": 810,
+          "mae": 2.3058
+        },
+        {
+          "name": "core-advantages",
+          "top": 1892,
+          "height": 645,
+          "mae": 0.7263
+        },
+        {
+          "name": "mission container",
+          "top": 2537,
+          "height": 625,
+          "mae": 1.5964
+        },
+        {
+          "name": "solution",
+          "top": 3162,
+          "height": 298,
+          "mae": 0.7491
+        },
+        {
+          "name": "",
+          "top": 3460,
+          "height": 470,
+          "mae": 0.8532
+        }
+      ]
+    },
+    {
+      "page": "product",
+      "rgb_mae": 1.4825,
+      "sections": [
+        {
+          "name": "page-banner",
+          "top": 160,
+          "height": 300,
+          "mae": 2.0256
+        },
+        {
+          "name": "soft-section network-section",
+          "top": 460,
+          "height": 716,
+          "mae": 2.5629
+        },
+        {
+          "name": "product-advantages",
+          "top": 1176,
+          "height": 910,
+          "mae": 2.743
+        },
+        {
+          "name": "soft-section",
+          "top": 2086,
+          "height": 444,
+          "mae": 1.4696
+        },
+        {
+          "name": "parameter-section",
+          "top": 2530,
+          "height": 863,
+          "mae": 0.0443
+        },
+        {
+          "name": "application-strip",
+          "top": 3393,
+          "height": 228,
+          "mae": 0.4824
+        },
+        {
+          "name": "solution",
+          "top": 3621,
+          "height": 298,
+          "mae": 1.0536
+        },
+        {
+          "name": "",
+          "top": 3919,
+          "height": 477,
+          "mae": 0.7526
+        }
+      ]
+    },
+    {
+      "page": "process",
+      "rgb_mae": 1.0812,
+      "sections": [
+        {
+          "name": "page-banner",
+          "top": 260,
+          "height": 300,
+          "mae": 1.0893
+        },
+        {
+          "name": "soft-section",
+          "top": 560,
+          "height": 722,
+          "mae": 1.9605
+        },
+        {
+          "name": "team-section",
+          "top": 1282,
+          "height": 908,
+          "mae": 1.1874
+        },
+        {
+          "name": "soft-section certificates",
+          "top": 2190,
+          "height": 864,
+          "mae": 0.6063
+        },
+        {
+          "name": "solution",
+          "top": 3054,
+          "height": 298,
+          "mae": 1.076
+        },
+        {
+          "name": "",
+          "top": 3352,
+          "height": 466,
+          "mae": 0.7703
+        }
+      ]
+    },
+    {
+      "page": "service",
+      "rgb_mae": 1.0985,
+      "sections": [
+        {
+          "name": "page-banner",
+          "top": 160,
+          "height": 300,
+          "mae": 1.0178
+        },
+        {
+          "name": "soft-section",
+          "top": 460,
+          "height": 721,
+          "mae": 1.7301
+        },
+        {
+          "name": "implementation-section",
+          "top": 1181,
+          "height": 1465,
+          "mae": 0.4237
+        },
+        {
+          "name": "soft-section faq-section",
+          "top": 2646,
+          "height": 677,
+          "mae": 1.5145
+        },
+        {
+          "name": "downloads-section",
+          "top": 3323,
+          "height": 505,
+          "mae": 1.6414
+        },
+        {
+          "name": "solution",
+          "top": 3828,
+          "height": 298,
+          "mae": 1.1736
+        },
+        {
+          "name": "",
+          "top": 4126,
+          "height": 473,
+          "mae": 1.2111
+        }
+      ]
+    },
+    {
+      "page": "news",
+      "rgb_mae": 0.9568,
+      "sections": [
+        {
+          "name": "page-banner",
+          "top": 160,
+          "height": 300,
+          "mae": 1.2902
+        },
+        {
+          "name": "news-list-section container",
+          "top": 460,
+          "height": 1250,
+          "mae": 0.7693
+        },
+        {
+          "name": "solution",
+          "top": 1710,
+          "height": 298,
+          "mae": 1.1736
+        },
+        {
+          "name": "",
+          "top": 2008,
+          "height": 473,
+          "mae": 1.2111
+        }
+      ]
+    },
+    {
+      "page": "news-detail",
+      "rgb_mae": 1.2078,
+      "sections": [
+        {
+          "name": "page-banner",
+          "top": 160,
+          "height": 300,
+          "mae": 0.9263
+        },
+        {
+          "name": "article-section container",
+          "top": 460,
+          "height": 1300,
+          "mae": 1.3492
+        },
+        {
+          "name": "solution",
+          "top": 1760,
+          "height": 298,
+          "mae": 1.1736
+        },
+        {
+          "name": "",
+          "top": 2058,
+          "height": 473,
+          "mae": 1.2111
+        }
+      ]
+    },
+    {
+      "page": "contact",
+      "rgb_mae": 0.8674,
+      "sections": [
+        {
+          "name": "page-banner",
+          "top": 160,
+          "height": 300,
+          "mae": 0.7465
+        },
+        {
+          "name": "contact-section container",
+          "top": 460,
+          "height": 676,
+          "mae": 0.4281
+        },
+        {
+          "name": "consultation-section",
+          "top": 1136,
+          "height": 849,
+          "mae": 0.995
+        },
+        {
+          "name": "solution",
+          "top": 1985,
+          "height": 298,
+          "mae": 1.1971
+        },
+        {
+          "name": "",
+          "top": 2283,
+          "height": 473,
+          "mae": 1.2111
+        }
+      ]
+    }
+  ]
+}

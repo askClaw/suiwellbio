@@ -29,7 +29,7 @@ for name, selections in SELECTIONS.items():
 
     exports = []
     if name == 'demo':
-        exports = [(275,{279,929,933},(0,1158,1920,2404),'home-product-background'),(428,{454,429},(0,2950,1920,3418),'home-about-background'),(563,{533,535},(0,4756,1920,5052),'solution-background')]
+        exports = [(275,{279,929,933,931,932},(0,1158,1920,2404),'home-product-background'),(428,{454,429},(0,2950,1920,3418),'home-about-background'),(563,{533,535},(0,4756,1920,5052),'solution-background')]
     elif name == 'contact001':
         exports = [(169,{4305,4268},(359,537,959,1089),'contact-visual')]
     elif name == 'product001':
