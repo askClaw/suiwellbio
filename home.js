@@ -37,6 +37,7 @@ function setSlide(index) {
   const next = (index + slides.length) % slides.length;
   if (next === slide) return;
   slide = next;
+  $('.hero').dataset.slide = String(slide);
   animations.cancel('hero-copy');
   heroCopy.querySelector('h1').innerHTML = slides[slide][0];
   heroCopy.querySelector('p').textContent = slides[slide][1];

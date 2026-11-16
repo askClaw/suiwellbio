@@ -486,3 +486,78 @@ body[data-page="product"] #working-mode { padding-bottom:75px; }
 @media (prefers-reduced-motion:reduce) {
   .work-flow:has(> li:first-child.motion-pending)::before { clip-path:none; }
 }
+
+/* Artwork extracted from the supplied PSDs; text and controls stay semantic. */
+.visually-hidden { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.page-banner { background:var(--cyan) url('assets/psd/banner-background.webp') center top / auto 300px no-repeat; }
+.network-section { background:#f2fafa url('assets/psd/product-network.webp') center top / auto 100% no-repeat; }
+.psd-icon { display:block; flex:none; object-fit:contain; }
+#main-nav .psd-nav-icon { width:auto; height:auto; max-width:20px; max-height:17px; filter:brightness(0) saturate(100%) invert(63%) sepia(76%) saturate(1119%) hue-rotate(139deg) brightness(94%); }
+.stage-content .stage-icon { width:48px; height:48px; }
+.unit-icon { max-width:26px; max-height:26px; }
+.advantage-grid .adv-icon { width:32px; height:32px; filter:brightness(0) invert(1); }
+.location-icon { width:69px; height:66px; }
+.four-cards .psd-advantage { position:relative; padding:0; border:0; background:transparent; border-radius:0; }
+.four-cards .psd-advantage img { display:block; width:100%; height:auto; }
+.expertise-list img { filter:brightness(0) saturate(100%) invert(55%) sepia(99%) saturate(2027%) hue-rotate(142deg) brightness(96%); }
+.certificate-grid .certificate-ornament { width:24px; height:54px; }
+.contact-info .contact-icon { width:48px; height:48px; filter:brightness(0) saturate(100%) invert(55%) sepia(99%) saturate(2027%) hue-rotate(142deg) brightness(96%); }
+@media (min-width:761px) {
+  #main-nav a:nth-child(n+2):nth-child(-n+6)::before { content:''; width:9px; height:7px; order:2; background:var(--muted); mask:url('assets/psd/nav-arrow.png') center / contain no-repeat; }
+  .page-banner h1 { color:transparent; background-position:left center; background-repeat:no-repeat; background-size:auto 46px; }
+  body[data-page="about"] .page-banner h1 { background-image:url('assets/psd/banner-about.png'); }
+  body[data-page="process"] .page-banner h1 { background-image:url('assets/psd/banner-process.png'); }
+  body[data-page="service"] .page-banner h1 { background-image:url('assets/psd/banner-service.png'); }
+  body:is([data-page="news"],[data-page="news-detail"]) .page-banner h1 { background-image:url('assets/psd/banner-news.png'); }
+  body[data-page="contact"] .page-banner h1 { background-image:url('assets/psd/banner-contact.png'); }
+  body[data-page="product"] .page-banner h1 { color:white; background:none; }
+  .section-title h2:has(+ i) { background-position:center; background-repeat:no-repeat; background-size:auto 34px; }
+  .section-title h2:has(+ i)[data-psd-title] { color:transparent; }
+  .section-title h2[data-psd-title] em { color:transparent; }
+  body[data-page="product"] #core-units h2 { background-image:url('assets/psd/title-product-core.png'); }
+  body[data-page="product"] #advantages h2 { background-image:url('assets/psd/title-product-advantages.png'); }
+  body[data-page="product"] #working-mode h2 { background-image:url('assets/psd/title-product-flow.png'); }
+  body[data-page="product"] #parameters h2 { background-image:url('assets/psd/title-product-parameters.png'); }
+  body[data-page="about"] .soft-section h2 { background-image:url('assets/psd/title-about-locations.png'); }
+  body[data-page="about"] .core-advantages h2 { background-image:url('assets/psd/title-about-advantages.png'); }
+  body[data-page="about"] .mission h2 { background-image:url('assets/psd/title-about-mission.png'); }
+  body[data-page="process"] main > .soft-section:nth-of-type(2) h2 { background-image:url('assets/psd/title-process-system.png'); }
+  body[data-page="process"] .team-section h2 { background-image:url('assets/psd/title-process-team.png'); }
+  body[data-page="process"] .certificates h2 { background-image:url('assets/psd/title-process-compliance.png'); }
+  body[data-page="service"] main > .soft-section:nth-of-type(2) h2 { background-image:url('assets/psd/title-service-system.png'); }
+  body[data-page="service"] .implementation-section h2 { background-image:url('assets/psd/title-service-project.png'); }
+  body[data-page="service"] .faq-section h2 { background-image:url('assets/psd/title-service-faq.png'); }
+  body[data-page="service"] .downloads-section h2 { background-image:url('assets/psd/title-service-downloads.png'); }
+}
+@media (max-width:760px) {
+  .location-icon { width:46px; height:46px; }
+  .page-banner { background-size:auto 245px; background-position:left top; }
+}
+/* Desktop section boundaries follow the original 1920px composition. */
+.about:before { background:var(--cyan) url('assets/psd/home-about-background.webp') center top / cover no-repeat; }
+.solution { background:var(--cyan) url('assets/psd/solution-background.webp') center top / auto 100% no-repeat; }
+@media (min-width:761px) {
+  body[data-page="product"] .page-banner h1 { color:transparent; background:url('assets/psd/banner-product.png') left center / auto 50px no-repeat; }
+  body[data-page="home"] .products { padding-bottom:45px; }
+  body[data-page="home"] .applications { padding-bottom:8px; }
+  body[data-page="home"] .about { padding-bottom:0; }
+  body[data-page="home"] .about > .container > .more { margin-top:48px; }
+  body[data-page="home"] .news { padding-bottom:28px; }
+  .solution { padding-top:73px; padding-bottom:73px; }
+  .stage-content { column-gap:20px; }
+}
+@media (min-width:1101px) {
+  .contact-card { grid-template-columns:595px minmax(0,1fr); gap:45px; padding:0 50px 0 0; }
+  .contact-visual img { width:600px; height:552px; min-height:0; object-fit:cover; mask-image:none; }
+}
+.products { background-image:url('assets/psd/home-product-background.webp'); }
+@media (min-width:761px) {
+  .hero[data-slide="0"] .hero-copy h1 { color:transparent; text-shadow:none; background:url('assets/psd/home-hero-title.png') left center / auto 137px no-repeat; filter:drop-shadow(2px 4px 3px #5559); }
+  .hero[data-slide="0"] .hero-copy h1 em { color:transparent; }
+  body[data-page="home"] .section-title h2 { color:transparent; background-position:center; background-repeat:no-repeat; background-size:auto 34px; }
+  body[data-page="home"] .section-title h2 em { color:transparent; }
+  body[data-page="home"] .products .section-title h2 { background-image:url('assets/psd/title-home-product.png'); background-size:auto 39px; }
+  body[data-page="home"] .applications .section-title h2 { background-image:url('assets/psd/title-home-applications.png'); }
+  body[data-page="home"] .about .section-title h2 { background-image:url('assets/psd/title-home-about.png'); }
+  body[data-page="home"] .news .section-title h2 { background-image:url('assets/psd/title-home-news.png'); }
+}
