@@ -24,3 +24,12 @@ export function createFeedbackStore(faqs) {
   };
 }
 export const escapeHtml = text => String(text).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+
+// The supplied PSD intentionally repeats the same three samples on its list.
+// Keep links bound to the original articles rather than inventing article IDs.
+export function selectDesignNews(items, {category='company', page=1}={}) {
+  const validCategory=categories.some(item=>item.id===category)?category:'company';
+  const samples=validCategory==='company'?items.slice(0,3):items.filter(item=>item.category==='market');
+  const current=Math.min(3,Math.max(1,Math.floor(Number(page)||1)));
+  return {category:validCategory,page:current,totalPages:3,total:18,items:Array.from({length:6},(_,i)=>samples[i%samples.length])};
+}

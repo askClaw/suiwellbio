@@ -144,6 +144,7 @@ function finishCounter(state) {
   counterObserver.unobserve(state.element);
   state.visual.textContent = state.final;
   state.status = 'complete';
+  state.element.dataset.counterState = 'complete';
 }
 $$('.metric-grid strong').forEach((element, index) => {
   const final = element.textContent;
@@ -158,6 +159,7 @@ $$('.metric-grid strong').forEach((element, index) => {
   if (index < 2) {
     const state = { element, visual, final, target: index === 0 ? 50 : 30, suffix: index === 0 ? '%+' : '%', frame: 0, status: 'complete' };
     counters.set(element, state);
+    element.dataset.counterState=preference.matches?'complete':'pending';
     if (!preference.matches) {
       visual.textContent = '0' + state.suffix;
       state.status = 'pending';

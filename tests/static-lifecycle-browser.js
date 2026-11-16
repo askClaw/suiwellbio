@@ -86,7 +86,7 @@ document.querySelector('#run').addEventListener('click',async event=>{
    assert(new URL(win.location.href).searchParams.get('category')===category,'分类URL异常');
    assert(doc.querySelector(`[data-news-category="${category}"]`).hasAttribute('aria-current'),'分类高亮未更新');
    const cards=[...doc.querySelectorAll('[data-news-card]')];
-   assert(cards.length===2 && cards.every(e=>e.getBoundingClientRect().height>0),'分类卡片异常');
+   assert(cards.length===6 && cards.every(e=>e.getBoundingClientRect().height>0),'分类卡片异常');
    await tick(win);
   }
   // Exercise popstate rendering here; trusted browser Back/Forward is checked
@@ -98,7 +98,7 @@ document.querySelector('#run').addEventListener('click',async event=>{
   }
   doc.querySelector('.news-card-link').focus();assert(doc.activeElement.matches('.news-card-link'),'卡片无法键盘聚焦');
   const context=await new Promise(resolve=>{win.addEventListener('regression-context',event=>resolve(event.detail),{once:true});const script=doc.createElement('script');script.type='module';script.textContent="import * as context from '/common.js';window.dispatchEvent(new CustomEvent('regression-context',{detail:context}));";doc.head.append(script);});
-  const makeCard=id=>{const card=doc.createElement('article');card.id=id;card.style.cssText='height:250px;margin-top:1500px';card.textContent='Disposable regression card';doc.querySelector('#news-results').append(card);context.registerEntrances('#'+id);return card;};
+  const makeCard=id=>{doc.body.style.paddingBottom='1500px';const card=doc.createElement('article');card.id=id;card.style.cssText='height:250px;margin-top:1500px';card.textContent='Disposable regression card';doc.querySelector('#news-results').append(card);context.registerEntrances('#'+id);return card;};
   const pending=makeCard('pending-regression');assert(pending.dataset.motionState==='pending','未创建待入场目标');
   doc.querySelector('[data-news-category="market"]').click();assert(!pending.isConnected && !pending.hasAttribute('data-motion-state'),'待入场旧节点未注销');
   const running=makeCard('running-regression');win.scrollTo(0,running.getBoundingClientRect().top+win.scrollY-200);

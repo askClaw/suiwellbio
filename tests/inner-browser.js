@@ -56,7 +56,7 @@ document.querySelector('#run').addEventListener('click',async event=>{
     ({win,doc}=await load('service'));
     const details=[...doc.querySelectorAll('.faq-item')],last=details[3],form=last.querySelector('form'),extra=form.querySelector('.feedback-extra');
     assert(extra.hidden,'默认意见框应折叠');
-    assert(form.offsetHeight<=110,`默认反馈区过高：${form.offsetHeight}`);
+    const panel=form.closest('.feedback-panel');assert(!panel.open,'默认反馈面板应折叠');panel.querySelector('summary').click();assert(panel.open,'反馈面板无法展开');
     form.querySelector('[value="no"]').click();assert(!extra.hidden,'负反馈未展开意见');
     const input=form.querySelector('textarea');input.value='需要更详细的安装说明';
     form.querySelector('[value="yes"]').click();assert(extra.hidden && input.value,'切换评价丢失意见');

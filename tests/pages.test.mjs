@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { newsItems, faqItems } from '../site-data.js';
-import { selectNews, detailHref, createFeedbackStore } from '../page-model.js';
+import { selectNews, selectDesignNews, detailHref, createFeedbackStore } from '../page-model.js';
 
 test('news pagination filters first, sorts by date, and clamps stale pages',()=>{
   const items=Array.from({length:7},(_,i)=>({id:String(i),category:'market',publishedAt:`2026-10-${String(i+1).padStart(2,'0')}`}));
@@ -65,4 +65,12 @@ test('generated static demo forms are unavailable until their handlers initializ
   }
   assert.match(html,/<noscript>[\s\S]*?电话联系[\s\S]*?发送邮件[\s\S]*?<\/noscript>/);
  }
+});
+
+test('PSD news samples repeat six cards while retaining canonical article IDs',()=>{
+ const view=selectDesignNews(newsItems,{category:'company',page:2});
+ assert.equal(view.page,2);assert.equal(view.totalPages,3);assert.equal(view.items.length,6);
+ assert.deepEqual(view.items.map(i=>i.id),[...newsItems.slice(0,3),...newsItems.slice(0,3)].map(i=>i.id));
+ assert.ok(view.items.every(i=>newsItems.includes(i)));
+ assert.equal(selectDesignNews(newsItems,{page:99}).page,3);
 });

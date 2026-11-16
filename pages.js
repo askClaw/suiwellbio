@@ -1,8 +1,8 @@
 import { categories, newsItems, faqItems } from './site-data.js';
-import { selectNews, newsQuery, detailHref, createFeedbackStore, escapeHtml as e } from './page-model.js';
+import { selectNews, selectDesignNews, newsQuery, detailHref, createFeedbackStore, escapeHtml as e } from './page-model.js';
 
 function renderCard(item, category, page) {
-  return `<article data-news-card><a class="news-card-link" href="${detailHref(item,category,page)}"><div class="news-image"><img src="${item.cover}" alt="${e(item.title)}" width="384" height="182" loading="lazy"></div><div class="news-copy"><time datetime="${item.publishedAt}">${item.publishedAt}</time><h3>${e(item.title)}</h3><p>${e(item.summary)}</p><span class="read-more">阅读全文 →</span></div></a></article>`;
+  return `<article data-news-card${['brochure-2026','continuous-buffer','exhibition-demo'].includes(item.id)?` data-news-art="${item.id}"`:''}><a class="news-card-link" href="${detailHref(item,category,page)}"><div class="news-image"><img src="${item.cover}" alt="${e(item.title)}" width="384" height="182" loading="lazy"></div><div class="news-copy"><time datetime="${item.publishedAt}">${item.publishedAt}</time><h3>${e(item.title)}</h3><p>${e(item.summary)}</p><span class="read-more">阅读全文 →</span></div></a></article>`;
 }
 function enableStaticForm(form) {
   // Call only after all handlers for this form are installed.
@@ -16,7 +16,7 @@ export function initPages(context) {
     const list = $('#news-results'), section = $('#news-list');
     function render() {
       const params = new URLSearchParams(location.search);
-      const model = selectNews(newsItems,{category:params.get('category')||'company',page:params.get('page')||1});
+      const model = selectDesignNews(newsItems,{category:params.get('category')||'company',page:params.get('page')||1});
       const canonical = new URL(`news.html?${newsQuery(model.category,model.page)}${location.hash}`,location.href);
       if (canonical.href !== location.href) history.replaceState(null,'',canonical.href);
       $$('[data-news-category]').forEach(link => {
@@ -28,7 +28,7 @@ export function initPages(context) {
       list.innerHTML = model.items.map(item=>renderCard(item,model.category,model.page)).join('') || '<p class="empty-state">此分类暂无新闻。</p>';
       const link = (label,target,enabled) => enabled ? `<a href="news.html?${newsQuery(model.category,target)}" data-news-page="${target}" aria-label="${label}">${label}</a>` : `<span aria-disabled="true">${label}</span>`;
       const numbers = Array.from({length:model.totalPages},(_,i)=>i+1).map(number=>number===model.page?`<span aria-current="page">${number}</span>`:`<a href="news.html?${newsQuery(model.category,number)}" data-news-page="${number}">${number}</a>`).join('');
-      $('.pagination').innerHTML = link('上一页',model.page-1,model.page>1)+numbers+link('下一页',model.page+1,model.page<model.totalPages);
+      $('.pagination').innerHTML = numbers+link('›',model.page+1,model.page<model.totalPages)+link('»',model.totalPages,model.page<model.totalPages);
       registerEntrances('[data-news-card]','up','#news-results', { animateVisible: true });
     }
     section.addEventListener('click',event=>{
@@ -54,6 +54,7 @@ export function initPages(context) {
       nextLink.hidden=true;
       return;
     }
+    $('.article-paper').toggleAttribute('data-psd-article',item.id==='expo-invitation-2026');
     document.title=`${item.title}｜穗维卓生物`;
     $('.article-heading h2').textContent=item.title;
     $('.article-heading time').textContent=item.publishedAt;
@@ -77,6 +78,7 @@ export function initPages(context) {
     registerEntrances('.article-body > *', 'up', '.article-body');
     registerEntrances('.article-navigation > a', 'up', '.article-navigation');
   }
+  $$('[data-download-pending]').forEach(button=>button.addEventListener('click',()=>{const dialog=$('#detail-dialog');dialog.querySelector('.dialog-body').innerHTML='<h2>资料下载</h2><p>文件正在整理，请通过联系页面获取资料。</p><a class="button" href="contact.html#consultation">联系我们</a>';dialog.showModal();}));
   if (page === 'service') {
     const store=createFeedbackStore(faqItems);
     function setFAQ(details,open) {
@@ -133,7 +135,7 @@ export function initPages(context) {
     const form=$('.consultation-form'), code=$('.verification-code');
     const status=$('.form-status');
     form.addEventListener('submit',event=>{
-      event.preventDefault();status.classList.remove('is-error');
+      event.preventDefault();status.classList.remove('is-error');status.classList.add('is-active');
       for(const input of form.querySelectorAll('[required]')) {
         if(!input.value.trim()) {input.setCustomValidity('请填写此项。');input.reportValidity();return;}
       }
@@ -144,7 +146,7 @@ export function initPages(context) {
       }
       status.textContent='信息格式检查通过。当前为静态演示，填写内容未发送；请通过电话或邮箱与我们联系。';
     });
-    code.addEventListener('click',()=>{code.textContent=String(Math.floor(Math.random()*9000)+1000);form.elements.verification.value='';form.elements.verification.focus();});
+    code.addEventListener('click',()=>{code.dataset.refreshed='true';code.textContent=String(Math.floor(Math.random()*9000)+1000);form.elements.verification.value='';form.elements.verification.focus();});
     form.addEventListener('input',event=>event.target.setCustomValidity?.(''));
     enableStaticForm(form);
   }

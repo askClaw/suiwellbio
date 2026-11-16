@@ -53,8 +53,8 @@ button.addEventListener('click', async () => {
     await waitFor(win, () => machine.dataset.motionState === 'complete', '设备入场未完成');
     assert(win.getComputedStyle(point).visibility === 'visible' && win.getComputedStyle(connector).visibility === 'visible', '设备完成后热点或连线未显示');
     const image = machine.getBoundingClientRect(), marker = point.getBoundingClientRect();
-    assert(Math.abs(marker.left + marker.width / 2 - (image.left + image.width * .245)) < 1, '热点横向坐标错位');
-    assert(Math.abs(marker.top + marker.height / 2 - (image.top + image.height * .42)) < 1, '热点纵向坐标错位');
+    assert(Math.abs(marker.left + marker.width / 2 - (image.left + image.width * (231.5/1173))) < 1, '热点横向坐标错位');
+    assert(Math.abs(marker.top + marker.height / 2 - (image.top + image.height * (246.5/635))) < 1, '热点纵向坐标错位');
     passed('设备落定后热点、连线恢复，热点与设备锚点误差小于 1px');
     const values = [...doc.querySelectorAll('.metric-value')];
     const staticValues = values.slice(2).map(element => element.textContent);

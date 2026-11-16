@@ -7,7 +7,8 @@ const units = [
   ['实时检测与分析单元', '在线 pH 传感器、电导率传感器', '实时监测药液的关键质量属性，为控制提供数据支撑'],
   ['自动化控制单元', '自动化控制系统、操作界面', '实现缓冲液自动切换与全程闭环控制'],
   ['动态混合单元', '封闭管路、在线混合模块', '实时动态混合稀释，产出符合工艺要求的药液'],
-  ['流体输送单元', '流体输送与流量检测模块', '稳定输送工艺流体，支持连续化生产']
+  ['流体输送单元', '流体输送与流量检测模块', '稳定输送工艺流体，支持连续化生产'],
+  ['高精度计量单元', '质量流量计、体积流量计与高精度计量泵', '精确测量和输送各股流体，确保物料配比精准。']
 ];
 const slides = [
   ['专注在线配液，<br>赋能药企<em>高效合规</em>生产', '为制药与医美领域提供专业在线配液系统解决方案'],
@@ -84,7 +85,7 @@ function measureUnitHeight() {
 }
 function updateLine(duration = 0) {
   const imageLeft = machine.offsetLeft - machine.offsetWidth / 2;
-  const positions = [[.245, .42], [.15, .40], [.70, .38], [.15, .74]];
+  const positions = [[231.5/1173,246.5/635],[123.5/1173,232.5/635],[765.5/1173,216.5/635],[123.5/1173,440.5/635],[872.5/1173,374.5/635]];
   const points = positions.map(([x, y]) => [imageLeft + machine.offsetWidth * x, machine.offsetTop + machine.offsetHeight * y]);
   const card = { left: unitCard.offsetLeft, top: unitCard.offsetTop, width: unitCard.offsetWidth, height: unitCard.offsetHeight };
   card.right = card.left + card.width; card.bottom = card.top + card.height;
@@ -101,6 +102,7 @@ function selectUnit(button) {
   const style = getComputedStyle(unitContent);
   const initial = { opacity: Math.min(Number(style.opacity), .45), translate: style.translate };
   activeUnit = next;
+  unitCard.dataset.unitIndex=String(next);
   animations.cancel('unit-content');
   fillUnit(unitContent, next);
   hotspotButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
