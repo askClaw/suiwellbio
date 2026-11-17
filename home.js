@@ -46,13 +46,13 @@ function setSlide(index) {
     if (index === slide) button.setAttribute('aria-current', 'true'); else button.removeAttribute('aria-current');
   });
   animations.run('hero-copy', heroCopy,
-    [{ opacity: current.opacity, translate: current.translate }, { opacity: 0, translate: '0 -12px' }],
+    [{ opacity: current.opacity }, { opacity: 0 }],
     { duration: 180, easing: 'ease-in' }, () => {
       $('.hero').dataset.slide = String(nextSlide);
       heroCopy.querySelector('h1').innerHTML = slides[nextSlide][0];
       heroCopy.querySelector('p').textContent = slides[nextSlide][1];
       animations.run('hero-copy', heroCopy,
-        [{ opacity: 0, translate: '0 32px' }, { opacity: 1, translate: '0 0' }],
+        [{ opacity: 0 }, { opacity: 1 }],
         { duration: 900, easing: ease });
     });
 }
@@ -60,9 +60,9 @@ $('.previous').addEventListener('click', () => setSlide(slide - 1));
 $('.next').addEventListener('click', () => setSlide(slide + 1));
 $$('.slide-dots button').forEach((button, index) => button.addEventListener('click', () => setSlide(index)));
 measureHero();
-registerEntrances('.hero-copy h1', 'heading', '.hero-copy', { animateVisible: true });
-registerEntrances('.hero-copy p', 'up', '.hero-copy', { animateVisible: true, delay: 150 });
-registerEntrances('.hero-content > .button', 'up', '.hero-content', { delay: 300 });
+registerEntrances('.hero-copy h1', 'fade', '.hero-copy', { animateVisible: true });
+registerEntrances('.hero-copy p', 'fade', '.hero-copy', { animateVisible: true, delay: 150 });
+registerEntrances('.hero-content > .button', 'fade', '.hero-content', { delay: 300 });
 
 // Product geometry is measured only on selection / resize, never during tween frames.
 let activeUnit = 0;

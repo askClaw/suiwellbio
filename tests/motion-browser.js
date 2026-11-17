@@ -103,6 +103,16 @@ button.addEventListener('click', async () => {
     await waitFor(initialWin, () => parseInt(initialValue.textContent, 10) > 0 && parseInt(initialValue.textContent, 10) < 50, '初始可见未计数');
     await waitFor(initialWin, () => initialValue.textContent === '50%+', '初始可见未完成');
     passed('初始化时已经可见的数字也播放递增');
+    for(const width of [1280,390]){
+      frame.style.width=`${width}px`;frame.removeAttribute('srcdoc');
+      await new Promise(resolve=>{frame.onload=resolve;frame.src='../index.html';});
+      const view=frame.contentWindow,page=frame.contentDocument,em=page.querySelector('.hero-copy h1 em');
+      assert(view.getComputedStyle(em).color!=='rgba(0, 0, 0, 0)','响应式标题强调字仍透明');
+      assert(view.getComputedStyle(page.querySelector('.hero-copy h1'),'::before').display==='none','响应式标题仍展示带照片底色的切图');
+      assert(page.querySelector('.hero-scene')?.contains(page.querySelector('.hero-copy')),'首屏照片与文字没有共同的缩放容器');
+      assert(page.documentElement.scrollWidth<=width,'响应式首屏横向溢出');
+    }
+    passed('1280/390px首屏使用完整原生文字，共同缩放容器避免照片切图接缝');
     status.textContent = `全部通过：${results.children.length} 项真实页面浏览器回归`;
   } catch (error) { status.textContent = '检查失败：' + error.message; }
   finally { button.disabled = false; }

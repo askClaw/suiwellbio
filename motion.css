@@ -736,23 +736,54 @@ dialog[data-state="closing"]::backdrop  {
   --ease-out:cubic-bezier(.16,1,.3,1);
   --ease-ui:cubic-bezier(.22,.61,.36,1)
 }
-body[data-page="home"] .hero:before {
-  content:"";
+body[data-page="home"] .hero-scene {
   position:absolute;
   inset:0;
+  display:flex;
+  align-items:center;
   background:inherit;
-  pointer-events:none;
   transform-origin:55% 50%;
 }
 body[data-page="home"] .hero-content { z-index:1 }
 body[data-page="home"] .slide-arrow,
 body[data-page="home"] .slide-dots { z-index:2 }
 @media(prefers-reduced-motion:no-preference) {
-  body[data-page="home"] .hero:before { animation:hero-arrival 1.8s var(--ease-out) }
+  body[data-page="home"] .hero-scene { animation:hero-arrival 1.8s var(--ease-out) }
 }
 @keyframes hero-arrival {
   from { transform:scale(1.045) }
   to { transform:scale(1) }
+}
+@media(min-width:1920px) {
+  body[data-page="home"] .hero[data-slide="0"] {
+    background-image:url('assets/psd/home-hero-exact-background.png'),url('assets/hero.webp');
+  }
+}
+/* Photo-matted source glyphs align at the original width. At other sizes the
+   live text and controls follow the responsive photograph without visible seams. */
+@media(max-width:1919px),(min-width:1921px) {
+  body[data-page="home"] .hero[data-slide="0"] { background-image:url('assets/hero.webp') }
+  body[data-page="home"] .hero[data-slide="0"] .hero-copy h1 {
+    color:#fff;background:none;filter:none;height:auto;text-shadow:2px 4px 5px #555;
+  }
+  body[data-page="home"] .hero[data-slide="0"] .hero-copy h1 em { color:var(--gold) }
+  body[data-page="home"] .hero[data-slide="0"] .hero-copy p {
+    color:#fff;background:none;height:auto;width:auto;max-width:min(650px,100%);text-shadow:1px 2px 3px #777;
+  }
+  body[data-page="home"] .hero[data-slide="0"] .hero-copy h1:before,
+  body[data-page="home"] .hero[data-slide="0"] .hero-copy p:before,
+  body[data-page="home"] .hero-content>.button:before,
+  body[data-page="home"] .slide-arrow:before { display:none }
+  body[data-page="home"] .hero-content>.button {
+    background:var(--cyan);color:#fff;border-radius:30px;
+  }
+  body[data-page="home"] .slide-arrow {
+    color:#fff;border:1px solid #ffffff88;border-radius:50%;background:#ffffff20;
+  }
+  body[data-page="home"] .slide-arrow.previous { background:var(--gold);border-color:var(--gold) }
+  body[data-page="home"] .hero[data-slide="0"] .slide-dots { background:none }
+  body[data-page="home"] .hero[data-slide="0"] .slide-dots button { background:var(--cyan) }
+  body[data-page="home"] .hero[data-slide="0"] .slide-dots button.selected { background:var(--gold) }
 }
 body[data-page] [data-motion-state="running"] { will-change:opacity,translate,scale }
 body[data-page] :is(.button,.slide-arrow,.application-strip a,.article-navigation a) {

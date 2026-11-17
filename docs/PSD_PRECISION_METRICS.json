@@ -639,7 +639,7 @@
     "load_state": "All pages complete; no pending motion, font/image/background failures, script exceptions or horizontal overflow."
   },
   "motion_revision": {
-    "source_capture": ".design/precision-review/motion-round-3",
+    "source_capture": ".design/precision-review/motion-round-4",
     "mode": "Normal motion enabled; all sections scrolled into view; naturally completed; returned to top; cache disabled.",
     "pages": [
       {
@@ -695,7 +695,7 @@
     "unit_tests": 19,
     "browser_groups": {
       "inner": 7,
-      "motion": 9,
+      "motion": 10,
       "static_lifecycle": 4
     }
   }
