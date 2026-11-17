@@ -755,14 +755,14 @@ body[data-page="home"] .slide-dots { z-index:2 }
   to { transform:scale(1) }
 }
 @media(min-width:1920px) {
-  body[data-page="home"] .hero[data-slide="0"] {
+  body[data-page="home"] .hero {
     background-image:url('assets/psd/home-hero-exact-background.png'),url('assets/hero.webp');
   }
 }
 /* Photo-matted source glyphs align at the original width. At other sizes the
    live text and controls follow the responsive photograph without visible seams. */
 @media(max-width:1919px),(min-width:1921px) {
-  body[data-page="home"] .hero[data-slide="0"] { background-image:url('assets/hero.webp') }
+  body[data-page="home"] .hero { background-image:url('assets/hero.webp') }
   body[data-page="home"] .hero[data-slide="0"] .hero-copy h1 {
     color:#fff;background:none;filter:none;height:auto;text-shadow:2px 4px 5px #555;
   }
