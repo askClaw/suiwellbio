@@ -579,5 +579,63 @@
   ],
   "exactness": "pixel_equal requires zero differing pixels before MAE rounding; different_pixels and max_channel_delta are measured on raw RGB differences",
   "browser": "Chrome/157.0.8103.79",
-  "acceptance": "All eight full pages and every measured section have zero differing RGB pixels at the source PSD dimensions, DPR 1, default state after reduced-motion settling."
+  "acceptance": "All eight full pages and every measured section have zero differing RGB pixels at the source PSD dimensions, DPR 1, default state after reduced-motion settling.",
+  "public_verification": {
+    "base": "https://plus.forsize.cn/nickidea/",
+    "source_capture": ".design/precision-review/live-round-8",
+    "source_commit": "ccbba259e3c97702650a85f70cd4517692135aa7",
+    "https_files_checked": 709,
+    "file_errors": 0,
+    "pages": [
+      {
+        "page": "index",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "about",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "product",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "process",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "service",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "news",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "news-detail",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "contact",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      }
+    ],
+    "load_state": "All pages complete; no pending motion, font/image/background failures, script exceptions or horizontal overflow."
+  }
 }
