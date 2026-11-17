@@ -2,6 +2,7 @@
 .venv/
 .design/
 node_modules/
+__pycache__/
 dist/
 
 # Local PSD files and supplied reference projects

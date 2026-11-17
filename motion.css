@@ -725,8 +725,8 @@ dialog[data-state="closing"]::backdrop  {
 }
 
 /* Hotspots use final device coordinates: reveal them only once the device settles. */
-.machine:is([data-motion-state="pending"], [data-motion-state="running"]) ~ .hotspot,
-.machine:is([data-motion-state="pending"], [data-motion-state="running"]) ~ .connector {
+.machine-stage:has(.machine:is([data-motion-state="pending"], [data-motion-state="running"])) > .hotspot,
+.machine-stage:has(.machine:is([data-motion-state="pending"], [data-motion-state="running"])) > .connector {
   visibility: hidden;
   pointer-events: none;
 }

@@ -64,4 +64,6 @@ npm test
 
 桌面精度样式在 `precision.css`。`scripts/capture-pages.mjs` 可通过 Chrome CDP 对本地或线上八页截图，`scripts/compare-psd.py` 生成与 PSD 的逐页、逐区域差异图和 RGB 误差记录；误差值不作为还原度百分比。
 
+在本地服务器和 Chrome CDP 9228 端口运行时，`npm run test:browser` 执行三组浏览器回归。发布与公网全量哈希校验分别使用 `python3 scripts/deploy-release.py` 和 `python3 scripts/verify-release.py`；发布要求工作区已提交，保留上一版本并原子切换链接。
+
 本地预览支持 WOFF2 字体。截图脚本检查字体加载失败、HTML 图片及 CSS 背景解码失败；本地与线上对比前应确认均为零。桌面复杂静态信息图、卡片和文字可用原稿素材呈现，HTML 仍保留语义与原生控件。

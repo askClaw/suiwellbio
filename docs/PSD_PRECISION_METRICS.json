@@ -5,77 +5,77 @@
   ],
   "capture_mode": "reduced motion; fonts, HTML images and CSS background images decoded; failed font faces rejected",
   "measurement": "Mean absolute RGB channel difference on 0..255 scale; not a reproduction percentage",
-  "source_capture": ".design/precision-review/round-22",
+  "source_capture": ".design/precision-review/round-28",
   "pages": [
     {
       "page": "index",
-      "rgb_mae": 0.618,
-      "pixel_equal": false,
-      "different_pixels": 3058165,
-      "max_channel_delta": 255,
+      "rgb_mae": 0.0,
+      "pixel_equal": true,
+      "different_pixels": 0,
+      "max_channel_delta": 0,
       "sections": [
         {
           "name": "hero",
           "top": 160,
           "height": 838,
-          "mae": 0.8878,
-          "pixel_equal": false,
-          "different_pixels": 70890,
-          "max_channel_delta": 255
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "metrics",
           "top": 998,
           "height": 160,
-          "mae": 0.7717,
-          "pixel_equal": false,
-          "different_pixels": 4668,
-          "max_channel_delta": 255
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "products",
           "top": 1158,
           "height": 1246,
-          "mae": 1.2648,
-          "pixel_equal": false,
-          "different_pixels": 1627000,
-          "max_channel_delta": 255
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "applications",
           "top": 2404,
           "height": 546,
-          "mae": 0.2563,
-          "pixel_equal": false,
-          "different_pixels": 268681,
-          "max_channel_delta": 1
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "about",
           "top": 2950,
           "height": 934,
-          "mae": 0.7414,
-          "pixel_equal": false,
-          "different_pixels": 1070196,
-          "max_channel_delta": 255
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "news",
           "top": 3884,
           "height": 870,
-          "mae": 0.1393,
-          "pixel_equal": false,
-          "different_pixels": 15220,
-          "max_channel_delta": 255
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "solution",
           "top": 4754,
           "height": 298,
           "mae": 0.0,
-          "pixel_equal": false,
-          "different_pixels": 1,
-          "max_channel_delta": 1
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "",
@@ -86,13 +86,20 @@
           "different_pixels": 0,
           "max_channel_delta": 0
         }
-      ]
+      ],
+      "header": {
+        "height": 160,
+        "mae": 0.0,
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      }
     },
     {
       "page": "about",
-      "rgb_mae": 0.1389,
+      "rgb_mae": 0.1209,
       "pixel_equal": false,
-      "different_pixels": 890452,
+      "different_pixels": 881553,
       "max_channel_delta": 255,
       "sections": [
         {
@@ -119,16 +126,16 @@
           "height": 810,
           "mae": 0.0742,
           "pixel_equal": false,
-          "different_pixels": 26140,
+          "different_pixels": 26132,
           "max_channel_delta": 35
         },
         {
           "name": "core-advantages",
           "top": 1892,
           "height": 645,
-          "mae": 0.44,
+          "mae": 0.4288,
           "pixel_equal": false,
-          "different_pixels": 855962,
+          "different_pixels": 849661,
           "max_channel_delta": 19
         },
         {
@@ -145,9 +152,9 @@
           "top": 3162,
           "height": 298,
           "mae": 0.0,
-          "pixel_equal": false,
-          "different_pixels": 1,
-          "max_channel_delta": 1
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "",
@@ -158,13 +165,20 @@
           "different_pixels": 0,
           "max_channel_delta": 0
         }
-      ]
+      ],
+      "header": {
+        "height": 160,
+        "mae": 0.0,
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      }
     },
     {
       "page": "product",
-      "rgb_mae": 0.2169,
+      "rgb_mae": 0.2028,
       "pixel_equal": false,
-      "different_pixels": 296598,
+      "different_pixels": 293272,
       "max_channel_delta": 255,
       "sections": [
         {
@@ -180,36 +194,36 @@
           "name": "soft-section network-section",
           "top": 460,
           "height": 716,
-          "mae": 0.204,
+          "mae": 0.2004,
           "pixel_equal": false,
-          "different_pixels": 141168,
+          "different_pixels": 140793,
           "max_channel_delta": 35
         },
         {
           "name": "product-advantages",
           "top": 1176,
           "height": 910,
-          "mae": 0.4159,
+          "mae": 0.417,
           "pixel_equal": false,
-          "different_pixels": 20871,
+          "different_pixels": 20961,
           "max_channel_delta": 255
         },
         {
           "name": "soft-section",
           "top": 2086,
           "height": 444,
-          "mae": 0.5024,
+          "mae": 0.5103,
           "pixel_equal": false,
-          "different_pixels": 28751,
+          "different_pixels": 28267,
           "max_channel_delta": 255
         },
         {
           "name": "parameter-section",
           "top": 2530,
           "height": 863,
-          "mae": 0.0443,
+          "mae": 0.0441,
           "pixel_equal": false,
-          "different_pixels": 15200,
+          "different_pixels": 15248,
           "max_channel_delta": 35
         },
         {
@@ -226,9 +240,9 @@
           "top": 3621,
           "height": 298,
           "mae": 0.0,
-          "pixel_equal": false,
-          "different_pixels": 1,
-          "max_channel_delta": 1
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "",
@@ -239,14 +253,21 @@
           "different_pixels": 0,
           "max_channel_delta": 0
         }
-      ]
+      ],
+      "header": {
+        "height": 160,
+        "mae": 0.0,
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      }
     },
     {
       "page": "process",
-      "rgb_mae": 0.2353,
+      "rgb_mae": 0.2185,
       "pixel_equal": false,
-      "different_pixels": 127946,
-      "max_channel_delta": 255,
+      "different_pixels": 125341,
+      "max_channel_delta": 172,
       "sections": [
         {
           "name": "page-banner",
@@ -289,9 +310,9 @@
           "top": 3054,
           "height": 298,
           "mae": 0.0,
-          "pixel_equal": false,
-          "different_pixels": 1,
-          "max_channel_delta": 1
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "",
@@ -302,13 +323,20 @@
           "different_pixels": 0,
           "max_channel_delta": 0
         }
-      ]
+      ],
+      "header": {
+        "height": 260,
+        "mae": 0.0,
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      }
     },
     {
       "page": "service",
-      "rgb_mae": 0.194,
+      "rgb_mae": 0.1799,
       "pixel_equal": false,
-      "different_pixels": 585837,
+      "different_pixels": 584260,
       "max_channel_delta": 255,
       "sections": [
         {
@@ -333,18 +361,18 @@
           "name": "implementation-section",
           "top": 1181,
           "height": 1465,
-          "mae": 0.4014,
+          "mae": 0.4003,
           "pixel_equal": false,
-          "different_pixels": 526254,
+          "different_pixels": 527309,
           "max_channel_delta": 255
         },
         {
           "name": "soft-section faq-section",
           "top": 2646,
           "height": 677,
-          "mae": 0.3345,
+          "mae": 0.3351,
           "pixel_equal": false,
-          "different_pixels": 47852,
+          "different_pixels": 47815,
           "max_channel_delta": 225
         },
         {
@@ -361,9 +389,9 @@
           "top": 3828,
           "height": 298,
           "mae": 0.0,
-          "pixel_equal": false,
-          "different_pixels": 1,
-          "max_channel_delta": 1
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "",
@@ -374,13 +402,20 @@
           "different_pixels": 0,
           "max_channel_delta": 0
         }
-      ]
+      ],
+      "header": {
+        "height": 160,
+        "mae": 0.0,
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      }
     },
     {
       "page": "news",
-      "rgb_mae": 0.2629,
+      "rgb_mae": 0.2376,
       "pixel_equal": false,
-      "different_pixels": 34715,
+      "different_pixels": 32238,
       "max_channel_delta": 255,
       "sections": [
         {
@@ -396,9 +431,9 @@
           "name": "news-list-section container",
           "top": 460,
           "height": 1250,
-          "mae": 0.471,
+          "mae": 0.4716,
           "pixel_equal": false,
-          "different_pixels": 32115,
+          "different_pixels": 32238,
           "max_channel_delta": 255
         },
         {
@@ -406,9 +441,9 @@
           "top": 1710,
           "height": 298,
           "mae": 0.0,
-          "pixel_equal": false,
-          "different_pixels": 1,
-          "max_channel_delta": 1
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "",
@@ -419,13 +454,20 @@
           "different_pixels": 0,
           "max_channel_delta": 0
         }
-      ]
+      ],
+      "header": {
+        "height": 160,
+        "mae": 0.0,
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      }
     },
     {
       "page": "news-detail",
-      "rgb_mae": 0.1087,
+      "rgb_mae": 0.0838,
       "pixel_equal": false,
-      "different_pixels": 41880,
+      "different_pixels": 39301,
       "max_channel_delta": 255,
       "sections": [
         {
@@ -441,9 +483,9 @@
           "name": "article-section container",
           "top": 460,
           "height": 1300,
-          "mae": 0.1628,
+          "mae": 0.1631,
           "pixel_equal": false,
-          "different_pixels": 39280,
+          "different_pixels": 39301,
           "max_channel_delta": 255
         },
         {
@@ -451,9 +493,9 @@
           "top": 1760,
           "height": 298,
           "mae": 0.0,
-          "pixel_equal": false,
-          "different_pixels": 1,
-          "max_channel_delta": 1
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "",
@@ -464,14 +506,21 @@
           "different_pixels": 0,
           "max_channel_delta": 0
         }
-      ]
+      ],
+      "header": {
+        "height": 160,
+        "mae": 0.0,
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      }
     },
     {
       "page": "contact",
-      "rgb_mae": 0.4001,
+      "rgb_mae": 0.3754,
       "pixel_equal": false,
-      "different_pixels": 361656,
-      "max_channel_delta": 255,
+      "different_pixels": 358125,
+      "max_channel_delta": 248,
       "sections": [
         {
           "name": "page-banner",
@@ -486,18 +535,18 @@
           "name": "contact-section container",
           "top": 460,
           "height": 676,
-          "mae": 0.4281,
+          "mae": 0.4218,
           "pixel_equal": false,
-          "different_pixels": 305103,
+          "different_pixels": 304141,
           "max_channel_delta": 59
         },
         {
           "name": "consultation-section",
           "top": 1136,
           "height": 849,
-          "mae": 0.8825,
+          "mae": 0.8827,
           "pixel_equal": false,
-          "different_pixels": 53945,
+          "different_pixels": 53984,
           "max_channel_delta": 248
         },
         {
@@ -505,9 +554,9 @@
           "top": 1985,
           "height": 298,
           "mae": 0.0,
-          "pixel_equal": false,
-          "different_pixels": 1,
-          "max_channel_delta": 1
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "",
@@ -518,8 +567,16 @@
           "different_pixels": 0,
           "max_channel_delta": 0
         }
-      ]
+      ],
+      "header": {
+        "height": 160,
+        "mae": 0.0,
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      }
     }
   ],
-  "exactness": "pixel_equal requires zero differing pixels before MAE rounding; different_pixels and max_channel_delta are measured on raw RGB differences"
+  "exactness": "pixel_equal requires zero differing pixels before MAE rounding; different_pixels and max_channel_delta are measured on raw RGB differences",
+  "browser": "Chrome/157.0.8103.79"
 }

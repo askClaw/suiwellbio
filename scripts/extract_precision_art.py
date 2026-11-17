@@ -88,17 +88,7 @@ for page,name,cta in [('home','demo',4754),('about','aboutv001',3162),('product'
    elif ident==577:offset=f';top:{l.top-foot-71}px'
    elif ident in [586,587]:offset=f';top:{l.top-foot-395}px'
    css.append(f'body[data-page="{page}"] {selector}{{background-image:url("assets/psd/{name}-shared-{ident}.png"){offset}}}')
- # Composite just the base and brand mark, without text or CTA.
- group=d[563]
- for child in group:child.visible=child.layer_id in {533,535}
- background=group.composite(viewport=(0,cta,1920,cta+298),force=True).convert('RGB')
- # Keep the saved composite's exact background colors. Erase copy and button
- # bounds with the isolated background; separate opaque artwork restores them.
- exact=merged(p).crop((0,cta,1920,cta+298)).convert('RGB')
- for ident in [562,552]:
-  l=d[ident];box=(l.left,l.top-cta,l.right,l.bottom-cta)
-  exact.paste(background.crop(box),box[:2])
- exact.save(O/f'{name}-solution-background.png')
+ # Exact background and live control artwork are exported by export_components.
  css.append(f'body[data-page="{page}"] .solution{{background-image:url("assets/psd/{name}-solution-background.png");background-size:auto 298px}}')
 css.append('}')
 (R/'psd-art.css').write_text('\n'.join(css)+'\n')
@@ -178,3 +168,5 @@ for i,(x,y) in enumerate([(350,3550),(962,3550),(350,3658),(962,3658)]):merged(p
 from extract_banner_art import export_banners, export_components
 export_banners(R,O)
 export_components(R,O)
+from extract_home_precision import export_home
+export_home(R,O)

@@ -7,7 +7,11 @@ MARKER = '/* Generated precise banner backgrounds. */'
 COMPONENT_MARKER = '/* Generated exact component positions. */'
 
 def export_components(root, output):
-    css = [COMPONENT_MARKER, '@media(min-width:1280px){']
+    css = [COMPONENT_MARKER, '@media(min-width:1280px){',
+           '#main-nav .psd-nav-icon{opacity:0!important}',
+           '#main-nav a:before{display:none!important}',
+           '.top-actions{position:relative;left:1px}',
+           '.top-actions .search-toggle{position:relative;top:.5px}']
     pages = [
         ('home','demo',5052,[(294,'.products',1158),(441,'.about',2950),(480,'.news',3884)]),
         ('about','aboutv001',3460,[(1954,'main>.soft-section',1082),(1991,'.core-advantages',1892),(3709,'.mission',2537)]),
@@ -20,6 +24,12 @@ def export_components(root, output):
         psd = PSDImage.open(root / 'resource/v02' / f'{name}.psd')
         layers = {layer.layer_id: layer for layer in psd.descendants()}
         pixels = psd.topil().convert('RGB')
+        offset=100 if page=='process' else 0
+        for key,box in [('navigation',(575,95+offset,1565,125+offset)),('search',(1399,21+offset,1418,40+offset)),('english',(1446,25+offset,1561,41+offset))]:
+            pixels.crop(box).save(output/f'{name}-header-{key}.png')
+        css.append(f'body[data-page="{page}"] .navigation:after{{left:215px;top:35px;width:990px;height:30px;background-image:url("assets/psd/{name}-header-navigation.png");background-size:990px 30px}}')
+        css.append(f'body[data-page="{page}"] .top-actions .search-toggle{{background-image:url("assets/psd/{name}-header-search.png")}}')
+        css.append(f'body[data-page="{page}"] .top-actions .english{{background-image:url("assets/psd/{name}-header-english.png")}}')
         # The saved CTA artwork overlaps the first footer rows by 1–2 pixels.
         pixels.crop((0,foot,1920,foot+4)).save(output / f'{name}-footer-edge.png')
         css.append(f'body[data-page="{page}"] footer{{background:#fff url("assets/psd/{name}-footer-edge.png") center top / auto 4px no-repeat}}')
@@ -45,6 +55,23 @@ def export_components(root, output):
         for ident, selector, top in headings:
             layer = layers[ident]
             css.append(f'body[data-page="{page}"] {selector} .section-title:after{{left:calc(50% + {layer.left-960}px);right:auto;top:{layer.top-top}px;width:{layer.width}px;height:{layer.height}px;transform:none;background-position:left top;background-size:{layer.width}px {layer.height}px}}')
+        cta=foot-298
+        copy_box=layers[562].bbox
+        control=layers[552]
+        button_box=(control.left-10,control.top-10,control.right+10,control.bottom+10)
+        pixels.crop(button_box).save(output/f'{name}-solution-control.png')
+        css.append(f'body[data-page="{page}"] .solution .gold{{background:none;overflow:visible}}')
+        css.append(f'body[data-page="{page}"] .solution .gold:before{{content:"";position:absolute;inset:auto;left:-10px;top:-10px;width:{control.width+20}px;height:{control.height+20}px;transform:none;z-index:0;background:url("assets/psd/{name}-solution-control.png") no-repeat;pointer-events:none}}')
+        # Capture group bounds before changing visibility: hidden groups report
+        # empty bounds, which would leave the original copy in the background.
+        group=layers[563]
+        for child in group:child.visible=child.layer_id in {533,535}
+        base=group.composite(viewport=(0,cta,1920,foot),force=True).convert('RGB')
+        exact=pixels.crop((0,cta,1920,foot))
+        for x,y,r,b in [copy_box,button_box]:
+            box=(x,y-cta,r,b-cta)
+            exact.paste(base.crop(box),box[:2])
+        exact.save(output/f'{name}-solution-background.png')
     css.append('}')
     target = root / 'psd-art.css'
     previous = target.read_text().split(COMPONENT_MARKER)[0].rstrip()
@@ -82,3 +109,5 @@ if __name__ == '__main__':
     root = Path(__file__).resolve().parent.parent
     export_banners(root, root / 'assets/psd')
     export_components(root, root / 'assets/psd')
+    from extract_home_precision import export_home
+    export_home(root, root / 'assets/psd')

@@ -51,6 +51,8 @@ location ^~ /nickidea/ {
 
 ## 后续更新与回滚
 
+当前可重复执行命令：`npm run build:site` → 提交并推送源码 → `python3 scripts/deploy-release.py` → `python3 scripts/verify-release.py`。部署脚本校验发布包全部文件的SHA-256和路径、记录源提交与上一版本，普通内容发布不修改Nginx。公开端校验脚本逐个读取 `dist/` 文件，并额外确认文档、Git配置与不存在路径返回404。
+
 后续更新先运行 `npm run build:site`、语法和测试检查，把 `dist/` 内容上传到新的release目录；核对文件与权限后，通过临时链接加原子rename切换 `/srv/nickidea/current`。普通内容更新不需要修改Nginx配置或重载。
 
 保留旧release目录即可将current原子切回上一版本。若需完整撤销首次发布，则先确认Web入口仍指向上述current链接，移除这个新增入口，恢复本次备份中的Nginx配置，再运行配置检查和平滑重载。原有根目录文件不需要恢复。

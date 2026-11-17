@@ -21,7 +21,10 @@ for page,source in PAGES.items():
  assert original.size==actual.size,(page,original.size,actual.size)
  diff=ImageChops.difference(original,actual)
  row={'page':page,'rgb_mae':round(sum(ImageStat.Stat(diff).mean)/3,4),**exact_stats(diff),'sections':[]}
- for section in next(p for p in browser['pages'] if p['page']==('home' if page=='index' else page))['sections']:
+ layout=next(p for p in browser['pages'] if p['page']==('home' if page=='index' else page))['sections']
+ header=diff.crop((0,0,1920,layout[0]['top']))
+ row['header']={'height':layout[0]['top'],'mae':round(sum(ImageStat.Stat(header).mean)/3,4),**exact_stats(header)}
+ for section in layout:
   box=(0,section['top'],1920,min(original.height,section['top']+section['height']))
   region=diff.crop(box)
   row['sections'].append(dict(section,mae=round(sum(ImageStat.Stat(region).mean)/3,4),**exact_stats(region)))
