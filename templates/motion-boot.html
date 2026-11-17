@@ -1,0 +1,10 @@
+<script>
+(()=>{
+  const root=document.documentElement;
+  const enabled=typeof IntersectionObserver==='function'&&typeof Element.prototype.animate==='function'&&!matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const boot=window.__suiwellMotionBoot={mode:enabled?'preparing':'static'};
+  root.dataset.motionBoot=boot.mode;
+  const timer=enabled?setTimeout(()=>{boot.mode='fallback';root.dataset.motionBoot='fallback';},2500):0;
+  boot.ready=()=>{clearTimeout(timer);if(boot.mode!=='fallback'){boot.mode='ready';root.dataset.motionBoot='ready';}};
+})();
+</script>

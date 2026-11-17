@@ -4,3 +4,4 @@ import { initPages } from './pages.js';
 
 if (document.body.dataset.page === 'home') initHome(context);
 initPages(context);
+window.__suiwellMotionBoot?.ready();

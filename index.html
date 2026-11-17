@@ -1,5 +1,15 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="穗维卓生物专注在线配液，为制药与医美领域提供iSynFlo在线配液系统解决方案。"><title>穗维卓生物 SUIWELL Bio｜在线配液系统</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="motion.css"><link rel="stylesheet" href="pages.css"><link rel="stylesheet" href="precision.css"><link rel="stylesheet" href="psd-art.css"><script src="app.js" type="module"></script></head><body data-page="home">  <header id="top">
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="穗维卓生物专注在线配液，为制药与医美领域提供iSynFlo在线配液系统解决方案。"><title>穗维卓生物 SUIWELL Bio｜在线配液系统</title><script>
+(()=>{
+  const root=document.documentElement;
+  const enabled=typeof IntersectionObserver==='function'&&typeof Element.prototype.animate==='function'&&!matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const boot=window.__suiwellMotionBoot={mode:enabled?'preparing':'static'};
+  root.dataset.motionBoot=boot.mode;
+  const timer=enabled?setTimeout(()=>{boot.mode='fallback';root.dataset.motionBoot='fallback';},2500):0;
+  boot.ready=()=>{clearTimeout(timer);if(boot.mode!=='fallback'){boot.mode='ready';root.dataset.motionBoot='ready';}};
+})();
+</script>
+<link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="motion.css"><link rel="stylesheet" href="pages.css"><link rel="stylesheet" href="precision.css"><link rel="stylesheet" href="psd-art.css"><script src="app.js" type="module"></script></head><body data-page="home">  <header id="top">
     <div class="topbar"><div class="container"><span>专注在线配液 · 赋能药企高效合规生产</span><div class="top-actions"><button class="search-toggle" aria-label="搜索" aria-expanded="false"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button><button class="english" data-dialog="language">English Version</button></div></div></div>
     <div class="navigation container">
       <a class="brand" href="index.html" aria-label="穗维卓生物首页"><img src="assets/logo.png" width="145" height="38" alt="穗维卓 SUIWELL Bio"></a>

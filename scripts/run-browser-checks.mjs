@@ -11,7 +11,7 @@ const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 try{
  await send('Page.enable');
  await send('Emulation.setDeviceMetricsOverride',{width:1920,height:1080,deviceScaleFactor:1,mobile:false});
- for(const suite of ['inner-browser','motion-browser','static-lifecycle-browser']){
+ for(const suite of ['inner-browser','motion-browser','static-lifecycle-browser','interaction-polish-browser']){
   await send('Page.navigate',{url:new URL(`tests/${suite}.html`,base).href});
   await send('Page.bringToFront');
   let ready=false;

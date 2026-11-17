@@ -5,6 +5,38 @@
   --ease-ui:cubic-bezier(.2,.7,.3,1)
 }
 
+/* Set in the head, before the body can paint. A failed or slow module falls
+   back to readable static content and never restarts entrances afterwards. */
+html[data-motion-boot="preparing"] :is(
+  .section-title,.machine,.unit-card,.application-grid>button,.about-card,
+  .news-grid article,.solution .container>div,.solution .gold,.footer-grid>*,
+  .metric-grid>div,.hero-copy h1,.hero-copy p,.hero-content>.button,
+  .banner-content>div>*,.banner-content>img,.stage-ribbon>li,.stage-content>div,
+  .work-flow>li,.application-strip .eyebrow,.application-strip li,
+  .faq-item>summary,.news-tabs,.contact-visual,.contact-info,.form-heading,
+  .consultation-form>.form-field,.consultation-form>.form-submit,
+  .company-intro>div:first-child,.company-intro .factory-frame,.team-photo,.locations-map,
+  .project-timeline>li>article,.article-heading>*,.article-body>*,.article-navigation>a,[data-entry]
+):not([data-motion-state]) { opacity:0 }
+html[data-motion-boot="fallback"] .motion-pending { opacity:1!important }
+
+body[data-page] :is(a[href],button,[role="button"],summary,label[for],label:has(input:not(:disabled)),input[type="radio"],input[type="checkbox"],input[type="submit"],input[type="button"],input[type="reset"]):not(:disabled):not([aria-disabled="true"]) { cursor:pointer }
+body[data-page] :is(button,input,textarea):disabled { cursor:not-allowed }
+
+@font-face {
+  font-family:MetricCounter;
+  src:url('assets/fonts/SourceHanSansCN-Bold.woff2') format('woff2');
+  font-style:normal;font-weight:700;font-display:swap;
+}
+body[data-page] .metric-grid strong[data-counter-renderer="svg"]>.metric-value {
+  position:absolute;inset:0;width:100%;height:100%;margin:0;display:block;grid-area:auto;
+}
+body[data-page] .metric-grid strong[data-counter-state="pending"]>.metric-value { visibility:hidden }
+.counter-svg { display:block;width:100%;height:100%;overflow:visible }
+.counter-svg text { font-family:MetricCounter,sans-serif;font-weight:700;letter-spacing:0;font-kerning:none;font-feature-settings:normal;font-variant-numeric:normal }
+body[data-page] .metric-grid>div:hover { transform:none;background:transparent }
+body[data-page] .metric-grid>div:hover span { transform:none }
+
 html {
   scroll-padding-top:125px
 }

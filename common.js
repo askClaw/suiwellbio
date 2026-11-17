@@ -5,7 +5,8 @@ const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
 const preference = matchMedia('(prefers-reduced-motion: reduce)');
 const mobile = matchMedia('(max-width: 960px)');
-const skipMotion = () => preference.matches || document.hidden;
+const motionFallback = () => window.__suiwellMotionBoot?.mode === 'fallback';
+const skipMotion = () => preference.matches || document.hidden || motionFallback();
 const animations = createAnimationController(skipMotion);
 const ease = motionEase;
 const motionHooks = new Set();
@@ -88,7 +89,7 @@ function registerEntrances(selector, direction = 'up', groupSelector, { animateV
     if (visible && playVisible && !skipMotion() && element.animate) {
       enter(element, delay + Math.min(index * 110, 330)); return;
     }
-    if (preference.matches || (visible && !document.hidden) || !element.animate) { completeEntrance(element); return; }
+    if (preference.matches || motionFallback() || (visible && !document.hidden) || !element.animate) { completeEntrance(element); return; }
     element.classList.add('motion-pending');
     element.dataset.motionState = 'pending';
     entryObserver.observe(element);
@@ -116,6 +117,31 @@ document.addEventListener('focusin', event => {
 
 // Only percentages count. Business expressions always retain their real value.
 const counters = new Map();
+const counterCanvas = document.createElement('canvas').getContext('2d');
+let counterFontLoaded=false;
+const counterFontReady=($('.metric-grid')?document.fonts.load('700 36px MetricCounter','0123456789%+'):Promise.resolve()).catch(()=>{}).then(()=>{
+  counterFontLoaded=true;
+  counters.forEach(state=>{state.geometry=null;renderCounter(state,state.current);});
+});
+function renderCounter(state,value) {
+  if(state.current===value&&state.geometry)return;
+  state.current=value;
+  if(!state.svg){state.visual.textContent=value;return;}
+  if(!state.geometry){
+    const style=getComputedStyle(state.element);
+    state.geometry={size:parseFloat(style.fontSize),width:state.element.clientWidth,height:state.element.clientHeight,color:style.color,desktop:matchMedia('(min-width:1280px)').matches};
+  }
+  const {size,width,height,color,desktop}=state.geometry;
+  counterCanvas.font=`700 ${size}px MetricCounter`;
+  const metrics=counterCanvas.measureText(value),finalMetrics=counterCanvas.measureText(state.final);
+  const baseline=Math.round(finalMetrics.actualBoundingBoxAscent+(desktop?0:(height-finalMetrics.actualBoundingBoxAscent-finalMetrics.actualBoundingBoxDescent)/2));
+  state.svg.setAttribute('viewBox',`0 0 ${width} ${height}`);
+  state.text.setAttribute('x',Math.round(width/2+(metrics.actualBoundingBoxLeft-metrics.actualBoundingBoxRight)/2));
+  state.text.setAttribute('y',baseline);
+  state.text.setAttribute('fill',desktop?'#ebc653':color);
+  state.text.style.fontSize=`${size}px`;
+  state.text.textContent=value;
+}
 const counterObserver = new IntersectionObserver(entries => {
   if (document.hidden) return;
   entries.filter(entry => entry.isIntersecting && entry.intersectionRatio >= .15)
@@ -124,15 +150,21 @@ const counterObserver = new IntersectionObserver(entries => {
 function startCounter(element) {
   const state = counters.get(element);
   if (!state || state.status !== 'pending' || document.hidden) return;
+  if(preference.matches || motionFallback()){finishCounter(state);return;}
+  if(!counterFontLoaded){
+    if(!state.waitingFont){state.waitingFont=true;counterFontReady.then(()=>{state.waitingFont=false;startCounter(element);});}
+    return;
+  }
   state.status = 'running';
+  element.dataset.counterState = 'running';
   counterObserver.unobserve(element); // Each number plays once per page load.
   if (preference.matches) { finishCounter(state); return; }
-  state.visual.textContent = '0' + state.suffix;
+  renderCounter(state,'0'+state.suffix);
   const started = performance.now();
   function tick(now) {
     if (state.status !== 'running') return;
     const progress = Math.min((now - started) / 1600, 1);
-    state.visual.textContent = Math.round(state.target * (1 - (1 - progress) ** 3)) + state.suffix;
+    renderCounter(state,Math.round(state.target * (1 - (1 - progress) ** 3))+state.suffix);
     if (progress < 1) state.frame = requestAnimationFrame(tick);
     else finishCounter(state);
   }
@@ -141,7 +173,7 @@ function startCounter(element) {
 function finishCounter(state) {
   cancelAnimationFrame(state.frame);
   counterObserver.unobserve(state.element);
-  state.visual.textContent = state.final;
+  renderCounter(state,state.final);
   state.status = 'complete';
   state.element.dataset.counterState = 'complete';
 }
@@ -156,16 +188,24 @@ $$('.metric-grid strong').forEach((element, index) => {
   measure.className = 'metric-measure';
   element.replaceChildren(measure, visual);
   if (index < 2) {
-    const state = { element, visual, final, target: index === 0 ? 50 : 30, suffix: index === 0 ? '%+' : '%', frame: 0, status: 'complete' };
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    const text=document.createElementNS(svg.namespaceURI,'text');
+    svg.classList.add('counter-svg');svg.setAttribute('aria-hidden','true');svg.append(text);visual.replaceChildren(svg);
+    element.dataset.counterRenderer='svg';
+    const state = { element, visual, svg, text, final, current:final, target: index === 0 ? 50 : 30, suffix: index === 0 ? '%+' : '%', frame: 0, status: 'complete' };
     counters.set(element, state);
-    element.dataset.counterState=preference.matches?'complete':'pending';
-    if (!preference.matches) {
-      visual.textContent = '0' + state.suffix;
+    element.dataset.counterState=preference.matches||motionFallback()?'complete':'pending';
+    if (!preference.matches && !motionFallback()) {
       state.status = 'pending';
     }
+    renderCounter(state,state.status==='pending'?'0'+state.suffix:final);
     counterObserver.observe(element);
   }
 });
+const counterSizeObserver=new ResizeObserver(entries=>entries.forEach(({target})=>{
+  const state=counters.get(target);if(state){state.geometry=null;renderCounter(state,state.current);}
+}));
+counters.forEach(state=>counterSizeObserver.observe(state.element));
 registerEntrances('.metric-grid > div', 'fade', '.metric-grid');
 
 // A dialog remains modal until its exit finishes. Reopening cancels stale cleanup.
