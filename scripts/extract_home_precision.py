@@ -10,6 +10,13 @@ def export_home(root, output):
     layers = {layer.layer_id: layer for layer in psd.descendants()}
     bounds = {ident:layer.bbox for ident,layer in layers.items()}
     saved = psd.topil().convert('RGB')
+    # Unlike the saved page crop, fixed controls need transparent artwork.
+    phone_mask = layers[594].topil().convert('RGBA').getchannel('A')
+    phone = Image.new('RGBA', phone_mask.size, 'white')
+    phone.putalpha(phone_mask)  # The source layer uses a white color overlay.
+    collapsed = layers[592].topil().convert('RGBA')
+    collapsed.alpha_composite(phone, ((collapsed.width-phone.width)//2, (collapsed.height-phone.height)//2))
+    collapsed.save(output / 'tool-phone-collapsed.png')
     css = [MARKER, '@media(min-width:1280px){']
     def crop(name, box):
         saved.crop(box).save(output / f'{name}.png')
@@ -99,8 +106,6 @@ def export_home(root, output):
         '.hotspot:hover,.hotspot:focus-visible{transform:none;outline:2px solid var(--gold);outline-offset:3px}',
         'body[data-page="home"] .products>.more{position:absolute;left:calc(50% - 91px);top:1114px;margin:0;width:145px;height:54px;color:transparent;border:0;border-radius:0;background:none;box-shadow:none;overflow:visible}',
         'body[data-page="home"] .products>.more:after{display:none}',
-        '.floating-tools a,.floating-tools a.phone{position:relative;border-radius:0;background:none!important}',
-        'body[data-page="home"] .floating-tools a[href="#top"]{top:-1px}',
     ]
     artwork('.unit-card[data-unit-index="0"]:before','home-unit-panel',(122,1446,453,1687),(130,1454))
     artwork('.machine-stage:has(.unit-card[data-unit-index="0"]):has(.machine[data-motion-state="complete"]):after','home-default-connector',line_box,(160,1369))
@@ -109,9 +114,6 @@ def export_home(root, output):
     for i,ident in enumerate([236,256,241,251,246]):
         crop(f'home-hotspot-{i}',bounds[ident])
         css.append(f'.hotspot[data-unit="{i}"]{{background-image:url("assets/psd/home-hotspot-{i}.png")}}')
-    for ident,selector in [(599,'.floating-tools a:not(.phone):first-child'),(595,'.floating-tools a.phone'),(603,'.floating-tools a[href="#top"]')]:
-        l=layers[ident]
-        artwork(selector+':before',f'home-tool-{ident}',(l.left-10,l.top-10,l.right+10,l.bottom+10),(l.left,l.top))
     css.append('}')
     # Application icons remain individual buttons, with source text and graphics.
     applications=saved.crop((0,2404,1920,2950))

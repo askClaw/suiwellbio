@@ -334,12 +334,6 @@ body,button,input,textarea{font-family:SourceHanPSD,'Microsoft YaHei',sans-serif
  .article-navigation a:first-child:before,.article-navigation a:last-child:after{content:'➜';display:inline-flex;align-items:center;justify-content:center;border:1px solid #7fced9;width:38px;height:38px;border-radius:50%;color:#91d6df;vertical-align:middle;margin-right:18px}
  .article-navigation a:first-child:before{transform:rotate(180deg)}
  .article-navigation a:last-child:after{margin:0 0 0 18px}
- body:not([data-page="home"]) .floating-tools{display:none}
- body[data-page="home"] .floating-tools{position:absolute;top:1179px;right:23px;bottom:auto;gap:11px;width:243px}
- body[data-page="home"] .floating-tools a{width:55px;height:55px;box-shadow:none;background:transparent url('assets/psd/demo-text-599.png') center / contain no-repeat}
- body[data-page="home"] .floating-tools a.phone{width:243px;height:55px;background-image:url('assets/psd/demo-text-595.png')}
- body[data-page="home"] .floating-tools a[href="#top"]{opacity:1;visibility:visible;transform:none;background-image:url('assets/psd/demo-text-603.png')}
- body[data-page="home"] .floating-tools a>*{opacity:0}
  .navigation:after{content:'';position:absolute;left:248px;top:41px;width:951px;height:17px;background:url('assets/psd/demo-text-14.png') no-repeat;pointer-events:none}
  #main-nav{position:absolute;left:222px;right:0;top:0;height:100px;display:block}
  #main-nav a{position:absolute;top:42px;left:0;height:24px;width:140px;padding:0;font-size:0;gap:0}

@@ -321,8 +321,6 @@ body[data-page="home"] .products{background-image:url("assets/psd/home-products-
 .hotspot:hover,.hotspot:focus-visible{transform:none;outline:2px solid var(--gold);outline-offset:3px}
 body[data-page="home"] .products>.more{position:absolute;left:calc(50% - 91px);top:1114px;margin:0;width:145px;height:54px;color:transparent;border:0;border-radius:0;background:none;box-shadow:none;overflow:visible}
 body[data-page="home"] .products>.more:after{display:none}
-.floating-tools a,.floating-tools a.phone{position:relative;border-radius:0;background:none!important}
-body[data-page="home"] .floating-tools a[href="#top"]{top:-1px}
 .unit-card[data-unit-index="0"]:before{content:"";position:absolute;inset:auto;left:-8px;top:-8px;width:331px;height:241px;transform:none;z-index:auto;background:url("assets/psd/home-unit-panel.png") no-repeat;pointer-events:none}
 .machine-stage:has(.unit-card[data-unit-index="0"]):has(.machine[data-motion-state="complete"]):after{content:"";position:absolute;inset:auto;left:192px;top:177px;width:256px;height:335px;transform:none;z-index:auto;background:url("assets/psd/home-default-connector.png") no-repeat;pointer-events:none;z-index:1}
 body[data-page="home"] .products>.more:before{content:"";position:absolute;inset:auto;left:-11px;top:-10px;width:168px;height:82px;transform:none;z-index:auto;background:url("assets/psd/home-product-link.png") no-repeat;pointer-events:none}
@@ -331,9 +329,6 @@ body[data-page="home"] .products>.more:before{content:"";position:absolute;inset
 .hotspot[data-unit="2"]{background-image:url("assets/psd/home-hotspot-2.png")}
 .hotspot[data-unit="3"]{background-image:url("assets/psd/home-hotspot-3.png")}
 .hotspot[data-unit="4"]{background-image:url("assets/psd/home-hotspot-4.png")}
-.floating-tools a:not(.phone):first-child:before{content:"";position:absolute;inset:auto;left:-10px;top:-10px;width:75px;height:75px;transform:none;z-index:auto;background:url("assets/psd/home-tool-599.png") no-repeat;pointer-events:none}
-.floating-tools a.phone:before{content:"";position:absolute;inset:auto;left:-10px;top:-10px;width:263px;height:75px;transform:none;z-index:auto;background:url("assets/psd/home-tool-595.png") no-repeat;pointer-events:none}
-.floating-tools a[href="#top"]:before{content:"";position:absolute;inset:auto;left:-10px;top:-10px;width:75px;height:75px;transform:none;z-index:auto;background:url("assets/psd/home-tool-603.png") no-repeat;pointer-events:none}
 }
 @media(min-width:1600px){
 body[data-page="home"] .news{position:relative;background:#fff url("assets/psd/home-news-leading-edge.png") center top / auto 1px no-repeat}
