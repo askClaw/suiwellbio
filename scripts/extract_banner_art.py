@@ -111,3 +111,7 @@ if __name__ == '__main__':
     export_components(root, root / 'assets/psd')
     from extract_home_precision import export_home
     export_home(root, root / 'assets/psd')
+    from extract_contact_precision import export_contact
+    export_contact(root, root / 'assets/psd')
+    from extract_inner_precision import export_inner
+    export_inner(root, root / 'assets/psd')

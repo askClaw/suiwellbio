@@ -5,7 +5,7 @@
   ],
   "capture_mode": "reduced motion; fonts, HTML images and CSS background images decoded; failed font faces rejected",
   "measurement": "Mean absolute RGB channel difference on 0..255 scale; not a reproduction percentage",
-  "source_capture": ".design/precision-review/round-28",
+  "source_capture": ".design/precision-review/round-35",
   "pages": [
     {
       "page": "index",
@@ -97,10 +97,10 @@
     },
     {
       "page": "about",
-      "rgb_mae": 0.1209,
-      "pixel_equal": false,
-      "different_pixels": 881553,
-      "max_channel_delta": 255,
+      "rgb_mae": 0.0,
+      "pixel_equal": true,
+      "different_pixels": 0,
+      "max_channel_delta": 0,
       "sections": [
         {
           "name": "page-banner",
@@ -124,28 +124,28 @@
           "name": "soft-section",
           "top": 1082,
           "height": 810,
-          "mae": 0.0742,
-          "pixel_equal": false,
-          "different_pixels": 26132,
-          "max_channel_delta": 35
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "core-advantages",
           "top": 1892,
           "height": 645,
-          "mae": 0.4288,
-          "pixel_equal": false,
-          "different_pixels": 849661,
-          "max_channel_delta": 19
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "mission container",
           "top": 2537,
           "height": 625,
-          "mae": 0.2213,
-          "pixel_equal": false,
-          "different_pixels": 5760,
-          "max_channel_delta": 255
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "solution",
@@ -176,10 +176,10 @@
     },
     {
       "page": "product",
-      "rgb_mae": 0.2028,
-      "pixel_equal": false,
-      "different_pixels": 293272,
-      "max_channel_delta": 255,
+      "rgb_mae": 0.0,
+      "pixel_equal": true,
+      "different_pixels": 0,
+      "max_channel_delta": 0,
       "sections": [
         {
           "name": "page-banner",
@@ -194,46 +194,46 @@
           "name": "soft-section network-section",
           "top": 460,
           "height": 716,
-          "mae": 0.2004,
-          "pixel_equal": false,
-          "different_pixels": 140793,
-          "max_channel_delta": 35
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "product-advantages",
           "top": 1176,
           "height": 910,
-          "mae": 0.417,
-          "pixel_equal": false,
-          "different_pixels": 20961,
-          "max_channel_delta": 255
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "soft-section",
           "top": 2086,
           "height": 444,
-          "mae": 0.5103,
-          "pixel_equal": false,
-          "different_pixels": 28267,
-          "max_channel_delta": 255
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "parameter-section",
           "top": 2530,
           "height": 863,
-          "mae": 0.0441,
-          "pixel_equal": false,
-          "different_pixels": 15248,
-          "max_channel_delta": 35
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "application-strip",
           "top": 3393,
           "height": 228,
-          "mae": 0.4551,
-          "pixel_equal": false,
-          "different_pixels": 88003,
-          "max_channel_delta": 242
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "solution",
@@ -264,10 +264,10 @@
     },
     {
       "page": "process",
-      "rgb_mae": 0.2185,
-      "pixel_equal": false,
-      "different_pixels": 125341,
-      "max_channel_delta": 172,
+      "rgb_mae": 0.0,
+      "pixel_equal": true,
+      "different_pixels": 0,
+      "max_channel_delta": 0,
       "sections": [
         {
           "name": "page-banner",
@@ -291,19 +291,19 @@
           "name": "team-section",
           "top": 1282,
           "height": 908,
-          "mae": 0.3568,
-          "pixel_equal": false,
-          "different_pixels": 103680,
-          "max_channel_delta": 10
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "soft-section certificates",
           "top": 2190,
           "height": 864,
-          "mae": 0.5907,
-          "pixel_equal": false,
-          "different_pixels": 21661,
-          "max_channel_delta": 172
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "solution",
@@ -334,10 +334,10 @@
     },
     {
       "page": "service",
-      "rgb_mae": 0.1799,
-      "pixel_equal": false,
-      "different_pixels": 584260,
-      "max_channel_delta": 255,
+      "rgb_mae": 0.0,
+      "pixel_equal": true,
+      "different_pixels": 0,
+      "max_channel_delta": 0,
       "sections": [
         {
           "name": "page-banner",
@@ -361,28 +361,28 @@
           "name": "implementation-section",
           "top": 1181,
           "height": 1465,
-          "mae": 0.4003,
-          "pixel_equal": false,
-          "different_pixels": 527309,
-          "max_channel_delta": 255
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "soft-section faq-section",
           "top": 2646,
           "height": 677,
-          "mae": 0.3351,
-          "pixel_equal": false,
-          "different_pixels": 47815,
-          "max_channel_delta": 225
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "downloads-section",
           "top": 3323,
           "height": 505,
-          "mae": 0.0282,
-          "pixel_equal": false,
-          "different_pixels": 9136,
-          "max_channel_delta": 10
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "solution",
@@ -413,10 +413,10 @@
     },
     {
       "page": "news",
-      "rgb_mae": 0.2376,
-      "pixel_equal": false,
-      "different_pixels": 32238,
-      "max_channel_delta": 255,
+      "rgb_mae": 0.0,
+      "pixel_equal": true,
+      "different_pixels": 0,
+      "max_channel_delta": 0,
       "sections": [
         {
           "name": "page-banner",
@@ -431,10 +431,10 @@
           "name": "news-list-section container",
           "top": 460,
           "height": 1250,
-          "mae": 0.4716,
-          "pixel_equal": false,
-          "different_pixels": 32238,
-          "max_channel_delta": 255
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "solution",
@@ -465,10 +465,10 @@
     },
     {
       "page": "news-detail",
-      "rgb_mae": 0.0838,
-      "pixel_equal": false,
-      "different_pixels": 39301,
-      "max_channel_delta": 255,
+      "rgb_mae": 0.0,
+      "pixel_equal": true,
+      "different_pixels": 0,
+      "max_channel_delta": 0,
       "sections": [
         {
           "name": "page-banner",
@@ -483,10 +483,10 @@
           "name": "article-section container",
           "top": 460,
           "height": 1300,
-          "mae": 0.1631,
-          "pixel_equal": false,
-          "different_pixels": 39301,
-          "max_channel_delta": 255
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "solution",
@@ -517,10 +517,10 @@
     },
     {
       "page": "contact",
-      "rgb_mae": 0.3754,
-      "pixel_equal": false,
-      "different_pixels": 358125,
-      "max_channel_delta": 248,
+      "rgb_mae": 0.0,
+      "pixel_equal": true,
+      "different_pixels": 0,
+      "max_channel_delta": 0,
       "sections": [
         {
           "name": "page-banner",
@@ -535,19 +535,19 @@
           "name": "contact-section container",
           "top": 460,
           "height": 676,
-          "mae": 0.4218,
-          "pixel_equal": false,
-          "different_pixels": 304141,
-          "max_channel_delta": 59
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "consultation-section",
           "top": 1136,
           "height": 849,
-          "mae": 0.8827,
-          "pixel_equal": false,
-          "different_pixels": 53984,
-          "max_channel_delta": 248
+          "mae": 0.0,
+          "pixel_equal": true,
+          "different_pixels": 0,
+          "max_channel_delta": 0
         },
         {
           "name": "solution",
@@ -578,5 +578,6 @@
     }
   ],
   "exactness": "pixel_equal requires zero differing pixels before MAE rounding; different_pixels and max_channel_delta are measured on raw RGB differences",
-  "browser": "Chrome/157.0.8103.79"
+  "browser": "Chrome/157.0.8103.79",
+  "acceptance": "All eight full pages and every measured section have zero differing RGB pixels at the source PSD dimensions, DPR 1, default state after reduced-motion settling."
 }

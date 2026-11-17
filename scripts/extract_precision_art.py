@@ -170,3 +170,7 @@ export_banners(R,O)
 export_components(R,O)
 from extract_home_precision import export_home
 export_home(R,O)
+from extract_contact_precision import export_contact
+export_contact(R,O)
+from extract_inner_precision import export_inner
+export_inner(R,O)
