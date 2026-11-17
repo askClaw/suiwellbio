@@ -1,4 +1,4 @@
-import { createAnimationController, settleMotionStates } from './motion-core.js';
+import { createAnimationController, settleMotionStates, entranceMotion, motionEase } from './motion-core.js';
 import { createEntranceRegistry } from './entrance-registry.js';
 
 const $ = selector => document.querySelector(selector);
@@ -7,7 +7,7 @@ const preference = matchMedia('(prefers-reduced-motion: reduce)');
 const mobile = matchMedia('(max-width: 960px)');
 const skipMotion = () => preference.matches || document.hidden;
 const animations = createAnimationController(skipMotion);
-const ease = 'cubic-bezier(.22,1,.36,1)';
+const ease = motionEase;
 const motionHooks = new Set();
 function addMotionHooks(hooks) { motionHooks.add(hooks); }
 const contactLink = '<a class="button" href="contact.html#consultation">联系工艺工程师 →</a>';
@@ -22,7 +22,7 @@ const details = {
 const entryObserver = new IntersectionObserver(entries => {
   if (document.hidden) return;
   startEntrances(entries.filter(entry => entry.isIntersecting).map(entry => entry.target));
-}, { threshold: .08, rootMargin: '0px 0px -16px 0px' });
+}, { threshold: .04, rootMargin: '0px 0px -3% 0px' });
 const entranceRegistry = createEntranceRegistry({
   unobserve: element => entryObserver.unobserve(element),
   cancel: element => animations.cancel(element),
@@ -56,10 +56,11 @@ function startEntrances(elements) {
       const row = [...rows.keys()].find(value => Math.abs(value - top) < 8) ?? top;
       const index = rows.get(row) || 0;
       rows.set(row, index + 1);
-      enter(element, Math.min(index * 70, 140));
+      enter(element, stateDelay(element) + Math.min(index * 110, 330));
     });
   });
 }
+function stateDelay(element) { return entrances.get(element)?.delay || 0; }
 function completeEntrance(element) {
   entranceRegistry.complete(element);
 }
@@ -70,25 +71,22 @@ function enter(element, delay = 0, immediately = false) {
   element.dataset.motionState = 'running';
   element.classList.remove('motion-pending');
   entryObserver.unobserve(element);
-  const x = !mobile.matches ? (state.direction === 'left' ? -18 : state.direction === 'right' ? 18 : 0) : 0;
-  const y = state.direction === 'fade' ? 0 : 16;
   if (immediately) { completeEntrance(element); return; }
-  animations.run(element, element, [
-    { opacity: 0, translate: `${x}px ${y}px`, scale: state.direction === 'scale' ? '.985' : '1' },
-    { opacity: 1, translate: '0px 0px', scale: '1' }
-  ], { duration: state.direction === 'scale' ? 620 : 540, delay, easing: ease, fill: 'backwards' }, () => completeEntrance(element));
+  const motion = entranceMotion(state.direction, mobile.matches);
+  animations.run(element, element, motion.frames,
+    { duration: motion.duration, delay, easing: motion.easing, fill: 'backwards' }, () => completeEntrance(element));
 }
-function registerEntrances(selector, direction = 'up', groupSelector, { animateVisible = false } = {}) {
+function registerEntrances(selector, direction = 'up', groupSelector, { animateVisible = false, delay = 0 } = {}) {
   $$(selector).forEach((element, index) => {
     if (entranceRegistry.has(element)) return;
     const rect = element.getBoundingClientRect();
     const visible = rect.bottom > 0 && rect.top < innerHeight;
-    const state = { direction, group: groupSelector ? element.closest(groupSelector) : null, status: 'pending' };
+    const state = { direction, delay, group: groupSelector ? element.closest(groupSelector) : null, status: 'pending' };
     entranceRegistry.add(element, state);
     element.dataset.motion = direction;
     const playVisible = animateVisible || (scrollY === 0 && (groupSelector === '.hero-content' || document.body.dataset.page !== 'home'));
     if (visible && playVisible && !skipMotion() && element.animate) {
-      enter(element, Math.min(index * 80, 240)); return;
+      enter(element, delay + Math.min(index * 110, 330)); return;
     }
     if (preference.matches || (visible && !document.hidden) || !element.animate) { completeEntrance(element); return; }
     element.classList.add('motion-pending');
@@ -96,12 +94,13 @@ function registerEntrances(selector, direction = 'up', groupSelector, { animateV
     entryObserver.observe(element);
   });
 }
-registerEntrances('.section-title > *', 'up', '.section-title');
+// Animate the element that paints the PSD artwork, rather than its transparent
+// semantic children. This also avoids moving a child inside an entering card.
+registerEntrances('.section-title', 'heading');
 registerEntrances('.machine', 'scale');
 registerEntrances('.unit-card', 'left');
 registerEntrances('.application-grid > button', 'up', '.application-grid');
 registerEntrances('.about-card');
-registerEntrances('.about-features > span', 'fade', '.about-features');
 registerEntrances('.news-grid article', 'up', '.news-grid');
 registerEntrances('.solution .container > div');
 registerEntrances('.solution .gold');
@@ -132,7 +131,7 @@ function startCounter(element) {
   const started = performance.now();
   function tick(now) {
     if (state.status !== 'running') return;
-    const progress = Math.min((now - started) / 1100, 1);
+    const progress = Math.min((now - started) / 1600, 1);
     state.visual.textContent = Math.round(state.target * (1 - (1 - progress) ** 3)) + state.suffix;
     if (progress < 1) state.frame = requestAnimationFrame(tick);
     else finishCounter(state);
@@ -333,9 +332,11 @@ registerEntrances('.application-strip .eyebrow', 'fade');
 registerEntrances('.application-strip li', 'up', '.application-strip ul');
 registerEntrances('.faq-item > summary', 'up', '.faq-list');
 registerEntrances('.news-tabs', 'fade');
-registerEntrances('.contact-visual', 'scale');
-registerEntrances('.contact-info > *', 'up', '.contact-info');
-registerEntrances('.form-heading > *', 'up', '.form-heading');
+registerEntrances('.contact-visual', 'image');
+registerEntrances('.contact-info', 'right', undefined, { delay: 150 });
+registerEntrances('.form-heading', 'heading');
 registerEntrances('.consultation-form > .form-field, .consultation-form > .form-submit', 'up', '.consultation-form');
+registerEntrances('.company-intro > div:first-child', 'left');
+registerEntrances('.company-intro .factory-frame,.team-photo,.locations-map', 'image');
 registerEntrances('[data-entry]');
 export { $, $$, preference, mobile, skipMotion, animations, ease, registerEntrances, disposeEntrances, showDialog, addMotionHooks, updateScrollState };

@@ -637,5 +637,66 @@
       }
     ],
     "load_state": "All pages complete; no pending motion, font/image/background failures, script exceptions or horizontal overflow."
+  },
+  "motion_revision": {
+    "source_capture": ".design/precision-review/motion-round-3",
+    "mode": "Normal motion enabled; all sections scrolled into view; naturally completed; returned to top; cache disabled.",
+    "pages": [
+      {
+        "page": "index",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "about",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "product",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "process",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "service",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "news",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "news-detail",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      },
+      {
+        "page": "contact",
+        "pixel_equal": true,
+        "different_pixels": 0,
+        "max_channel_delta": 0
+      }
+    ],
+    "reference_review": "docs/MOTION_REFERENCE_REVIEW.md",
+    "unit_tests": 19,
+    "browser_groups": {
+      "inner": 7,
+      "motion": 9,
+      "static_lifecycle": 4
+    }
   }
 }

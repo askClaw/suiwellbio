@@ -38,22 +38,31 @@ function setSlide(index) {
   const next = (index + slides.length) % slides.length;
   if (next === slide) return;
   slide = next;
-  $('.hero').dataset.slide = String(slide);
-  animations.cancel('hero-copy');
-  heroCopy.querySelector('h1').innerHTML = slides[slide][0];
-  heroCopy.querySelector('p').textContent = slides[slide][1];
+  const nextSlide = slide;
+  [...heroCopy.children].forEach(element => animations.finish(element));
+  const current = getComputedStyle(heroCopy);
   $$('.slide-dots button').forEach((button, index) => {
     button.classList.toggle('selected', index === slide);
     if (index === slide) button.setAttribute('aria-current', 'true'); else button.removeAttribute('aria-current');
   });
-  animations.run('hero-copy', heroCopy, [{ opacity: 0, translate: '0 10px' }, { opacity: 1, translate: '0 0' }], { duration: 320, easing: ease });
+  animations.run('hero-copy', heroCopy,
+    [{ opacity: current.opacity, translate: current.translate }, { opacity: 0, translate: '0 -12px' }],
+    { duration: 180, easing: 'ease-in' }, () => {
+      $('.hero').dataset.slide = String(nextSlide);
+      heroCopy.querySelector('h1').innerHTML = slides[nextSlide][0];
+      heroCopy.querySelector('p').textContent = slides[nextSlide][1];
+      animations.run('hero-copy', heroCopy,
+        [{ opacity: 0, translate: '0 32px' }, { opacity: 1, translate: '0 0' }],
+        { duration: 900, easing: ease });
+    });
 }
 $('.previous').addEventListener('click', () => setSlide(slide - 1));
 $('.next').addEventListener('click', () => setSlide(slide + 1));
 $$('.slide-dots button').forEach((button, index) => button.addEventListener('click', () => setSlide(index)));
 measureHero();
-registerEntrances('.hero-copy', 'up', '.hero-content');
-registerEntrances('.hero-content > .button', 'up', '.hero-content');
+registerEntrances('.hero-copy h1', 'heading', '.hero-copy', { animateVisible: true });
+registerEntrances('.hero-copy p', 'up', '.hero-copy', { animateVisible: true, delay: 150 });
+registerEntrances('.hero-content > .button', 'up', '.hero-content', { delay: 300 });
 
 // Product geometry is measured only on selection / resize, never during tween frames.
 let activeUnit = 0;
@@ -99,15 +108,19 @@ function updateLine(duration = 0) {
 function selectUnit(button) {
   const next = Number(button.dataset.unit);
   if (next === activeUnit) return;
-  const style = getComputedStyle(unitContent);
-  const initial = { opacity: Math.min(Number(style.opacity), .45), translate: style.translate };
+  animations.finish(unitCard);
+  const style = getComputedStyle(unitCard);
   activeUnit = next;
-  unitCard.dataset.unitIndex=String(next);
-  animations.cancel('unit-content');
-  fillUnit(unitContent, next);
   hotspotButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-  animations.run('unit-content', unitContent, [initial, { opacity: 1, translate: '0 0' }], { duration: 250, easing: ease });
-  updateLine(250);
+  animations.run('unit-content', unitCard,
+    [{ opacity: style.opacity }, { opacity: 0 }], { duration: 140, easing: 'ease-in' }, () => {
+      unitCard.dataset.unitIndex=String(next);
+      fillUnit(unitContent, next);
+      animations.run('unit-content', unitCard,
+        [{ opacity: 0, translate: '0 10px' }, { opacity: 1, translate: '0 0' }],
+        { duration: 560, easing: ease });
+      updateLine(520);
+    });
 }
 hotspotButtons.forEach(button => {
   button.addEventListener('click', () => selectUnit(button));

@@ -43,9 +43,9 @@ document.querySelector('#run').addEventListener('click',async event=>{
     win.scrollTo(0,top('advantages')+190);
     await until(win,()=>cards[0].dataset.motionState==='running','卡片未开始入场');
     const delays=cards.slice(0,3).map(e=>e.getAnimations()[0]?.effect.getTiming().delay);
-    assert(JSON.stringify(delays)==='[0,70,140]',`错峰延迟异常：${delays}`);
+    assert(delays[0]===0 && delays[1]>=90 && delays[1]<=150 && delays[2]===delays[1]*2,`错峰节奏不连贯：${delays}`);
     await until(win,()=>cards.slice(0,3).every(e=>e.dataset.motionState==='complete'),'卡片未完成');
-    pass('同行卡片实际错峰为0/70/140ms并完成显示');
+    pass('同行卡片按约0.1秒错峰，舒展入场后完成显示');
     const flow=doc.querySelector('.work-flow'),steps=[...flow.children];
     win.scrollTo(0,top('working-mode')+140);
     await until(win,()=>steps.some(step=>step.dataset.motionState==='running'),'工作流程未逐项入场');

@@ -90,7 +90,7 @@ export function initPages(context) {
       const summary=details.querySelector('summary');
       const border=details.offsetHeight-details.clientHeight;
       const target=open?details.offsetHeight:summary.offsetHeight+border;
-      animations.run(details,details,[{height:`${previous}px`},{height:`${target}px`}],{duration:open?240:160,easing:ease},()=>{details.open=open;});
+      animations.run(details,details,[{height:`${previous}px`},{height:`${target}px`}],{duration:open?380:260,easing:ease},()=>{details.open=open;});
     }
     $$('.faq-item').forEach(details=>{
       details.dataset.expanded=String(details.open);

@@ -730,3 +730,80 @@ dialog[data-state="closing"]::backdrop  {
   visibility: hidden;
   pointer-events: none;
 }
+
+/* Reference-inspired pacing. Only transient states change the PSD rest pose. */
+:root {
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-ui:cubic-bezier(.22,.61,.36,1)
+}
+body[data-page="home"] .hero:before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:inherit;
+  pointer-events:none;
+  transform-origin:55% 50%;
+}
+body[data-page="home"] .hero-content { z-index:1 }
+body[data-page="home"] .slide-arrow,
+body[data-page="home"] .slide-dots { z-index:2 }
+@media(prefers-reduced-motion:no-preference) {
+  body[data-page="home"] .hero:before { animation:hero-arrival 1.8s var(--ease-out) }
+}
+@keyframes hero-arrival {
+  from { transform:scale(1.045) }
+  to { transform:scale(1) }
+}
+body[data-page] [data-motion-state="running"] { will-change:opacity,translate,scale }
+body[data-page] :is(.button,.slide-arrow,.application-strip a,.article-navigation a) {
+  transition:transform .55s var(--ease-out),box-shadow .55s var(--ease-out),filter .55s var(--ease-out);
+}
+body[data-page] .news-grid article {
+  transition:transform .65s var(--ease-out),box-shadow .65s var(--ease-out);
+}
+body[data-page] :is(.core-unit,.advantage-grid article,.four-cards article,.parameter-grid>div,.download-row,.location-cards article,.expertise-list article) {
+  transition:transform .65s var(--ease-out),box-shadow .65s var(--ease-out),border-color .5s;
+}
+body[data-page] .news-grid .news-image { overflow:hidden }
+body[data-page] .news-grid .news-image img {
+  transition:transform 1.1s var(--ease-out);
+}
+body[data-page] .application-grid button>span {
+  transition:transform .8s var(--ease-out),box-shadow .8s var(--ease-out);
+}
+body[data-page] #main-nav a:after {
+  display:block;
+  opacity:0;
+  transform:scaleX(0);
+  transition:transform .55s var(--ease-out),opacity .35s;
+}
+body[data-page] #main-nav a:hover:after,
+body[data-page] #main-nav a:focus-visible:after { opacity:1;transform:scaleX(1) }
+body[data-page="home"] .machine-stage>.hotspot,
+body[data-page="home"] .machine-stage>.connector { transition:opacity .5s var(--ease-out),filter .5s }
+body[data-page="home"] .machine-stage:has(.machine:is([data-motion-state="pending"],[data-motion-state="running"]))>.hotspot,
+body[data-page="home"] .machine-stage:has(.machine:is([data-motion-state="pending"],[data-motion-state="running"]))>.connector { opacity:0 }
+@media(hover:hover) and (pointer:fine) {
+  body[data-page] .news-grid article:hover,
+  body[data-page] .news-grid article:focus-within {
+    transform:translateY(-6px);
+    box-shadow:0 18px 38px #16474e12;
+  }
+  body[data-page] .news-grid article:hover .news-image img,
+  body[data-page] .news-grid article:focus-within .news-image img { transform:scale(1.055) }
+  body[data-page] .application-grid button:hover>span,
+  body[data-page] .application-grid button:focus-visible>span { transform:translateY(-7px) scale(1.035) }
+  body[data-page] :is(.button,.application-strip a,.article-navigation a):hover { transform:translateY(-3px) }
+  body[data-page] .slide-arrow:hover { transform:scale(1.07) }
+  body[data-page] .hotspot:hover { filter:drop-shadow(0 0 7px #00b6cc55) }
+}
+@media(prefers-reduced-motion:reduce) {
+  body[data-page] .news-grid article:hover,
+  body[data-page] .news-grid article:focus-within,
+  body[data-page] .news-grid article:hover .news-image img,
+  body[data-page] .news-grid article:focus-within .news-image img,
+  body[data-page] .application-grid button:hover>span,
+  body[data-page] .application-grid button:focus-visible>span,
+  body[data-page] :is(.button,.application-strip a,.article-navigation a):hover,
+  body[data-page] .slide-arrow:hover { transform:none }
+}

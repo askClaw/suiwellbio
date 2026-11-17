@@ -1,4 +1,18 @@
 // Each key has exactly one owner. Completion from a cancelled operation is ignored.
+export const motionEase = 'cubic-bezier(.16,1,.3,1)';
+
+// Reference rhythm: a long deceleration, restrained travel, and a clean rest pose.
+export function entranceMotion(direction, compact = false) {
+  const sideways = direction === 'left' || direction === 'right';
+  const image = direction === 'image';
+  const x = sideways && !compact ? (direction === 'left' ? -52 : 52) : 0;
+  const y = direction === 'fade' || (sideways && !compact) ? 0 : compact ? 24 : 42;
+  const from = { opacity: 0, translate: `${x}px ${y}px`, scale: direction === 'scale' ? '.96' : image ? '1.035' : '1' };
+  const to = { opacity: 1, translate: '0px 0px', scale: '1' };
+  if (image) { from.clipPath = 'inset(0 0 12% 0)'; to.clipPath = 'inset(0 0 0% 0)'; }
+  return { frames: [from, to], duration: compact ? 720 : image || direction === 'scale' ? 1200 : direction === 'heading' ? 1050 : 960, easing: motionEase };
+}
+
 export function createAnimationController(shouldSkip = () => false) {
   const jobs = new Map();
   function cancel(key) {
