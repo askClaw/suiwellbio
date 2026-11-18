@@ -60,18 +60,26 @@ button.addEventListener('click', async () => {
     assert(heading.hasAttribute('data-motion-state') && !heading.querySelector('[data-motion-state]'),'标题动效仍绑定透明文字或嵌套重复播放');
     assert(win.getComputedStyle(heading,'::after').backgroundImage!=='none','缺少实际PSD标题图层');
     const sourceCard=doc.querySelector('.unit-card');
+    const unitContent=sourceCard.querySelector('.unit-content');
     const modules=[...doc.querySelectorAll('[data-unit]')];
+    await waitFor(win,()=>sourceCard.dataset.motionState==='complete');
+    const cardBounds=sourceCard.getBoundingClientRect();
+    modules[2].click();
+    await waitFor(win,()=>sourceCard.dataset.unitIndex==='2' && unitContent.getAnimations().length===0,'动态混合单元未显示');
+    const updated=sourceCard.getBoundingClientRect();
+    assert(updated.width===cardBounds.width && updated.height===cardBounds.height && updated.y===cardBounds.y,'热点切换导致说明卡移动或改变尺寸');
+    assert(win.getComputedStyle(connector.querySelector('.connector-flow')).stroke!=='rgba(0, 0, 0, 0)','连线未使用同一图层');
     modules[1].click();modules[2].click();modules[0].click();
-    await waitFor(win,()=>sourceCard.dataset.unitIndex==='0' && sourceCard.getAnimations().length===0,'快速切换未收敛到最后模块');
-    assert(modules[0].getAttribute('aria-pressed')==='true' && win.getComputedStyle(sourceCard).opacity==='1','原稿说明卡切回后仍透明');
-    passed('实际PSD标题参与入场，模块快速切换后原稿卡片完整恢复');
+    await waitFor(win,()=>sourceCard.dataset.unitIndex==='0' && unitContent.getAnimations().length===0,'快速切换未收敛到最后模块');
+    assert(modules[0].getAttribute('aria-pressed')==='true' && win.getComputedStyle(unitContent).opacity==='1','说明卡切回后仍透明');
+    passed('实际PSD标题参与入场，模块切换保持说明卡坐标与尺寸并遵从最后选择');
     doc.querySelector('.next').click();doc.querySelector('.next').click();doc.querySelector('.previous').click();
     const hero=doc.querySelector('.hero'),copy=doc.querySelector('.hero-copy');
     await waitFor(win,()=>hero.dataset.slide==='1' && copy.getAnimations().length===0,'快速轮播留下了旧回调或未完成动画');
-    assert(copy.querySelector('h1').textContent.includes('iSynFlo'),'轮播文字与最终选中项不一致');
+    assert(copy.querySelector('h1').textContent.includes('iSynFlo') && doc.querySelectorAll('.slide-dots button')[1].matches('[aria-current="true"]'),'轮播文字与最终选中项不一致');
     doc.querySelector('.previous').click();
     await waitFor(win,()=>hero.dataset.slide==='0' && copy.getAnimations().length===0,'轮播未恢复原稿');
-    passed('轮播完成退场与入场，快速点击遵从最后选择并可恢复PSD首帧');
+    passed('轮播完成退场与入场，快速点击遵从最后选择并可恢复首张');
     const values = [...doc.querySelectorAll('.metric-value')];
     const staticValues = values.slice(2).map(element => element.textContent);
     const counting = () => parseInt(values[0].textContent, 10) > 0 && parseInt(values[0].textContent, 10) < 50;
@@ -103,16 +111,40 @@ button.addEventListener('click', async () => {
     await waitFor(initialWin, () => parseInt(initialValue.textContent, 10) > 0 && parseInt(initialValue.textContent, 10) < 50, '初始可见未计数');
     await waitFor(initialWin, () => initialValue.textContent === '50%+', '初始可见未完成');
     passed('初始化时已经可见的数字也播放递增');
-    for(const width of [1280,390]){
+    for(const width of [1920,1280,390,360]){
       frame.style.width=`${width}px`;frame.removeAttribute('srcdoc');
       await new Promise(resolve=>{frame.onload=resolve;frame.src='../index.html';});
       const view=frame.contentWindow,page=frame.contentDocument,em=page.querySelector('.hero-copy h1 em');
+      const scene=page.querySelector('.hero-scene'),cta=page.querySelector('.hero-content>.button');
       assert(view.getComputedStyle(em).color!=='rgba(0, 0, 0, 0)','响应式标题强调字仍透明');
-      assert(view.getComputedStyle(page.querySelector('.hero-copy h1'),'::before').display==='none','响应式标题仍展示带照片底色的切图');
-      assert(page.querySelector('.hero-scene')?.contains(page.querySelector('.hero-copy')),'首屏照片与文字没有共同的缩放容器');
+      assert(view.getComputedStyle(page.querySelector('.hero-copy h1'),'::before').content==='none','首张标题没有使用同一文字渲染');
+      assert(view.getComputedStyle(scene).transform==='none','首屏照片与控件仍在缩放');
       assert(page.documentElement.scrollWidth<=width,'响应式首屏横向溢出');
+      const position = () => [...page.querySelectorAll('.hero-copy h1,.hero-copy p,.hero-content>.button,.slide-dots button,.slide-arrow')].map(element => {
+        const { x,y,width,height } = element.getBoundingClientRect();
+        const { fontSize,fontWeight } = view.getComputedStyle(element);
+        return [x,y,width,height,fontSize,fontWeight];
+      });
+      await page.fonts.ready;
+      await nextFrame(view); await nextFrame(view);
+      if (width<=760) {
+        const bottom=scene.getBoundingClientRect().bottom;
+        for (const control of page.querySelectorAll('.slide-arrow,.slide-dots')) {
+          const { top,height }=control.getBoundingClientRect();
+          assert(Math.abs(bottom-top-height/2-64)<.1,'手机端轮播箭头和指示条未对齐在同一高度');
+        }
+      }
+      const original = position();
+      for (const index of [1,2,0]) {
+        page.querySelectorAll('.slide-dots button')[index].click();
+        await waitFor(view,()=>page.querySelector('.hero').dataset.slide===String(index),'轮播文字没有切换');
+        const updated = position();
+        assert(updated.every((item,i) => item.every((value,j) => value===original[i][j])),`${width}px首屏轮播改变了文字尺寸或控件坐标`);
+        const button=cta.getBoundingClientRect(), dots=page.querySelector('.slide-dots').getBoundingClientRect();
+        assert(button.bottom < dots.top || button.right < dots.left, `${width}px首屏文案撑高后按钮与轮播控件重叠`);
+      }
     }
-    passed('1280/390px首屏使用完整原生文字，共同缩放容器避免照片切图接缝');
+    passed('1920/1280/390/360px三张首屏的字号、字重和控件坐标一致');
     status.textContent = `全部通过：${results.children.length} 项真实页面浏览器回归`;
   } catch (error) { status.textContent = '检查失败：' + error.message; }
   finally { button.disabled = false; }

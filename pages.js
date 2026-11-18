@@ -10,7 +10,7 @@ function enableStaticForm(form) {
   form.dataset.ready='true';
 }
 export function initPages(context) {
-  const { $, $$, animations, ease, registerEntrances, disposeEntrances, skipMotion } = context;
+  const { $, $$, animations, ease, registerEntrances, disposeEntrances, showDialog, skipMotion } = context;
   const page = document.body.dataset.page;
   if (page === 'news') {
     const list = $('#news-results'), section = $('#news-list');
@@ -78,30 +78,54 @@ export function initPages(context) {
     registerEntrances('.article-body > *', 'up', '.article-body');
     registerEntrances('.article-navigation > a', 'up', '.article-navigation');
   }
-  $$('[data-download-pending]').forEach(button=>button.addEventListener('click',()=>{const dialog=$('#detail-dialog');dialog.querySelector('.dialog-body').innerHTML='<h2>资料下载</h2><p>文件正在整理，请通过联系页面获取资料。</p><a class="button" href="contact.html#consultation">联系我们</a>';dialog.showModal();}));
+  $$('[data-download-pending]').forEach(button => button.addEventListener('click', () => {
+    showDialog('<h2>资料下载</h2><p>文件正在整理，请通过联系页面获取资料。</p><a class="button" href="contact.html#consultation">联系我们</a>', button);
+  }));
   if (page === 'service') {
     const store=createFeedbackStore(faqItems);
-    function setFAQ(details,open) {
-      const previous=details.getBoundingClientRect().height;
-      // Remove any previous height effect before measuring the new natural height.
+    function resizeFAQ(details, update, duration = 260, complete = () => {}) {
+      const previous = details.getBoundingClientRect().height;
       animations.cancel(details);
-      details.dataset.expanded=String(open);
-      details.open=true;
-      const summary=details.querySelector('summary');
-      const border=details.offsetHeight-details.clientHeight;
-      const target=open?details.offsetHeight:summary.offsetHeight+border;
-      animations.run(details,details,[{height:`${previous}px`},{height:`${target}px`}],{duration:open?380:260,easing:ease},()=>{details.open=open;});
+      const target = update() ?? details.getBoundingClientRect().height;
+      if (Math.abs(previous - target) < .25) { complete(); return; }
+      animations.run(details, details, [{ height: `${previous}px` }, { height: `${target}px` }],
+        { duration, easing: ease, fill: 'both' }, complete);
     }
-    $$('.faq-item').forEach(details=>{
-      details.dataset.expanded=String(details.open);
-      details.querySelector('summary').addEventListener('click',event=>{
+    function setFAQ(details, open) {
+      const summary = details.querySelector('summary');
+      const answer = details.querySelector('.faq-answer');
+      if (!open && answer.contains(document.activeElement)) summary.focus({ preventScroll: true });
+      resizeFAQ(details, () => {
+        details.dataset.expanded = String(open);
+        details.open = true;
+        answer.inert = !open;
+        if (open) return;
+        const style = getComputedStyle(details);
+        return summary.getBoundingClientRect().height + parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+      }, open ? 340 : 260, () => { details.open = open; });
+    }
+    function resizeAnswer(details, update) {
+      if (details.dataset.expanded === 'true') resizeFAQ(details, update);
+      else update();
+    }
+    const questions = $$('.faq-item');
+    questions.forEach(details => {
+      details.dataset.expanded = String(details.open);
+      details.querySelector('.faq-answer').inert = !details.open;
+      details.querySelector('summary').addEventListener('click', event => {
         event.preventDefault();
-        const opening=details.dataset.expanded!=='true';
-        if(opening) $$('.faq-item').filter(other=>other!==details && other.dataset.expanded==='true').forEach(other=>setFAQ(other,false));
-        setFAQ(details,opening);
+        const opening = details.dataset.expanded !== 'true';
+        if (opening) questions.filter(other => other !== details && other.dataset.expanded === 'true').forEach(other => setFAQ(other, false));
+        setFAQ(details, opening);
       });
     });
     $$('.faq-feedback').forEach(form=>{
+      const details = form.closest('.faq-item');
+      const panel = form.closest('.feedback-panel');
+      panel.querySelector('summary').addEventListener('click', event => {
+        event.preventDefault();
+        resizeAnswer(details, () => { panel.open = !panel.open; });
+      });
       form.addEventListener('submit',event=>{
         event.preventDefault();
         const data=new FormData(form);
@@ -116,10 +140,9 @@ export function initPages(context) {
       const toggle=form.querySelector('.feedback-toggle');
       const extra=form.querySelector('.feedback-extra');
       function showComment(open) {
-        // Finish the outer transition before changing its natural content height.
-        animations.finish(form.closest('.faq-item'));
+        if (extra.hidden === !open) return;
         if(!open && extra.contains(document.activeElement)) toggle.focus();
-        extra.hidden=!open;
+        resizeAnswer(details, () => { extra.hidden = !open; });
         toggle.setAttribute('aria-expanded',String(open));
         toggle.textContent=open?'收起意见':'补充意见';
       }

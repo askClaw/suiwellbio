@@ -3,9 +3,10 @@
 @font-face{font-family:SourceHanPSD;src:url('assets/fonts/SourceHanSansCN-Medium.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
 body,button,input,textarea{font-family:SourceHanPSD,'Microsoft YaHei',sans-serif;font-weight:500}
 .feedback-panel{position:relative;font-size:12px;color:var(--cyan)}
-.feedback-panel>summary{cursor:pointer;list-style:none;text-align:right}
-.feedback-panel:not([open]){position:absolute;right:18px;bottom:5px;opacity:0}
-.faq-item:hover .feedback-panel,.faq-item:focus-within .feedback-panel{opacity:1}
+.feedback-panel>summary{width:fit-content;margin-left:auto;padding:2px 4px;cursor:pointer;list-style:none;line-height:16px;transition:opacity .2s}
+@media(min-width:1280px) and (hover:hover){
+ .faq-item:not(:hover):not(:focus-within) .feedback-panel:not([open])>summary{opacity:0}
+}
 .faq-item{position:relative}
 .download-hint{display:none}
 .news-results{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
@@ -81,8 +82,8 @@ body,button,input,textarea{font-family:SourceHanPSD,'Microsoft YaHei',sans-serif
  .news-list-section .news-card-link h3{font-size:18px;line-height:26px;margin:14px 0 8px}
  .news-list-section article p{font-size:16px;line-height:22px;margin:0}
  .news-list-section .read-more{margin-top:auto}
- .pagination{height:32px;margin-top:60px;gap:10px}
- .pagination a,.pagination span{font-size:14px;padding:5px;min-width:30px;height:30px;border-radius:0}
+ .pagination{height:32px;margin-top:60px;gap:9px;position:relative;top:-4px}
+ .pagination > *{font-size:14px;height:34px}
  .news-list-section time{font-size:12px;line-height:16px}
  .download-row{height:83px;border-radius:5px;padding:18px 21px}
  .download-grid{gap:25px 24px}
@@ -142,7 +143,6 @@ body,button,input,textarea{font-family:SourceHanPSD,'Microsoft YaHei',sans-serif
  body[data-page="service"] main>.soft-section:nth-child(2){height:721px;padding:0}
  .implementation-section{height:1465px;padding:0;background:#fff url('assets/psd/background-service-project.webp') center top / auto 1465px no-repeat}
  .faq-section{min-height:677px;padding:0}
- .faq-section:has(.feedback-panel[open]){height:auto;padding-bottom:80px}
  .downloads-section{height:505px;padding:0}
  body:is([data-page="service"],[data-page="news"],[data-page="news-detail"],[data-page="contact"]) footer{height:473px}
  .article-section{height:1300px;padding:77px 0 0}
@@ -223,12 +223,11 @@ body,button,input,textarea{font-family:SourceHanPSD,'Microsoft YaHei',sans-serif
  .project-timeline:before{left:50%;bottom:200px}
  .faq-section .section-title+.container{margin-top:36px}
  .faq-list{gap:16px;max-width:864px}
- .faq-item summary{height:65px;padding:16px 24px;font-size:20px;line-height:30px}
+ .faq-item>summary{height:65px;padding:16px 24px;font-size:20px;line-height:30px}
  .faq-answer{padding:0 24px 20px}
  .faq-answer>p{font-size:16px;line-height:24px;color:#878690}
  .faq-sign{width:24px;height:24px;font-size:16px}
  .faq-item[open]>.faq-answer{min-height:70px}
- .faq-item .feedback-panel[open]{position:relative;opacity:1}
  .downloads-section .section-title+.container{margin-top:59px}
  .consultation-form{gap:40px 100px}
  .form-field label{margin-bottom:32px}
@@ -347,29 +346,24 @@ body,button,input,textarea{font-family:SourceHanPSD,'Microsoft YaHei',sans-serif
  .hero-shade{display:none}
  .hero-content{position:absolute;top:266px;left:50%;transform:translateX(-50%);height:273px;padding:0 0 0 12px}
  .hero-copy h1{height:137px;line-height:68px;margin:0 0 29px}
- .hero[data-slide="0"] .hero-copy h1{background-position:left top;filter:drop-shadow(2px 4px 3px #5559)}
  .hero-copy p{font-size:20px;line-height:24px;margin:0}
- .hero[data-slide="0"] .hero-copy p{height:24px;width:432px;background:url('assets/psd/demo-text-42.png') left top no-repeat;color:transparent;text-shadow:none}
  .hero-content>.button{position:absolute;left:11px;top:218px;height:55px;min-height:0;box-shadow:3px 5px 5px #0003}
  .hero-content>.button .icon{display:none}
  .slide-arrow{top:394px;width:49px;height:49px}
  .slide-arrow.previous{background:#f1cb4f;border-color:#f1cb4f}
- .slide-dots{bottom:29px;gap:9px}.slide-dots button{width:39px;height:5px}.slide-dots .selected{width:51px}
  .metrics{padding:0!important}
  .metric-grid>div{height:98px;margin-top:31px;padding:0;position:relative}
  .metric-grid strong{position:absolute;left:50%;top:16px;transform:translateX(-50%);margin:0;height:38px;min-width:164px;font-size:36px}
  .metric-grid>div>span{position:absolute;top:66px;left:0;right:0;margin:0;height:20px;color:transparent;background-position:top center;background-repeat:no-repeat}
- .metric-grid strong[data-counter-state="complete"] .metric-value,.metric-grid>div:nth-child(n+3) .metric-value{opacity:0}
- .metric-grid strong[data-counter-state="complete"]:after,.metric-grid>div:nth-child(n+3) strong:after{content:'';position:absolute;inset:0;background-position:top center;background-repeat:no-repeat}
- .metric-grid>div:nth-child(1) strong:after{background-image:url('assets/psd/demo-text-182.png')}.metric-grid>div:nth-child(1)>span{background-image:url('assets/psd/demo-text-183.png')}
- .metric-grid>div:nth-child(2) strong:after{background-image:url('assets/psd/demo-text-187.png')}.metric-grid>div:nth-child(2)>span{background-image:url('assets/psd/demo-text-188.png')}
+ .metric-grid>div:nth-child(n+3) .metric-value{opacity:0}
+ .metric-grid>div:nth-child(n+3) strong:after{content:'';position:absolute;inset:0;background-position:top center;background-repeat:no-repeat}
+ .metric-grid>div:nth-child(1)>span{background-image:url('assets/psd/demo-text-183.png')}
+ .metric-grid>div:nth-child(2)>span{background-image:url('assets/psd/demo-text-188.png')}
  .metric-grid>div:nth-child(3) strong:after{background-image:url('assets/psd/demo-text-193.png')}.metric-grid>div:nth-child(3)>span{background-image:url('assets/psd/demo-text-192.png')}
  .metric-grid>div:nth-child(4) strong:after{background-image:url('assets/psd/demo-text-198.png')}.metric-grid>div:nth-child(4)>span{background-image:url('assets/psd/demo-text-197.png')}
  .metric-grid>div:nth-child(5) strong:after{background-image:url('assets/psd/demo-text-203.png')}.metric-grid>div:nth-child(5)>span{background-image:url('assets/psd/demo-text-202.png')}
  .metric-grid>div:nth-child(6) strong:after{background-image:url('assets/psd/demo-text-208.png')}.metric-grid>div:nth-child(6)>span{background-image:url('assets/psd/demo-text-207.png')}
  .application-grid{grid-template-columns:repeat(5,144px);gap:97px;width:1108px;margin-left:46px}
- .unit-card[data-unit-index="0"]{height:225px;padding:0;border:0;background:url('assets/psd/demo-text-274.png') center / 315px 225px no-repeat;box-shadow:none}
- .unit-card[data-unit-index="0"] .unit-content{opacity:0!important;padding:16px 20px}
  .hotspot[aria-pressed="true"]{background:#00b6cc;transform:none}
  .hotspot[aria-pressed="true"]:before{opacity:0}
  .about-card .factory-frame img{height:317px;max-width:none;width:479px;object-fit:fill}
@@ -441,7 +435,12 @@ body,button,input,textarea{font-family:SourceHanPSD,'Microsoft YaHei',sans-serif
  .core-unit>div:last-child:after{top:43px}
  .core-unit:first-child{box-shadow:0 0 35px #79b5bd33}
 }
-@media(min-width:1280px){.footer-grid nav>a{opacity:1;color:transparent}.footer-grid nav>a:focus-visible{outline:3px solid var(--gold)}}
+@media(min-width:1280px){
+ .footer-grid nav>a,.footer-grid nav>a:hover{position:relative;opacity:1;color:transparent}
+ .footer-grid nav>a::after{content:'';position:absolute;inset:21px 0 auto;height:1px;background:var(--cyan);width:100%;transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease-out)}
+ .footer-grid nav>a:is(:hover,:focus-visible)::after{transform:scaleX(1)}
+ .footer-grid nav>a:focus-visible{outline:3px solid var(--gold)}
+}
 @media(min-width:1280px){
  .section-title>*,.solution>.container>div>*,.article-paper[data-psd-article] .article-heading>*,.article-paper[data-psd-article] .article-body>*,.core-unit p,.about-copy p,.company-intro p,.advantage-grid ul>*{opacity:0!important}
 }
@@ -516,7 +515,7 @@ body,button,input,textarea{font-family:SourceHanPSD,'Microsoft YaHei',sans-serif
  .parameter-grid>div:nth-child(15):before{background-image:url('assets/psd/parameter-copy-14.png')}
  .parameter-grid>div:nth-child(16):before{background-image:url('assets/psd/parameter-copy-15.png')}
  .faq-list{gap:11px}
- .faq-item summary{height:68px;color:transparent;background-repeat:no-repeat;background-position:22px 25px}
+ .faq-item>summary{height:68px;color:transparent;background-repeat:no-repeat;background-position:22px 25px}
  .faq-item:nth-child(1)>summary{background-image:url('assets/psd/faq-copy-3653.png')}
  .faq-item:nth-child(2)>summary{background-image:url('assets/psd/faq-copy-3673.png')}
  .faq-item:nth-child(3)>summary{background-image:url('assets/psd/faq-copy-3681.png')}
@@ -526,8 +525,9 @@ body,button,input,textarea{font-family:SourceHanPSD,'Microsoft YaHei',sans-serif
  .faq-item:nth-child(4) .faq-answer{position:relative}
  .faq-item:nth-child(4) .faq-answer>p{opacity:0!important}
  .faq-item:nth-child(4) .faq-answer:before{content:'';position:absolute;left:22px;top:6px;width:734px;height:41px;background:url('assets/psd/faq-copy-3695.png') no-repeat;pointer-events:none}
- .faq-sign,.faq-item[open] .faq-sign{width:29px;height:29px;color:transparent;rotate:none;background:transparent url('assets/psd/faq-copy-3659.png') no-repeat}
- .faq-item[open] .faq-sign{background-image:url('assets/psd/faq-copy-3693.png')}
+ .faq-sign{width:29px;height:29px;font-size:0}
+ .faq-sign::before{content:'';width:8px;height:7px;background:currentColor;clip-path:polygon(0 12%,100% 12%,50% 96%)}
+ .faq-item:is([data-expanded="true"],[open]:not([data-expanded])) .faq-sign{rotate:180deg}
 }
 @media(min-width:1280px){
  .news-grid{position:relative;left:-1px;width:1202px;grid-template-columns:repeat(3,386px);column-gap:22px}
@@ -727,7 +727,7 @@ body,button,input,textarea{font-family:SourceHanPSD,'Microsoft YaHei',sans-serif
  .faq-section{background-color:#f5fbfb}
  .faq-list{position:relative;left:-2px;top:2px;max-width:860px;gap:13px}
  .faq-item{border-color:#dceeee}
- .faq-item summary{height:66px;background-position:22px 23px}
+ .faq-item>summary{height:66px;background-position:22px 23px}
  .faq-item:nth-child(4)>summary{background-position:22px 24px}
  .faq-item[open]>.faq-answer{min-height:70px}
  .faq-item:nth-child(4) .faq-answer:before{top:6px}

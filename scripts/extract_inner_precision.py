@@ -73,18 +73,10 @@ def export_inner(root, output):
             '.article-navigation a:last-child{left:-3px}']
 
     p,d=source('news')
-    css += ['.news-tabs{position:relative;left:-1px;display:block;width:1202px;height:61px;border:0;background:none;overflow:visible}',
-            '.news-tabs a{position:absolute;left:0;top:0;width:602px;height:63px;padding:9px 20px}',
-            '.news-tabs a:last-child{left:602px;width:600px}',
-            '.news-tabs a:first-child[aria-current],.news-tabs a:last-child:not([aria-current]){color:transparent;background-color:transparent;background-repeat:no-repeat;border-radius:0}',
-            '.news-tabs a:first-child[aria-current]{background-image:url("assets/psd/news-company-tab.png")}',
-            '.news-tabs a:last-child:not([aria-current]){background-image:url("assets/psd/news-market-tab.png")}',
-            '.news-list-section article[data-news-art]{position:relative;border-color:transparent;border-radius:0;background:none;overflow:visible}',
+    css += ['.news-list-section article[data-news-art]{position:relative;border-color:transparent;border-radius:0;background:none;overflow:visible}',
             '.news-list-section article[data-news-art]>.news-card-link{position:relative;z-index:1}',
             '.news-list-section article[data-news-art] .read-more{background-position:left top}',
             '.news-list-section article[data-news-art]:nth-child(3n+2) .read-more,.news-list-section article[data-news-art]:nth-child(3n) .read-more{left:26px}']
-    crop(p,'news-company-tab',(359,537,961,600))
-    crop(p,'news-market-tab',(961,537,1561,600))
     for i,(x,y,ids) in enumerate([
         (359,658,[4005,4006,4007,4011]),(767,658,[4020,4021,4022,4028]),(1175,658,[4037,4038,4039,4044]),
         (359,1120,[4057,4058,4059,4063]),(767,1120,[4072,4073,4074,4080]),(1175,1120,[4089,4090,4091,4096])]):
@@ -93,12 +85,6 @@ def export_inner(root, output):
             frame.paste('white',(x1-box[0],y1-box[1],r-box[0],b-box[1]))
         frame.save(output/f'news-list-frame-{i}.png')
         css.append(f'.news-list-section article[data-news-art]:nth-child({i+1}):before{{content:"";position:absolute;left:-11px;top:-12px;width:406px;height:445px;background:url("assets/psd/news-list-frame-{i}.png") no-repeat;pointer-events:none}}')
-    css += ['.pagination:has(:first-child[aria-current]){position:relative;top:-4px;width:188px;margin-left:auto;margin-right:auto;height:34px}',
-            '.pagination:has(:first-child[aria-current])>*{position:absolute;top:0;width:34px;height:34px;padding:0;min-width:0;color:transparent;background-color:transparent;background-repeat:no-repeat}']
-    for i,x in enumerate([866,909,952,995,1030]):
-        crop(p,f'news-page-control-{i}',(x,1600,x+34,1634))
-        css.append(f'.pagination:has(:first-child[aria-current])>:nth-child({i+1}){{left:{x-866}px;background-image:url("assets/psd/news-page-control-{i}.png")}}')
-
     p,d=source('product001')
     # Native card content keeps its layout, while the saved border is separate.
     core_bounds={v:d[v].bbox for v in [1884,1908,1919,1931,1939]}
@@ -188,23 +174,9 @@ def export_inner(root, output):
             '.project-timeline article,.project-timeline li:first-child article{border-color:transparent;border-radius:0;box-shadow:none;background:none}',
             '.project-timeline:before{left:581px;top:0;bottom:auto;width:37px;height:964px;background:url("assets/psd/service-timeline-connector.png") no-repeat}',
             '.timeline-dot{opacity:0}',
-            '.faq-item{position:relative}',
-            '.faq-item .faq-sign,.faq-item[open] .faq-sign{border-radius:0}',
             '.faq-item>summary{position:relative;z-index:1;background-position:22px 23px}',
             '.faq-item:nth-child(4)>summary{background-position:22px 24px}',
             '.faq-item:nth-child(4) .faq-answer:before{top:6px}']
-    for i,(ident,y,copy_id,sign_id) in enumerate([(3651,2862,3653,3659),(3672,2943,3673,3677),(3680,3024,3681,3685),(3688,3106,3689,3693)]):
-        l=d[ident];pad=24 if i==3 else 10
-        box=(l.left-pad,l.top-pad,l.right+pad,l.bottom+pad);frame=p.crop(box)
-        for x1,y1,r,b in [d[copy_id].bbox,d[sign_id].bbox]+([d[3695].bbox] if i==3 else []):
-            frame.paste('white',(x1-box[0],y1-box[1],r-box[0],b-box[1]))
-        frame.save(output/f'faq-frame-{i}.png')
-        selector=f'.faq-item:nth-child({i+1})'+(':not([open])' if i<3 else '[open]:not(:has(.feedback-panel[open]))')
-        css.append(f'{selector}{{border-color:transparent;border-radius:0;overflow:visible;box-shadow:none;background:none}}')
-        css.append(f'{selector}:before{{content:"";position:absolute;left:{box[0]-529}px;top:{box[1]-y-1}px;width:{box[2]-box[0]}px;height:{box[3]-box[1]}px;background:url("assets/psd/faq-frame-{i}.png") no-repeat;pointer-events:none}}')
-        crop(p,f'faq-sign-exact-{i}',d[sign_id].bbox)
-        state=':not([open])' if i<3 else '[open]'
-        css.append(f'.faq-item:nth-child({i+1}){state}>summary .faq-sign{{background-image:url("assets/psd/faq-sign-exact-{i}.png")}}')
     crop(p,'download-highlighted-frame',(946,3534,1588,3667))
     css.append('.download-row:nth-child(2):after{left:-24px;top:-26px;width:642px;height:133px;background-image:url("assets/psd/download-highlighted-frame.png")}')
     css.append('}')

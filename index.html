@@ -10,7 +10,7 @@
 })();
 </script>
 <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="motion.css"><link rel="stylesheet" href="pages.css"><link rel="stylesheet" href="precision.css"><link rel="stylesheet" href="psd-art.css"><script src="app.js" type="module"></script></head><body data-page="home">  <header id="top">
-    <div class="topbar"><div class="container"><span>专注在线配液 · 赋能药企高效合规生产</span><div class="top-actions"><button class="search-toggle" aria-label="搜索" aria-expanded="false"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button><button class="english" data-dialog="language">English Version</button></div></div></div>
+    <div class="topbar"><div class="container"><span>专注在线配液 · 赋能药企高效合规生产</span><div class="top-actions"><button class="search-toggle" aria-label="搜索" aria-expanded="false" aria-controls="search-panel"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button><button class="english" data-dialog="language">English Version</button></div></div></div>
     <div class="navigation container">
       <a class="brand" href="index.html" aria-label="穗维卓生物首页"><img src="assets/logo.png" width="145" height="38" alt="穗维卓 SUIWELL Bio"></a>
       <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="打开导航">☰</button>
@@ -22,7 +22,7 @@
 <a href="news.html"><img class="icon psd-nav-icon" src="assets/psd/nav-news.png" alt="">新闻资讯</a>
 <a href="contact.html"><img class="icon psd-nav-icon" src="assets/psd/nav-contact.png" alt="">联系我们</a></nav>
     </div>
-    <form class="search-panel container" hidden role="search"><label for="site-search">搜索首页内容</label><input id="site-search" type="search" placeholder="输入产品、应用领域或新闻关键词" required><button class="button" type="submit">搜索</button><p class="search-result" aria-live="polite"></p></form>
+    <form class="search-panel container" id="search-panel" hidden role="search"><label for="site-search">搜索首页内容</label><input id="site-search" type="search" placeholder="输入产品、应用领域或新闻关键词" required><button class="button" type="submit">搜索</button><p class="search-result" aria-live="polite"></p></form>
   </header>
   <main>
     <section class="hero" data-slide="0" aria-label="在线配液系统介绍">
@@ -39,7 +39,7 @@
       <div class="section-title"><span class="eyebrow">PRODUCT SHOWCASE</span><h2>iSynFlo™ <em>在线配液系统</em></h2><i></i><p>高度自动化，在封闭管路中实时动态混合稀释，直接产出符合工艺要求的药液</p></div>
       <div class="machine-stage">
         <picture class="machine-picture"><source media="(min-width:1600px)" srcset="assets/psd/machine-exact.png"><img class="machine" src="assets/machine.png" width="1173" height="635" alt="iSynFlo 在线配液设备，集成自动化控制、混合与检测模块"></picture>
-        <div class="unit-card" data-unit-index="0" id="unit-details" aria-live="polite" aria-atomic="true"><div class="unit-content"><h3>▧ <span>实时检测与分析单元</span></h3><dl><dt>核心配置</dt><dd>在线 pH 传感器、电导率传感器</dd><dt>核心作用</dt><dd>实时监测药液的关键质量属性，为控制提供数据支撑</dd></dl></div></div>
+        <div class="unit-card" data-unit-index="0" id="unit-details" aria-live="polite" aria-atomic="true"><div class="unit-content"><h3><img src="assets/psd/home-unit-icon.png" width="25" height="22" alt=""><span>实时检测与分析单元</span></h3><dl><dt>核心配置</dt><dd>在线 pH 传感器、电导率传感器</dd><dt>核心作用</dt><dd>实时监测药液的关键质量属性，为控制提供数据支撑</dd></dl></div></div>
         <svg class="connector" aria-hidden="true"><path class="connector-track"/><path class="connector-flow"/></svg>
         <button aria-controls="unit-details" class="hotspot point-1" data-unit="0" aria-label="查看实时检测与分析单元" aria-pressed="true"></button><button aria-controls="unit-details" class="hotspot point-2" data-unit="1" aria-label="查看自动化控制单元" aria-pressed="false"></button><button aria-controls="unit-details" class="hotspot point-3" data-unit="2" aria-label="查看动态混合单元" aria-pressed="false"></button><button aria-controls="unit-details" class="hotspot point-4" data-unit="3" aria-label="查看流体输送单元" aria-pressed="false"></button><button aria-controls="unit-details" class="hotspot point-5" data-unit="4" aria-label="查看高精度计量单元" aria-pressed="false"></button>
       </div>

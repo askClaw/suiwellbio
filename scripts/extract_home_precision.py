@@ -17,7 +17,7 @@ def export_home(root, output):
     collapsed = layers[592].topil().convert('RGBA')
     collapsed.alpha_composite(phone, ((collapsed.width-phone.width)//2, (collapsed.height-phone.height)//2))
     collapsed.save(output / 'tool-phone-collapsed.png')
-    css = [MARKER, '@media(min-width:1280px){']
+    css = [MARKER, '@media(width:1920px){']
     def crop(name, box):
         saved.crop(box).save(output / f'{name}.png')
     def artwork(selector, name, box, origin):
@@ -25,39 +25,32 @@ def export_home(root, output):
         x,y,r,b = box
         css.append(f'{selector}{{content:"";position:absolute;inset:auto;left:{x-origin[0]}px;top:{y-origin[1]}px;width:{r-x}px;height:{b-y}px;transform:none;z-index:auto;background:url("assets/psd/{name}.png") no-repeat;pointer-events:none}}')
     css += [
-        '.hero[data-slide="0"] .hero-copy h1{position:relative;background:none;filter:none}',
-        '.hero[data-slide="0"] .hero-copy p{position:relative;left:1px;background:none}',
         '.hero-content>.button,.slide-arrow{color:transparent;background:none;border:0;border-radius:0;box-shadow:none;overflow:visible}',
         '.hero-content>.button:hover,.slide-arrow:hover{background:none;box-shadow:none}',
         '.hero-content>.button:after,.slide-arrow:after{display:none}',
         '.slide-arrow.next{right:49px}',
-        '.slide-dots{left:calc(50% - 76px);transform:none;bottom:29px;height:8px;gap:7px}',
-        '.slide-dots button{width:41px;height:8px}.slide-dots button.selected{width:55px}',
-        '.hero[data-slide="0"] .slide-dots{background:url("assets/psd/home-slide-dots.png") no-repeat}',
-        '.hero[data-slide="0"] .slide-dots button{background:none}',
     ]
-    artwork('.hero[data-slide="0"] .hero-copy h1:before','home-hero-heading',(355,408,980,582),(372,426))
-    artwork('.hero[data-slide="0"] .hero-copy p:before','home-hero-caption',(368,586,812,621),(373,592))
     artwork('.hero-content>.button:before','home-video-control',(360,634,568,716),(371,644))
     artwork('.slide-arrow.previous:before','home-slide-previous',(44,550,102,608),(48,554))
     artwork('.slide-arrow.next:before','home-slide-next',(1818,550,1876,608),(1822,554))
-    crop('home-slide-dots',(884,961,1035,969))
     hero=saved.crop((0,160,1920,998))
     raw_hero=Image.open(output/'hero-lossless.png').convert('RGB')
     for x,y,r,b in [(355,408,980,582),(368,586,812,621),(360,634,568,716),(44,550,102,608),(1818,550,1876,608),(884,961,1035,969)]:
         box=(x,y-160,r,b-160)
         hero.paste(raw_hero.crop(box),box[:2])
     hero.save(output/'home-hero-exact-background.png')
-    css.append('.hero[data-slide="0"]{outline:0;background-image:url("assets/psd/home-hero-exact-background.png")}')
     css += [
+        '}',
+        '@media(min-width:1280px){',
         '.metric-grid>div{border:0}',
         '.metric-grid strong{left:0;top:16px;transform:none;width:200px;min-width:0;justify-content:center}',
-        '.metric-grid strong[data-counter-state="complete"] .metric-value,.metric-grid>div:nth-child(n+3) .metric-value{opacity:0!important}',
+        '.metric-grid>div:nth-child(n+3) .metric-value{opacity:0!important}',
     ]
     for i,(number,label) in enumerate([(182,183),(187,188),(193,192),(198,197),(203,202),(208,207)]):
         x=360+200*i
-        l=layers[number]
-        css.append(f'.metric-grid>div:nth-child({i+1}) strong:after{{inset:auto;left:{l.left-x}px;top:0;width:{l.width}px;height:{l.height}px;background-position:left top}}')
+        if i>=2:
+            l=layers[number]
+            css.append(f'.metric-grid>div:nth-child({i+1}) strong:after{{inset:auto;left:{l.left-x}px;top:0;width:{l.width}px;height:{l.height}px;background-position:left top}}')
         l=layers[label]
         css.append(f'.metric-grid>div:nth-child({i+1})>span{{left:{l.left-x}px;right:auto;width:{l.width}px;background-position:left top}}')
         if i<5:
@@ -96,10 +89,12 @@ def export_home(root, output):
         box=(x,y-1158,r,b-1158)
         exact.paste(base.crop(box),box[:2])
     exact.save(output/'home-products-exact-background.png')
+    icon_mask = layers[264].topil().convert('RGBA').getchannel('A')
+    icon = Image.new('RGBA', icon_mask.size, '#00b6cc')
+    icon.putalpha(icon_mask)
+    icon.save(output/'home-unit-icon.png')
     css += ['@media(min-width:1600px){',
         'body[data-page="home"] .products{background-image:url("assets/psd/home-products-exact-background.png")}',
-        '.unit-card[data-unit-index="0"]{background:none;border-radius:0;backdrop-filter:none}',
-        '.machine-stage:has(.unit-card[data-unit-index="0"]) .connector path{stroke:transparent}',
         '.machine{filter:none}',
         '.hotspot,.hotspot[aria-pressed="true"]{border:0;border-radius:0;background-color:transparent;background-repeat:no-repeat;transform:none;box-shadow:none}',
         '.hotspot:before{display:none}',
@@ -107,9 +102,6 @@ def export_home(root, output):
         'body[data-page="home"] .products>.more{position:absolute;left:calc(50% - 91px);top:1114px;margin:0;width:145px;height:54px;color:transparent;border:0;border-radius:0;background:none;box-shadow:none;overflow:visible}',
         'body[data-page="home"] .products>.more:after{display:none}',
     ]
-    artwork('.unit-card[data-unit-index="0"]:before','home-unit-panel',(122,1446,453,1687),(130,1454))
-    artwork('.machine-stage:has(.unit-card[data-unit-index="0"]):has(.machine[data-motion-state="complete"]):after','home-default-connector',line_box,(160,1369))
-    css[-1]=css[-1][:-1]+';z-index:1}'
     artwork('body[data-page="home"] .products>.more:before','home-product-link',(858,2262,1026,2344),(869,2272))
     for i,ident in enumerate([236,256,241,251,246]):
         crop(f'home-hotspot-{i}',bounds[ident])

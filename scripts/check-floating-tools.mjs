@@ -50,6 +50,13 @@ try{
     assert(await evaluate("getComputedStyle(document.querySelector('.floating-tools')).position==='fixed'"),'Toolbar is not fixed');
     assert(await evaluate("getComputedStyle(document.querySelector('.floating-tools a')).display!=='none'"),'Contact icon hidden');
     assert(await evaluate("document.querySelector('.floating-tools .phone').getAttribute('href')==='tel:+8613817002275'"),'Incorrect telephone destination');
+    assert(await evaluate(`(() => {
+      const phone=document.querySelector('.floating-tools .phone');
+      const label=phone.querySelector('.tool-tip'), icon=phone.querySelector('.icon');
+      return getComputedStyle(icon).display!=='none' && getComputedStyle(phone).backgroundImage==='none'
+        && getComputedStyle(phone,'::before').content==='none'
+        && label.textContent.replace(/[^+0-9]/g,'')===phone.href.slice(4);
+    })()`),'Phone uses two icons or its visible number differs from the dial link');
     await evaluate('scrollTo({top:850,behavior:"instant"})');
     await until("getComputedStyle(document.querySelector('.floating-tools a[href=\"#top\"]')).opacity==='1'",'Back-to-top did not appear');
     const after=await rect('.floating-tools');
@@ -57,9 +64,24 @@ try{
     if(page==='index'&&width===1920)await crop('collapsed',width);
     const phone=await rect('.floating-tools .phone');
     await move(phone.left+phone.width/2,phone.top+phone.height/2);
+    if(page==='index'&&[1920,390].includes(width)){
+      const mid=await evaluate(`(() => {
+        const phone=document.querySelector('.floating-tools .phone');
+        getComputedStyle(phone).width;
+        const effects=phone.getAnimations({subtree:true});
+        effects.forEach(effect=>{effect.pause();effect.currentTime=90;});
+        const box=phone.getBoundingClientRect();
+        return [box.width,box.right,getComputedStyle(phone.querySelector('.tool-tip')).opacity];
+      })()`);
+      assert(mid[0]>size&&mid[0]<expanded&&mid[1]===phone.right&&mid[2]==='0','Phone label appeared before the capsule was wide enough');
+      if(width===1920)await crop('expanding',width);
+      await evaluate("document.querySelector('.floating-tools .phone').getAnimations({subtree:true}).forEach(effect=>effect.play())");
+    }
     await until(`Math.abs(document.querySelector('.phone').getBoundingClientRect().width-${expanded})<.1`,'Hover did not expand phone');
     const open=await rect('.floating-tools .phone');
     assert(open.right===phone.right,'Expansion moved the screen edge');
+    const label=await rect('.floating-tools .phone .tool-tip');
+    assert(label.left>=open.left&&label.right<open.right,'Expanded capsule clips the phone number');
     await move(open.left+10,open.top+open.height/2);await wait(450);
     assert(Math.abs((await rect('.phone')).width-expanded)<.1,'Expanded part is not hoverable');
     if(page==='index'&&width===1920)await crop('expanded',width);

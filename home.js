@@ -1,7 +1,7 @@
 import { connectorPoints, createPointTween, pathFromPoints } from './motion-core.js';
 
 export function initHome(context) {
-const { $, $$, mobile, skipMotion, animations, ease, registerEntrances, addMotionHooks, updateScrollState } = context;
+const { $, $$, skipMotion, animations, ease, registerEntrances, addMotionHooks, updateScrollState } = context;
 if (!$('.hero-copy') || !$('.machine-stage')) return;
 const units = [
   ['实时检测与分析单元', '在线 pH 传感器、电导率传感器', '实时监测药液的关键质量属性，为控制提供数据支撑'],
@@ -16,56 +16,60 @@ const slides = [
   ['深耕制药与医美，<br>提供<em>专业工艺</em>支持', '从研发、设计到制造，为商业化生产提供全流程支持']
 ];
 
-// Hero text has a stable box; the CTA and controls never fade with it.
-let slide = 0;
+let requestedSlide = 0;
+const hero = $('.hero');
 const heroCopy = $('.hero-copy');
+const slideButtons = $$('.slide-dots button');
+const heroTitle = heroCopy.querySelector('h1');
+const heroDescription = heroCopy.querySelector('p');
+
+function setCopy(container, [title, description]) {
+  container.querySelector('h1').innerHTML = title;
+  container.querySelector('p').textContent = description;
+}
+
 function measureHero() {
-  const copy = heroCopy.cloneNode(true);
-  copy.classList.add('measure-copy'); copy.setAttribute('aria-hidden', 'true'); copy.inert = true;
-  copy.style.width = `${heroCopy.clientWidth}px`;
-  copy.style.minHeight = '0';
-  heroCopy.parentElement.append(copy);
-  let height = 0;
-  slides.forEach(([title, description]) => {
-    copy.querySelector('h1').innerHTML = title;
-    copy.querySelector('p').textContent = description;
-    height = Math.max(height, copy.getBoundingClientRect().height);
+  const copy = measurementCopy(heroCopy);
+  const title = copy.querySelector('h1');
+  const description = copy.querySelector('p');
+  title.style.minHeight = '';
+  description.style.minHeight = '';
+  let titleHeight = 0;
+  let descriptionHeight = 0;
+  slides.forEach(content => {
+    setCopy(copy, content);
+    titleHeight = Math.max(titleHeight, title.getBoundingClientRect().height);
+    descriptionHeight = Math.max(descriptionHeight, description.getBoundingClientRect().height);
   });
   copy.remove();
-  heroCopy.style.minHeight = `${Math.ceil(height)}px`;
+  heroTitle.style.minHeight = `${Math.ceil(titleHeight)}px`;
+  heroDescription.style.minHeight = `${Math.ceil(descriptionHeight)}px`;
 }
 function setSlide(index) {
   const next = (index + slides.length) % slides.length;
-  if (next === slide) return;
-  slide = next;
-  const nextSlide = slide;
+  if (next === requestedSlide) return;
+  requestedSlide = next;
   [...heroCopy.children].forEach(element => animations.finish(element));
-  const current = getComputedStyle(heroCopy);
-  $$('.slide-dots button').forEach((button, index) => {
-    button.classList.toggle('selected', index === slide);
-    if (index === slide) button.setAttribute('aria-current', 'true'); else button.removeAttribute('aria-current');
-  });
-  animations.run('hero-copy', heroCopy,
-    [{ opacity: current.opacity }, { opacity: 0 }],
-    { duration: 180, easing: 'ease-in' }, () => {
-      $('.hero').dataset.slide = String(nextSlide);
-      heroCopy.querySelector('h1').innerHTML = slides[nextSlide][0];
-      heroCopy.querySelector('p').textContent = slides[nextSlide][1];
-      animations.run('hero-copy', heroCopy,
-        [{ opacity: 0 }, { opacity: 1 }],
-        { duration: 900, easing: ease });
+  fadeSwap('hero-copy', heroCopy, () => {
+    hero.dataset.slide = String(next);
+    setCopy(heroCopy, slides[next]);
+    slideButtons.forEach((button, index) => {
+      button.classList.toggle('selected', index === next);
+      if (index === next) button.setAttribute('aria-current', 'true'); else button.removeAttribute('aria-current');
     });
+  });
 }
-$('.previous').addEventListener('click', () => setSlide(slide - 1));
-$('.next').addEventListener('click', () => setSlide(slide + 1));
-$$('.slide-dots button').forEach((button, index) => button.addEventListener('click', () => setSlide(index)));
+$('.previous').addEventListener('click', () => setSlide(requestedSlide - 1));
+$('.next').addEventListener('click', () => setSlide(requestedSlide + 1));
+slideButtons.forEach((button, index) => button.addEventListener('click', () => setSlide(index)));
 measureHero();
 registerEntrances('.hero-copy h1', 'fade', '.hero-copy', { animateVisible: true });
 registerEntrances('.hero-copy p', 'fade', '.hero-copy', { animateVisible: true, delay: 150 });
 registerEntrances('.hero-content > .button', 'fade', '.hero-content', { delay: 300 });
 
 // Product geometry is measured only on selection / resize, never during tween frames.
-let activeUnit = 0;
+let requestedUnit = 0;
+let visibleUnit = 0;
 const stage = $('.machine-stage');
 const machine = $('.machine');
 const unitCard = $('.unit-card');
@@ -82,13 +86,31 @@ function fillUnit(container, index) {
   const descriptions = container.querySelectorAll('dd');
   descriptions[0].textContent = units[index][1]; descriptions[1].textContent = units[index][2];
 }
+function measurementCopy(element) {
+  const copy = element.cloneNode(true);
+  copy.classList.add('measure-copy');
+  copy.setAttribute('aria-hidden', 'true');
+  copy.inert = true;
+  copy.style.width = `${element.getBoundingClientRect().width}px`;
+  element.after(copy);
+  return copy;
+}
+function fadeSwap(key, element, swap) {
+  const { opacity } = getComputedStyle(element);
+  animations.run(key, element, [{ opacity }, { opacity: 0 }],
+    { duration: 140, easing: 'ease-in', fill: 'both' }, () => {
+      swap();
+      animations.run(key, element, [{ opacity: 0 }, { opacity: 1 }],
+        { duration: 360, easing: ease, fill: 'both' });
+    });
+}
 function measureUnitHeight() {
-  const measure = unitContent.cloneNode(true);
-  measure.classList.add('measure-copy'); measure.setAttribute('aria-hidden', 'true'); measure.inert = true;
-  measure.style.width = `${unitContent.clientWidth}px`; measure.style.minHeight = '0';
-  unitCard.append(measure);
+  const measure = measurementCopy(unitContent);
   let height = 0;
-  units.forEach((_, index) => { fillUnit(measure, index); height = Math.max(height, measure.getBoundingClientRect().height); });
+  units.forEach((_, index) => {
+    fillUnit(measure, index);
+    height = Math.max(height, measure.getBoundingClientRect().height);
+  });
   measure.remove();
   unitContent.style.minHeight = `${Math.ceil(height)}px`;
 }
@@ -98,7 +120,7 @@ function updateLine(duration = 0) {
   const points = positions.map(([x, y]) => [imageLeft + machine.offsetWidth * x, machine.offsetTop + machine.offsetHeight * y]);
   const card = { left: unitCard.offsetLeft, top: unitCard.offsetTop, width: unitCard.offsetWidth, height: unitCard.offsetHeight };
   card.right = card.left + card.width; card.bottom = card.top + card.height;
-  const path = connectorPoints(card, points[activeUnit], stage.clientWidth <= 760);
+  const path = connectorPoints(card, points[visibleUnit], stage.clientWidth <= 760);
   hotspotButtons.forEach((button, index) => {
     button.style.left = `${points[index][0] - button.offsetWidth / 2}px`;
     button.style.top = `${points[index][1] - button.offsetHeight / 2}px`;
@@ -107,20 +129,16 @@ function updateLine(duration = 0) {
 }
 function selectUnit(button) {
   const next = Number(button.dataset.unit);
-  if (next === activeUnit) return;
+  if (next === requestedUnit) return;
+  requestedUnit = next;
   animations.finish(unitCard);
-  const style = getComputedStyle(unitCard);
-  activeUnit = next;
-  hotspotButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-  animations.run('unit-content', unitCard,
-    [{ opacity: style.opacity }, { opacity: 0 }], { duration: 140, easing: 'ease-in' }, () => {
-      unitCard.dataset.unitIndex=String(next);
-      fillUnit(unitContent, next);
-      animations.run('unit-content', unitCard,
-        [{ opacity: 0, translate: '0 10px' }, { opacity: 1, translate: '0 0' }],
-        { duration: 560, easing: ease });
-      updateLine(520);
-    });
+  fadeSwap('unit-content', unitContent, () => {
+    visibleUnit = next;
+    unitCard.dataset.unitIndex = String(visibleUnit);
+    fillUnit(unitContent, visibleUnit);
+    hotspotButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+    updateLine(360);
+  });
 }
 hotspotButtons.forEach(button => {
   button.addEventListener('click', () => selectUnit(button));

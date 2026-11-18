@@ -13,8 +13,8 @@ const motionHooks = new Set();
 function addMotionHooks(hooks) { motionHooks.add(hooks); }
 const contactLink = '<a class="button" href="contact.html#consultation">联系工艺工程师 →</a>';
 const details = {
-  video: '<h2>iSynFlo™ 在线配液系统</h2><img src="assets/hero.webp" alt="在线配液系统"><p>设计文件中未附带视频素材。您可以查看首页的设备介绍，或联系团队获取产品演示视频。</p>' + contactLink,
-  product: '<h2>iSynFlo™ 在线配液系统</h2><img src="assets/machine.png" alt="iSynFlo 在线配液设备"><p>高度自动化，在封闭管路中实时动态混合稀释，直接产出符合工艺要求的药液。</p><p>融合自动化控制、流体工程及洁净工艺技术，支持缓冲液自动切换与全程闭环控制，可集成或独立运行。</p>' + contactLink,
+  video: '<h2>iSynFlo™ 在线配液系统</h2><img src="assets/hero.webp" width="1920" height="838" alt="在线配液系统"><p>设计文件中未附带视频素材。您可以查看首页的设备介绍，或联系团队获取产品演示视频。</p>' + contactLink,
+  product: '<h2>iSynFlo™ 在线配液系统</h2><img src="assets/machine.png" width="1173" height="635" alt="iSynFlo 在线配液设备"><p>高度自动化，在封闭管路中实时动态混合稀释，直接产出符合工艺要求的药液。</p><p>融合自动化控制、流体工程及洁净工艺技术，支持缓冲液自动切换与全程闭环控制，可集成或独立运行。</p>' + contactLink,
   about: '<h2>关于穗维卓生物</h2><img src="assets/factory.webp" alt="生产园区"><p>上海穗维卓生物科技有限公司深耕在线配液系统研发、设计与制造，为客户商业化生产提供定制化方案与全流程支持。</p><p>秉持“专业、创新、品质、服务”理念，以专业工艺，持续为客户创造价值。</p>' + contactLink,
   news: '<h2>新闻资讯</h2><p>首页展示了设计稿中的三则新闻摘要。点击新闻卡片可查看对应摘要，完整稿件尚待补充。</p>',
   language: '<h2>English Version</h2><p>The English version is being prepared. Please contact our team for product information and consultation in English.</p>' + contactLink
@@ -129,7 +129,8 @@ function renderCounter(state,value) {
   if(!state.svg){state.visual.textContent=value;return;}
   if(!state.geometry){
     const style=getComputedStyle(state.element);
-    state.geometry={size:parseFloat(style.fontSize),width:state.element.clientWidth,height:state.element.clientHeight,color:style.color,desktop:matchMedia('(min-width:1280px)').matches};
+    const { width, height } = state.element.getBoundingClientRect();
+    state.geometry={size:parseFloat(style.fontSize),width,height,color:style.color,desktop:matchMedia('(min-width:1280px)').matches};
   }
   const {size,width,height,color,desktop}=state.geometry;
   counterCanvas.font=`700 ${size}px MetricCounter`;
@@ -212,25 +213,28 @@ registerEntrances('.metric-grid > div', 'fade', '.metric-grid');
 const dialog = $('#detail-dialog');
 let dialogState = 'closed';
 let dialogTrigger = null;
+function panelFrame(element) {
+  const { opacity, translate } = getComputedStyle(element);
+  return { opacity, translate };
+}
 function showDialog(content, trigger = document.activeElement) {
-  animations.cancel('dialog');
+  const initial = dialog.open ? panelFrame(dialog) : { opacity: 0, translate: '0 6px' };
   dialogTrigger = trigger;
   $('.dialog-body').innerHTML = content;
   $('.dialog-body h2').id = 'dialog-title';
   document.body.classList.add('dialog-open');
-  if (!dialog.open) dialog.showModal();
   dialogState = 'opening';
   dialog.dataset.state = dialogState;
-  animations.run('dialog', dialog, [{ opacity: 0, translate: '0 10px', scale: '.985' }, { opacity: 1, translate: '0 0', scale: '1' }], { duration: 250, easing: ease }, () => {
+  if (!dialog.open) dialog.showModal();
+  animations.run('dialog', dialog, [initial, { opacity: 1, translate: '0 0' }], { duration: 240, easing: ease, fill: 'both' }, () => {
     dialogState = 'open'; dialog.dataset.state = dialogState;
   });
 }
 function closeDialog() {
   if (dialogState === 'closed' || dialogState === 'closing') return;
-  const style = getComputedStyle(dialog);
-  const initial = { opacity: style.opacity, translate: style.translate, scale: style.scale };
+  const initial = panelFrame(dialog);
   dialogState = 'closing'; dialog.dataset.state = dialogState;
-  animations.run('dialog', dialog, [initial, { opacity: 0, translate: '0 6px', scale: '.99' }], { duration: 160, easing: 'ease-in' }, () => {
+  animations.run('dialog', dialog, [initial, { opacity: 0, translate: '0 4px' }], { duration: 180, easing: 'ease-in', fill: 'both' }, () => {
     dialogState = 'closed'; dialog.dataset.state = dialogState;
     dialog.close();
     document.body.classList.remove('dialog-open');
@@ -260,22 +264,23 @@ const menuButton = $('.menu-toggle');
 let menuState = 'closed';
 function closeMenu(reason = 'outside') {
   if (!mobile.matches || menuState === 'closed' || menuState === 'closing') return;
-  const style = getComputedStyle(nav);
+  const initial = panelFrame(nav);
   menuState = 'closing'; nav.dataset.state = menuState;
   nav.inert = true;
   menuButton.setAttribute('aria-expanded', 'false');
-  animations.run('menu', nav, [{ opacity: style.opacity, translate: style.translate }, { opacity: 0, translate: '0 -6px' }], { duration: 150, easing: 'ease-in' }, () => {
+  animations.run('menu', nav, [initial, { opacity: 0, translate: '0 -6px' }], { duration: 150, easing: 'ease-in', fill: 'both' }, () => {
     nav.classList.remove('open');
     menuState = 'closed'; nav.dataset.state = menuState;
     if (reason === 'escape') menuButton.focus({ preventScroll: true });
   });
 }
 function openMenu() {
-  animations.cancel('menu');
+  const initial = menuState === 'closing' ? panelFrame(nav) : { opacity: 0, translate: '0 -6px' };
+  setSearch(false);
   nav.classList.add('open'); nav.inert = false;
   menuButton.setAttribute('aria-expanded', 'true');
   menuState = 'opening'; nav.dataset.state = menuState;
-  animations.run('menu', nav, [{ opacity: 0, translate: '0 -8px' }, { opacity: 1, translate: '0 0' }], { duration: 230, easing: ease }, () => { menuState = 'open'; nav.dataset.state = menuState; });
+  animations.run('menu', nav, [initial, { opacity: 1, translate: '0 0' }], { duration: 230, easing: ease, fill: 'both' }, () => { menuState = 'open'; nav.dataset.state = menuState; });
 }
 function syncMenuBreakpoint() {
   animations.cancel('menu');
@@ -293,30 +298,51 @@ nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
     destination.focus({ preventScroll: true });
   }
 }));
-document.addEventListener('click', event => { if (!event.target.closest('header')) closeMenu(); });
+document.addEventListener('click', event => {
+  if (event.target.closest('header')) return;
+  closeMenu();
+  setSearch(false);
+});
 mobile.addEventListener('change', syncMenuBreakpoint);
 syncMenuBreakpoint();
 document.addEventListener('keydown', event => {
   if (event.key !== 'Escape' || dialog.open) return;
   closeMenu('escape');
-  if (!$('.search-panel').hidden) {
-    $('.search-panel').hidden = true;
-    $('.search-toggle').setAttribute('aria-expanded', 'false');
-    $('.search-toggle').focus();
-  }
+  setSearch(false, true);
 });
 
-$('.search-toggle').addEventListener('click', () => {
-  const panel = $('.search-panel'); panel.hidden = !panel.hidden;
-  $('.search-toggle').setAttribute('aria-expanded', String(!panel.hidden));
-  if (!panel.hidden) $('#site-search').focus();
-});
-$('.search-panel').addEventListener('submit', event => {
+const searchButton = $('.search-toggle');
+const searchPanel = $('.search-panel');
+function setSearch(open, restoreFocus = false) {
+  if (searchButton.getAttribute('aria-expanded') === String(open)) return;
+  const initial = searchPanel.hidden ? { opacity: 0, translate: '0 -6px' } : panelFrame(searchPanel);
+  const moveFocus = !open && (restoreFocus || searchPanel.contains(document.activeElement));
+  searchButton.setAttribute('aria-expanded', String(open));
+  searchPanel.inert = !open;
+  if (open) {
+    closeMenu();
+    searchPanel.hidden = false;
+    $('#site-search').focus({ preventScroll: true });
+  } else if (moveFocus) {
+    searchButton.focus({ preventScroll: true });
+  }
+  const target = open ? { opacity: 1, translate: '0 0' } : { opacity: 0, translate: '0 -6px' };
+  animations.run('search', searchPanel, [initial, target],
+    { duration: open ? 220 : 160, easing: open ? ease : 'ease-in', fill: 'both' },
+    () => { searchPanel.hidden = !open; });
+}
+searchButton.addEventListener('click', () => setSearch(searchButton.getAttribute('aria-expanded') === 'false'));
+searchPanel.addEventListener('submit', event => {
   event.preventDefault();
   const query = $('#site-search').value.trim().toLowerCase();
   const result = query && $$('main section').find(section => section.textContent.toLowerCase().includes(query));
   $('.search-result').textContent = result ? `已找到“${$('#site-search').value.trim()}”的相关内容。` : '未找到相关内容，请尝试“配液”“应用”或“新闻”。';
-  if (result) result.scrollIntoView({ behavior: skipMotion() ? 'auto' : 'smooth', block: 'start' });
+  if (result) {
+    setSearch(false);
+    if (!result.hasAttribute('tabindex')) result.tabIndex = -1;
+    result.focus({ preventScroll: true });
+    result.scrollIntoView({ behavior: skipMotion() ? 'auto' : 'smooth', block: 'start' });
+  }
 });
 function settleMotion({ all = false } = {}) {
   // Running finite effects finish; unseen pending work survives a background visit.
